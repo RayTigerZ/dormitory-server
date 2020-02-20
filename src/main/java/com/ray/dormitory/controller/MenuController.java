@@ -1,0 +1,48 @@
+package com.ray.dormitory.controller;
+
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ray.dormitory.bean.po.Menu;
+import com.ray.dormitory.bean.po.Operation;
+import com.ray.dormitory.service.MenuService;
+import com.ray.dormitory.service.OperationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+
+/**
+ * @author : Ray
+ * @date : 2019.11.21 11:38
+ */
+@RestController
+@RequestMapping("/menus")
+public class MenuController {
+
+    @Autowired
+    private MenuService menuService;
+    @Autowired
+    private OperationService operationService;
+
+    @GetMapping("")
+    public List<Menu> getAllMenus() {
+        return menuService.list();
+    }
+
+    @PostMapping("")
+    public boolean addOrUpdate(@Valid Menu menu) {
+        return menuService.saveOrUpdate(menu);
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean deleteById(@PathVariable int id) {
+        return menuService.removeById(id);
+    }
+
+    @GetMapping("/{id}/operations")
+    public List<Operation> getOperations(@PathVariable int id) {
+        return operationService.list(Wrappers.<Operation>lambdaQuery().eq(Operation::getMenuId, id));
+    }
+
+
+}

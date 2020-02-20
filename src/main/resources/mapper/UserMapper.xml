@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ray.dormitory.mapper.UserMapper">
+    <resultMap id="userResultMap" type="com.ray.dormitory.bean.po.User">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="account" column="account"/>
+        <result property="password" column="password"/>
+        <result property="salt" column="salt"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="sex" column="sex"/>
+        <result property="roomId" column="room_id"/>
+        <result property="classId" column="class_id"/>
+        <result property="isUsable" column="is_usable"/>
+        <association property="cla" column="class_id" select="getCla" javaType="string"/>
+        <association property="college" column="class_id" select="getCollege" javaType="string"/>
+        <association property="roles" javaType="string" select="getRoles" column="id"/>
+        <collection property="roleIds" ofType="integer" select="getRoleIds" column="id"/>
+    </resultMap>
+
+    <resultMap id="studentMap" type="com.ray.dormitory.bean.bo.Student">
+        <result property="name" column="name"/>
+        <result property="studentNum" column="account"/>
+        <result property="sex" column="sex"/>
+        <result property="classId" column="class_id"/>
+        <result property="roomNum" column="room_id"/>
+        <association property="cla" column="class_id" select="getCla" javaType="string"/>
+        <association property="college" column="class_id" select="getCollege" javaType="string"/>
+    </resultMap>
+
+
+    <select id="getCla" resultType="string">
+        select name from organization where id=#{id}
+    </select>
+    <select id="getCollege" resultType="string">
+        select name from organization where id=(
+            select parent_id from organization where id=(
+                select parent_id from organization where id=#{id}
+            )
+        )
+    </select>
+
+    <select id="getRoles" resultType="string">
+        select group_concat(`name`) from role
+            where id in(
+                select role_id from user_role where user_id=#{id}
+            )
+    </select>
+
+    <select id="getRoleIds" resultType="integer">
+        select role_id from user_role where user_id=#{id}
+    </select>
+
+    <select id="getStudentInfo" resultMap="studentMap">
+        select `name`,account,sex,class_id,room_id  from user where account=#{account}
+    </select>
+
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ray.dormitory.mapper.RoomMapper">
+    <resultMap id="roomResultMap" type="com.ray.dormitory.bean.po.Room">
+        <id property="id" column="id"/>
+        <result property="number" column="number"/>
+        <result property="size" column="size"/>
+        <!--        <result property="lived" column="lived"/>-->
+        <result property="buildingId" column="building_id"/>
+        <collection property="students" ofType="com.ray.dormitory.bean.po.User">
+            <result property="account" column="account"/>
+            <result property="name" column="name"/>
+            <result property="cla" column="class"/>
+        </collection>
+    </resultMap>
+    <select id="getRoomsOfFloor" resultMap="roomResultMap">
+        select r.*,u.account,u.name,o.name class
+            from room r
+            left join user u on r.id=u.room_id
+            left join organization o on u.class_id=o.id
+            where r.building_id=#{buildingId} and substring(r.number, 3, 2)=#{floor}
+    </select>
+</mapper>

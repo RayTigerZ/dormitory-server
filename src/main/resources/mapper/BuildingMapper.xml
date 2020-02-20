@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ray.dormitory.mapper.BuildingMapper">
+
+    <select id="getFloors" resultType="com.ray.dormitory.bean.bo.Floor">
+        SELECT substring(number, 3, 2) num ,SUM(lived) lived,SUM(size)-SUM(lived) free
+		FROM (
+		    SELECT r.number number,r.size size,count(u.id) lived
+		        FROM room r LEFT JOIN user u on r.id=u.room_id
+		        WHERE building_id=#{buildingId} GROUP BY r.id
+		    )floor
+		GROUP BY substring(number, 3, 2)
+    </select>
+</mapper>
