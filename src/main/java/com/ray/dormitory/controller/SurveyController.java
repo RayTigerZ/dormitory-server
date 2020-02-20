@@ -1,10 +1,12 @@
 package com.ray.dormitory.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ray.dormitory.bean.po.Answer;
+import com.ray.dormitory.bean.po.Questionnaire;
 import com.ray.dormitory.bean.po.Survey;
 import com.ray.dormitory.service.AnswerService;
 import com.ray.dormitory.service.QuestionnaireService;
@@ -69,8 +71,15 @@ public class SurveyController {
             for (Survey survey : surveyList) {
                 Map<String, Object> map = new HashMap<>(3);
                 map.put("survey", survey);
-                map.put("questionnaire", questionnaireService.getById(survey.getQuestionnaireId()));
-                map.put("answer", answerService.getOne(Wrappers.<Answer>lambdaQuery().eq(Answer::getUserId, userId).eq(Answer::getSurveyId, survey.getId())));
+
+                Questionnaire questionnaire = questionnaireService.getById(survey.getQuestionnaireId());
+                map.put("questionnaire", questionnaire);
+
+                Wrapper<Answer> wrapper = Wrappers.<Answer>lambdaQuery().eq(Answer::getUserId, userId).eq(Answer::getSurveyId, survey.getId());
+                Answer answer = answerService.getOne(wrapper);
+                map.put("answer", answer == null ? null : answer.getAnswer());
+
+                list.add(map);
             }
         }
 

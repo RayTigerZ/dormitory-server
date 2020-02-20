@@ -39,7 +39,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public boolean updatePassword(String account, String oldPsw, String newPsw) {
         User user = getUserByAccount(account);
         if (user != null) {
@@ -59,13 +58,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public boolean resetPassword(int id) {
         User user = baseMapper.selectById(id);
         String account = user.getAccount();
         String salt = MD5Util.getSalt();
         String password = account.substring(account.length() - 6);
-        System.out.println(password);
+        password = MD5Util.getMD5(password);
         password = MD5Util.getMD5(password + salt);
         return update(Wrappers.<User>lambdaUpdate().set(User::getSalt, salt).set(User::getPassword, password).eq(User::getId, id));
 
