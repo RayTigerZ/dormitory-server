@@ -26,7 +26,7 @@ public class App {
             int z = random.nextInt(4) + 1;
             Answer answer = new Answer();
             Double[] arr = {new Double(x), new Double(y), new Double(z)};
-            answer.setAnswer(arr);
+            answer.setAnswer(Arrays.asList(arr));
             list.add(answer);
         }
 
@@ -36,9 +36,9 @@ public class App {
             @Override
             public double getDistance(Answer center, Answer point) {
                 double sum = 0;
-                int length = center.getAnswer().length;
+                int length = center.getAnswer().size();
                 for (int i = 0; i < length; i++) {
-                    sum += Math.pow(center.getAnswer()[i] - point.getAnswer()[i], 2);
+                    sum += Math.pow(center.getAnswer().get(i) - point.getAnswer().get(i), 2);
                 }
 
                 return sum;
@@ -47,15 +47,15 @@ public class App {
             @Override
             public void updateCenterPoint(List<Answer> list, Answer center) {
 
-                int size = center.getAnswer().length;
+                int size = center.getAnswer().size();
                 for (int i = 0; i < size; i++) {
                     double sum = 0;
                     int length = list.size();
                     for (int j = 0; j < length; j++) {
-                        sum += list.get(j).getAnswer()[i];
+                        sum += list.get(j).getAnswer().get(i);
                     }
 
-                    center.getAnswer()[i] = sum / length;
+                    center.getAnswer().set(i, sum / length);
                 }
 
 
@@ -71,7 +71,7 @@ public class App {
             System.out.println("-------" + (i + 1) + "-------");
 
             centers.get(i).stream().forEach(point -> {
-                System.out.println(Arrays.toString(point.getAnswer()));
+                System.out.println(point.getAnswer().toString());
             });
             System.out.println();
         }

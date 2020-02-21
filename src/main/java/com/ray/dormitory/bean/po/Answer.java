@@ -1,16 +1,16 @@
 package com.ray.dormitory.bean.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -22,7 +22,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@TableName("answer")
+@TableName(value = "answer", autoResultMap = true)
 public class Answer implements Serializable {
 
     /**
@@ -34,31 +34,35 @@ public class Answer implements Serializable {
     /**
      * 学生ID
      */
+    @NotNull
     private Integer userId;
 
     /**
      * 问卷调查ID
      */
+    @NotNull
     private Integer surveyId;
 
     /**
      * 问卷调查答案
      */
-    private Double[] answer;
+    @NotNull()
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private List<Double> answer;
 
+    @TableField(fill = FieldFill.INSERT)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
-    private String createUser;
 
     @Override
     public boolean equals(Object a) {
         if (a instanceof Answer) {
-            Double[] answer = ((Answer) a).getAnswer();
-            int len = this.answer.length;
+            List<Double> answer = ((Answer) a).getAnswer();
+            int len = this.answer.size();
             for (int i = 0; i < len; i++) {
-                if (!this.answer[i].equals(answer[i])) {
+                if (!this.answer.get(i).equals(answer.get(i))) {
                     return false;
                 }
             }
@@ -69,6 +73,6 @@ public class Answer implements Serializable {
 
     @Override
     public String toString() {
-        return Arrays.toString(answer);
+        return answer.toString();
     }
 }

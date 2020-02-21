@@ -2,6 +2,7 @@ package com.ray.dormitory.bean.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ray.dormitory.group.UpdateValid;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,12 +36,14 @@ public class StayApply implements Serializable {
     /**
      * 学号
      */
-    @NotBlank(message = "学号不能为空")
+    @TableField(updateStrategy = FieldStrategy.NEVER)
+    @NotBlank(message = "学号不能为空", groups = {UpdateValid.class})
     private String studentNum;
     /**
      * 学生姓名
      */
-    @NotBlank(message = "学生姓名不能为空")
+    @TableField(updateStrategy = FieldStrategy.NEVER)
+    @NotBlank(message = "学生姓名不能为空", groups = {UpdateValid.class})
     private String studentName;
 
     @NotNull(message = "开始时间不能为空")

@@ -12,10 +12,10 @@ import com.ray.dormitory.util.JwtUtil;
 import com.ray.dormitory.util.SysConfig;
 import com.ray.dormitory.util.bean.ExportData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,7 +104,7 @@ public class StayApplyController {
     }
 
     @PostMapping("")
-    public boolean save(@Valid StayApply stayApply, HttpServletRequest request) {
+    public boolean save(@Validated StayApply stayApply, HttpServletRequest request) {
 
         stayApply.setStudentNum(getStudentNum(request));
         stayApply.setStudentName(getStudentName(request));

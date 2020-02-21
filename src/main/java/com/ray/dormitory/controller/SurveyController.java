@@ -77,12 +77,26 @@ public class SurveyController {
 
                 Wrapper<Answer> wrapper = Wrappers.<Answer>lambdaQuery().eq(Answer::getUserId, userId).eq(Answer::getSurveyId, survey.getId());
                 Answer answer = answerService.getOne(wrapper);
-                map.put("answer", answer == null ? null : answer.getAnswer());
-
+                map.put("answer", answer == null ? getBlankAnswer(questionnaire.getQuestions().size()) : answer.getAnswer());
+                map.put("flag", answer == null ? false : true);
                 list.add(map);
             }
         }
 
+        return list;
+    }
+
+    @PostMapping("/answers")
+    public boolean answer(@RequestBody Answer entity) {
+
+        return answerService.save(entity);
+    }
+
+    private List<Double> getBlankAnswer(int len) {
+        List<Double> list = new ArrayList<>(len);
+        for (int i = 0; i < len; i++) {
+            list.add(null);
+        }
         return list;
     }
 

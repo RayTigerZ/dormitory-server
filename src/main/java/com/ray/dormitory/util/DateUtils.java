@@ -11,6 +11,6 @@ public class DateUtils {
         if (begin == null || end == null) {
             throw new NullPointerException();
         }
-        return begin.getTime() < end.getTime();
+        return begin.getTime() <= end.getTime();
     }
 }
