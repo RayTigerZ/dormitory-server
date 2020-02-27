@@ -37,9 +37,9 @@ public class RoomController {
 
     @PostMapping("/uploadBatch")
     public boolean uploadBatch(MultipartFile file, String time) throws IOException {
-
         EasyExcel.read(file.getInputStream(), Room.class, new UploadDataListener(roomService, time)).sheet().doRead();
         return true;
-
     }
+
+
 }

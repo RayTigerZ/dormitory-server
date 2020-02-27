@@ -1,6 +1,6 @@
 package com.ray.dormitory.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -63,7 +63,9 @@ public class RoleController {
     @ApiOperation(value = "获取角色对应的菜单权限")
     @GetMapping("/{id}/menus")
     public Map<String, Object> getRolePermissions(@PathVariable Integer id) {
-        List<Object> ids = roleMenuService.listObjs(new QueryWrapper<RoleMenu>().lambda().select(RoleMenu::getMenuId).eq(RoleMenu::getRoleId, id));
+        Wrapper<RoleMenu> wrapper = Wrappers.<RoleMenu>lambdaQuery()
+                .select(RoleMenu::getMenuId).eq(RoleMenu::getRoleId, id);
+        List<Object> ids = roleMenuService.listObjs(wrapper);
         List<Menu> menus = menuService.list();
         Map<String, Object> map = new HashMap<>(2);
         map.put("ids", ids);

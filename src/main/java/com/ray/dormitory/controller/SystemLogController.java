@@ -1,6 +1,6 @@
 package com.ray.dormitory.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -24,13 +24,14 @@ public class SystemLogController {
 
     @GetMapping("")
     public IPage<SystemLog> getLogList(int pageNum, int pageSize, String account, String begin, String end) {
-        LambdaQueryWrapper<SystemLog> queryWrapper = Wrappers.lambdaQuery();
+
         IPage<SystemLog> page = new Page<>(pageNum, pageSize);
-        queryWrapper.orderByDesc(SystemLog::getCreateTime)
+        Wrapper<SystemLog> wrapper = Wrappers.<SystemLog>lambdaQuery()
+                .orderByDesc(SystemLog::getCreateTime)
                 .like(StringUtils.isNotBlank(account), SystemLog::getCreateUser, account)
                 .ge(StringUtils.isNotBlank(begin), SystemLog::getCreateTime, begin)
                 .le(StringUtils.isNotBlank(end), SystemLog::getCreateTime, end);
-        return systemLogService.page(page, queryWrapper);
+        return systemLogService.page(page, wrapper);
     }
 
 

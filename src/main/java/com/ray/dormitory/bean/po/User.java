@@ -111,6 +111,13 @@ public class User implements Serializable {
     private String cla;
 
     /**
+     * 专业
+     */
+    @ExcelProperty("专业")
+    @TableField(exist = false)
+    private String major;
+
+    /**
      * 学院名称
      */
     @ExcelProperty("学院")

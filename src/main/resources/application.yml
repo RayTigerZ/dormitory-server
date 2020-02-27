@@ -48,6 +48,7 @@ sys-config:
   templatePath: D:/graduation-project/code/template-excel/
   tokenName: Authorization
   tokenTimeout: 1800
+  repairerRoleId: 3
 logging:
   level:
     com.ray.dormitory: TRACE

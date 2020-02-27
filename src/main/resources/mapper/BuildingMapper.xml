@@ -6,7 +6,7 @@
         SELECT substring(number, 3, 2) num ,SUM(lived) lived,SUM(size)-SUM(lived) free
 		FROM (
 		    SELECT r.number number,r.size size,count(u.id) lived
-		        FROM room r LEFT JOIN user u on r.id=u.room_id
+		        FROM room r LEFT JOIN user u on r.number=u.room_num
 		        WHERE building_id=#{buildingId} GROUP BY r.id
 		    )floor
 		GROUP BY substring(number, 3, 2)

@@ -17,6 +17,7 @@ public class SysConfig {
     private String templatePath;
     private String tokenName;
     private long tokenTimeout;
+    private int repairerRoleId;
 
 
 }

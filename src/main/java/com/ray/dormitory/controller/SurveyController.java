@@ -8,11 +8,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ray.dormitory.bean.po.Answer;
 import com.ray.dormitory.bean.po.Questionnaire;
 import com.ray.dormitory.bean.po.Survey;
+import com.ray.dormitory.bean.po.User;
 import com.ray.dormitory.service.AnswerService;
 import com.ray.dormitory.service.QuestionnaireService;
 import com.ray.dormitory.service.SurveyService;
-import com.ray.dormitory.util.JwtUtil;
-import com.ray.dormitory.util.SysConfig;
+import com.ray.dormitory.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +41,8 @@ public class SurveyController {
     @Autowired
     private AnswerService answerService;
     @Autowired
-    private SysConfig sysConfig;
+    private UserService userService;
+
 
     @GetMapping("")
     public IPage<Survey> getPage(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
@@ -62,10 +63,10 @@ public class SurveyController {
     @GetMapping("/answers")
     public List<Map<String, Object>> getList(HttpServletRequest request) {
         List<Map<String, Object>> list = new ArrayList<>();
-        String token = request.getHeader(sysConfig.getTokenName());
-        String account = JwtUtil.getAccount(token);
+        User user = userService.getCurrentUser(request);
+        String account = user.getAccount();
         if (account.length() == 12) {
-            Integer userId = JwtUtil.getId(token);
+            Integer userId = user.getId();
             String grade = account.substring(0, 4);
             List<Survey> surveyList = surveyService.list(Wrappers.<Survey>lambdaQuery().eq(Survey::getGrade, grade));
             for (Survey survey : surveyList) {
@@ -75,7 +76,9 @@ public class SurveyController {
                 Questionnaire questionnaire = questionnaireService.getById(survey.getQuestionnaireId());
                 map.put("questionnaire", questionnaire);
 
-                Wrapper<Answer> wrapper = Wrappers.<Answer>lambdaQuery().eq(Answer::getUserId, userId).eq(Answer::getSurveyId, survey.getId());
+                Wrapper<Answer> wrapper = Wrappers.<Answer>lambdaQuery()
+                        .eq(Answer::getUserId, userId)
+                        .eq(Answer::getSurveyId, survey.getId());
                 Answer answer = answerService.getOne(wrapper);
                 map.put("answer", answer == null ? getBlankAnswer(questionnaire.getQuestions().size()) : answer.getAnswer());
                 map.put("flag", answer == null ? false : true);
@@ -88,7 +91,6 @@ public class SurveyController {
 
     @PostMapping("/answers")
     public boolean answer(@RequestBody Answer entity) {
-
         return answerService.save(entity);
     }
 

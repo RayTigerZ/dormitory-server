@@ -1,7 +1,7 @@
 package com.ray.dormitory.controller;
 
 import com.alibaba.excel.EasyExcel;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -11,7 +11,6 @@ import com.ray.dormitory.bean.po.User;
 import com.ray.dormitory.bean.po.UserRole;
 import com.ray.dormitory.service.UserRoleService;
 import com.ray.dormitory.service.UserService;
-import com.ray.dormitory.util.JwtUtil;
 import com.ray.dormitory.util.UploadDataListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +21,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -37,6 +37,7 @@ public class UserController {
     @Autowired
     private UserRoleService userRoleService;
 
+
     @GetMapping("")
     public IPage<User> getPage(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize, String account, Integer roleId, Integer[] classId) {
         IPage<User> page = new Page<>(pageNum, pageSize);
@@ -48,19 +49,18 @@ public class UserController {
             }
         }
 
-        LambdaQueryWrapper<User> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.like(StringUtils.isNotBlank(account), User::getAccount, account)
+        Wrapper<User> wrapper = Wrappers.<User>lambdaQuery()
+                .like(StringUtils.isNotBlank(account), User::getAccount, account)
                 .in(roleId != null, User::getId, userIds)
                 .in(classId != null, User::getClassId, classId);
 
-        return userService.page(page, queryWrapper);
+        return userService.page(page, wrapper);
     }
 
 
     @PostMapping("/editPsw")
     public boolean editPsw(HttpServletRequest request, String oldPsw, String newPsw) {
-        String token = request.getHeader("Authorization");
-        String account = JwtUtil.getAccount(token);
+        String account = userService.getCurrentUser(request).getAccount();
         return userService.updatePassword(account, newPsw, oldPsw);
     }
 
@@ -90,5 +90,14 @@ public class UserController {
         return userService.getStudentInfo(account);
     }
 
+    @GetMapping("/roomNum")
+    public String getMyRoomNum(HttpServletRequest request) {
+        return userService.getCurrentUser(request).getRoomNum();
+    }
+
+    @GetMapping("/repairers")
+    public List<Map<String, Object>> getRepairers() {
+        return userService.repairers();
+    }
 
 }

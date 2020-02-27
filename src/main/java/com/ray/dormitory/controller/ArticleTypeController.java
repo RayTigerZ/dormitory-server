@@ -1,6 +1,7 @@
 package com.ray.dormitory.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -45,6 +46,8 @@ public class ArticleTypeController {
 
     @GetMapping("/options")
     public List<Map<String, Object>> getOptions() {
-        return articleTypeService.listMaps(Wrappers.<ArticleType>lambdaQuery().select(ArticleType::getId, ArticleType::getName));
+        Wrapper<ArticleType> wrapper = Wrappers.<ArticleType>lambdaQuery()
+                .select(ArticleType::getId, ArticleType::getName);
+        return articleTypeService.listMaps(wrapper);
     }
 }

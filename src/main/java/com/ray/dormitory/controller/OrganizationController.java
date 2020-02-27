@@ -1,6 +1,7 @@
 package com.ray.dormitory.controller;
 
 import com.alibaba.excel.EasyExcel;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ray.dormitory.bean.bo.OrganizationOption;
 import com.ray.dormitory.bean.po.Organization;
@@ -30,7 +31,9 @@ public class OrganizationController {
 
         List<Organization> list;
         if (level == null) {
-            list = organizationService.list(Wrappers.<Organization>lambdaQuery().isNull(Organization::getParentId));
+            Wrapper<Organization> wrapper = Wrappers.<Organization>lambdaQuery()
+                    .isNull(Organization::getParentId);
+            list = organizationService.list(wrapper);
             //将组织树结构的第三层 children属性设置为null，方便前端渲染
             for (Organization a : list) {
                 for (Organization b : a.getChildren()) {
@@ -41,7 +44,10 @@ public class OrganizationController {
             }
         } else {
             //获取指定层级的组织"length(code)"
-            list = organizationService.list(Wrappers.<Organization>lambdaQuery().eq(Organization::getCode, values[level - 1]).orderByAsc(Organization::getCode));
+            Wrapper<Organization> wrapper = Wrappers.<Organization>lambdaQuery()
+                    .eq(Organization::getCode, values[level - 1])
+                    .orderByAsc(Organization::getCode);
+            list = organizationService.list(wrapper);
         }
 
         return list;

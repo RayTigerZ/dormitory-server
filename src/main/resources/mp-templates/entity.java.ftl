@@ -8,9 +8,8 @@ package ${package.Entity};
     import io.swagger.annotations.ApiModelProperty;
 </#if>
 <#if entityLombokModel>
-    import lombok.Data;
-    import lombok.EqualsAndHashCode;
-    import lombok.experimental.Accessors;
+    import lombok.Getter;
+    import lombok.Setter;
 </#if>
 
 /**
@@ -22,17 +21,12 @@ package ${package.Entity};
 * @date ${.now}
 */
 <#if entityLombokModel>
-    @Data
-    <#if superEntityClass??>
-        @EqualsAndHashCode(callSuper = true)
-    <#else>
-        @EqualsAndHashCode(callSuper = false)
-    </#if>
-    @Accessors(chain = true)
+    @Getter
+    @Setter
 </#if>
-<#if table.convert>
-    @TableName("${table.name}")
-</#if>
+
+@TableName("${table.name}")
+
 <#if swagger2>
     @ApiModel(value="${entity}对象", description="${table.comment!}")
 </#if>
@@ -62,11 +56,11 @@ package ${package.Entity};
     <#if field.keyFlag>
     <#-- 主键 -->
         <#if field.keyIdentityFlag>
-            @TableId(value = "${field.name}", type = IdType.AUTO)
+            @TableId( type = IdType.AUTO)
         <#elseif idType??>
-            @TableId(value = "${field.name}", type = IdType.${idType})
+            @TableId( type = IdType.${idType})
         <#elseif field.convert>
-            @TableId("${field.name}")
+            @TableId
         </#if>
     <#-- 普通字段 -->
     <#elseif field.fill??>

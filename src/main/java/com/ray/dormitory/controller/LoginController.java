@@ -2,7 +2,8 @@ package com.ray.dormitory.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ray.dormitory.bean.po.Role;
 import com.ray.dormitory.bean.po.User;
 import com.ray.dormitory.exception.CustomException;
@@ -108,18 +109,16 @@ public class LoginController {
     @GetMapping("/userInfo")
     public Map<String, Object> getUserInfo(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>(2);
-        String token = request.getHeader(sysConfig.getTokenName());
-        int userId = 0;
-        //校验登陆的token是否与缓存中的token保持一致
-        if (token != null && JwtUtil.verifyToken(token)) {
-            userId = JwtUtil.getId(token);
-        }
-        if (userId == 0) {
+        User user = userService.getCurrentUser(request);
+        Integer userId = user.getId();
+        if (userId == null) {
             throw new CustomException(202, "请重新登录");
         }
-        List<Object> roles = roleService.listObjs(new QueryWrapper<Role>().lambda().select(Role::getName).inSql(Role::getId, "select role_id from user_role where user_id=" + userId));
+        Wrapper<Role> wrapper = Wrappers.<Role>lambdaQuery().select(Role::getName)
+                .inSql(Role::getId, "select role_id from user_role where user_id=" + userId);
+        List<Object> roles = roleService.listObjs(wrapper);
         map.put("roles", roles);
-        map.put("name", JwtUtil.getName(token));
+        map.put("name", user.getName());
         return map;
     }
 }

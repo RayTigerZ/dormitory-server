@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class CodeGenerator {
 
-    private static String tables = "stay_apply";
+    private static String tables = "notice";
 
 
     public static void main(String[] args) throws IOException {

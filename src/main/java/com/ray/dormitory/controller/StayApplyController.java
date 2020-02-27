@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ray.dormitory.bean.po.StayApply;
+import com.ray.dormitory.bean.po.User;
 import com.ray.dormitory.service.StayApplyService;
-import com.ray.dormitory.util.JwtUtil;
-import com.ray.dormitory.util.SysConfig;
+import com.ray.dormitory.service.UserService;
 import com.ray.dormitory.util.bean.ExportData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -36,7 +36,9 @@ public class StayApplyController {
     @Autowired
     private StayApplyService stayApplyService;
     @Autowired
-    private SysConfig sysConfig;
+    private UserService userService;
+//    @Autowired
+//    private SysConfig sysConfig;
 
     static {
         key = new ArrayList<>();
@@ -97,35 +99,22 @@ public class StayApplyController {
 
     @GetMapping("/self")
     public List<StayApply> getSelfApply(HttpServletRequest request) {
-
-        String studentNum = getStudentNum(request);
+        String studentNum = userService.getCurrentUser(request).getAccount();
         Wrapper<StayApply> wrapper = Wrappers.<StayApply>lambdaQuery().eq(StayApply::getStudentNum, studentNum).orderByDesc(StayApply::getCreateTime);
         return stayApplyService.list(wrapper);
     }
 
     @PostMapping("")
     public boolean save(@Validated StayApply stayApply, HttpServletRequest request) {
-
-        stayApply.setStudentNum(getStudentNum(request));
-        stayApply.setStudentName(getStudentName(request));
+        User user = userService.getCurrentUser(request);
+        stayApply.setStudentNum(user.getAccount());
+        stayApply.setStudentName(user.getName());
         return stayApplyService.save(stayApply);
     }
 
     @PostMapping("/{id}/check")
     public boolean check(@PathVariable int id, boolean result) {
-
         return stayApplyService.check(id, result);
-
-    }
-
-    private String getStudentNum(HttpServletRequest request) {
-        String token = request.getHeader(sysConfig.getTokenName());
-        return JwtUtil.getAccount(token);
-    }
-
-    private String getStudentName(HttpServletRequest request) {
-        String token = request.getHeader(sysConfig.getTokenName());
-        return JwtUtil.getName(token);
     }
 
 

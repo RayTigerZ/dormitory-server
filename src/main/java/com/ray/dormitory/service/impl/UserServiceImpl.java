@@ -1,5 +1,6 @@
 package com.ray.dormitory.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -12,13 +13,17 @@ import com.ray.dormitory.mapper.RoleMapper;
 import com.ray.dormitory.mapper.UserMapper;
 import com.ray.dormitory.mapper.UserRoleMapper;
 import com.ray.dormitory.service.UserService;
+import com.ray.dormitory.util.JwtUtil;
 import com.ray.dormitory.util.MD5Util;
+import com.ray.dormitory.util.SysConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Ray Z
@@ -31,6 +36,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private RoleMapper roleMapper;
     @Autowired
     private UserRoleMapper userRoleMapper;
+    @Autowired
+    private SysConfig sysConfig;
 
 
     @Override
@@ -160,5 +167,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Student getStudentInfo(String account) {
         return baseMapper.getStudentInfo(account);
+    }
+
+    @Override
+    public User getCurrentUser(HttpServletRequest request) {
+        String token = request.getHeader(sysConfig.getTokenName());
+        Integer userId = JwtUtil.getId(token);
+        return baseMapper.selectById(userId);
+    }
+
+    @Override
+    public List<Map<String, Object>> repairers() {
+        Wrapper<User> wrapper = Wrappers.<User>lambdaQuery()
+                .select(User::getAccount, User::getName)
+                .inSql(User::getId, "select user_id from user_role where role_id=" + sysConfig.getRepairerRoleId());
+        return baseMapper.selectMaps(wrapper);
     }
 }

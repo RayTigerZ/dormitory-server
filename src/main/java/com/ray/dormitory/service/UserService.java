@@ -4,6 +4,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.ray.dormitory.bean.bo.Student;
 import com.ray.dormitory.bean.po.User;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Ray
  * @date 2019/11/23 17:06
@@ -29,4 +33,8 @@ public interface UserService extends IService<User> {
     boolean resetPassword(int id);
 
     Student getStudentInfo(String account);
+
+    User getCurrentUser(HttpServletRequest request);
+
+    List<Map<String, Object>> repairers();
 }
