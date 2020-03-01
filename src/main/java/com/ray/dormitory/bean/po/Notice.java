@@ -36,6 +36,8 @@ public class Notice implements Serializable {
      */
     private String account;
 
+    private String title;
+
     /**
      * 通知内容
      */
@@ -46,13 +48,6 @@ public class Notice implements Serializable {
      */
     private Boolean isRead;
 
-    /**
-     * 阅读时间
-     */
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date readTime;
 
     @TableField(fill = FieldFill.INSERT)
     private String createUser;
@@ -65,8 +60,9 @@ public class Notice implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
-    public Notice(String account, String content) {
+    public Notice(String account, String title, String content) {
         this.account = account;
+        this.title = title;
         this.content = content;
     }
 

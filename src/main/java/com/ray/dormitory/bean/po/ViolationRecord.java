@@ -52,13 +52,13 @@ public class ViolationRecord implements Serializable {
     /**
      * 处罚
      */
-    @Size(max = 64, message = "处罚长度在1到64")
+    @Size(max = 64, message = "处罚最多为64个字符")
     private String punishment;
 
     /**
      * 备注
      */
-    @Size(max = 128, message = "备注信息最大为128个字符")
+    @Size(max = 128, message = "备注最多为128个字符")
     private String remark;
 
     /**

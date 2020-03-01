@@ -33,7 +33,8 @@ public class NoticeController {
     public List<Notice> getList(HttpServletRequest request) {
         User user = userService.getCurrentUser(request);
         Wrapper<Notice> wrapper = Wrappers.<Notice>lambdaQuery()
-                .eq(Notice::getAccount, user.getAccount());
+                .eq(Notice::getAccount, user.getAccount())
+                .orderByDesc(Notice::getCreateTime);
         return noticeService.list(wrapper);
     }
 

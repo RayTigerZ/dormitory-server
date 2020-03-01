@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
@@ -26,7 +27,6 @@ import java.util.Date;
 @TableName("stay_apply")
 public class StayApply implements Serializable {
 
-
     /**
      * ID
      */
@@ -36,28 +36,35 @@ public class StayApply implements Serializable {
     /**
      * 学号
      */
-    @TableField(updateStrategy = FieldStrategy.NEVER)
     @NotBlank(message = "学号不能为空", groups = {UpdateValid.class})
     private String studentNum;
+
     /**
      * 学生姓名
      */
-    @TableField(updateStrategy = FieldStrategy.NEVER)
     @NotBlank(message = "学生姓名不能为空", groups = {UpdateValid.class})
     private String studentName;
 
+    /**
+     * 留宿开始时间
+     */
     @NotNull(message = "开始时间不能为空")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date beginDate;
 
+    /**
+     * 留宿结束时间
+     */
     @NotNull(message = "结束时间不能为空")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date endDate;
 
-    @NotBlank(message = "紧急联系方式不能为空")
-    @Size(max = 16, message = "紧急联系方式长度不能超过16")
+    /**
+     * 紧急联系电话
+     */
+    @Pattern(regexp = "^1[3456789][0-9]{9}$", message = "请输入正确的手机号码")
     private String emergencyContact;
 
     /**

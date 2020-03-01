@@ -20,7 +20,6 @@ import java.util.Date;
 @Getter
 @Setter
 @TableName("cost")
-
 public class Cost implements Serializable {
 
 
@@ -36,12 +35,18 @@ public class Cost implements Serializable {
     private String roomNum;
 
     /**
-     * 费用项
+     * 收费项目
      */
     private String chargeName;
 
+    /**
+     * 单价
+     */
     private Double chargePrice;
 
+    /**
+     * 单位
+     */
     private String chargeUnit;
 
     /**

@@ -16,8 +16,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExportData<T> {
+    private String fileName;
     private List<String> header;
     private List<String> key;
-    private List<T> data;
+    private List<T> rows;
 
 }

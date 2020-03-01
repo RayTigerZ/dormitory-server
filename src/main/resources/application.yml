@@ -21,7 +21,6 @@ spring:
       max-active: 20
       min-idle: 0
       aop-patterns: com.ray.dormitory.service.*
-
       stat-view-servlet:
         allow: 127.0.0.1
         reset-enable: false
@@ -33,10 +32,14 @@ spring:
         enabled: true
       filters: stat,wall,logback
 
+  freemarker:
+    template-loader-path: classpath:/notice-templates
+    cache: true
+    content-type: text/html; charset=UTF-8
+
 #mybatis-plus配置
 mybatis-plus:
   mapperLocations: classpath:/mapper/*Mapper.xml
-  #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.ray.dormitory.bean
   configuration:
     lazy-loading-enabled: true

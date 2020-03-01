@@ -38,4 +38,10 @@ public class VisitRecordServiceImpl extends ServiceImpl<VisitRecordMapper, Visit
         }
 
     }
+
+    @Override
+    public boolean save(VisitRecord entity) {
+        entity.setVisitTime(new Date());
+        return super.save(entity);
+    }
 }

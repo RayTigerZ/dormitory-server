@@ -13,7 +13,9 @@ import com.ray.dormitory.service.NoticeService;
 import com.ray.dormitory.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,8 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     private CostMapper costMapper;
     @Autowired
     private UserService userService;
+    @Autowired
+    private FreeMarkerConfigurer configuration;
 
     private static final String costNoticeTemplate = "%s %s 的 %s";
 
@@ -47,8 +51,14 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
                     .eq(User::getRoomNum, cost.getRoomNum());
             List<Object> accounts = userService.listObjs(wrapper);
             accounts.forEach(account -> {
+                String title = String.format("%s的%s通知", cost.getCycle(), cost.getChargeName());
+                try {
+                    configuration.getConfiguration().getTemplate("");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 String content = String.format(costNoticeTemplate, cost.getRoomNum(), cost.getCycle(), cost.getChargeName());
-                Notice notice = new Notice((String) account, content);
+                Notice notice = new Notice((String) account, title, content);
                 noticeList.add(notice);
             });
 

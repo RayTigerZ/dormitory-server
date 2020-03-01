@@ -8,7 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
@@ -35,21 +36,20 @@ public class VisitRecord implements Serializable {
     /**
      * 访客真实姓名
      */
-    @NotNull(message = "真实姓名不能为空")
+    @NotBlank(message = "真实姓名不能为空")
     @Size(min = 1, max = 32, message = "真实姓名长度在1到32")
     private String trueName;
 
     /**
      * 访客身份证
      */
-    @NotNull(message = "身份证不能为空")
-    @Size(min = 1, max = 32, message = "身份证长度在1到32")
+    @NotBlank(message = "身份证不能为空")
+    @Pattern(regexp = "^[0-9]{7,18}$", message = "请输入正确的身份证号码")
     private String identity;
 
     /**
      * 访客来访时间
      */
-    @NotNull(message = "来访时间不能为空")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date visitTime;
@@ -62,9 +62,9 @@ public class VisitRecord implements Serializable {
     private Date leaveTime;
 
     /**
-     * 备注特别情况
+     * 备注
      */
-    @Size(max = 128, message = "备注信息最多为128个字符")
+    @Size(max = 128, message = "备注最多为128个字符")
     private String remark;
 
 

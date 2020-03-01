@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ray.dormitory.bean.bo.Student;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import java.util.List;
 @Getter
 @Setter
 @TableName("room")
+@JsonIgnoreProperties(value = {"handler"})
 public class Room {
 
     /**

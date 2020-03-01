@@ -3,6 +3,7 @@ package com.ray.dormitory.controller;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -12,11 +13,14 @@ import com.ray.dormitory.service.StayApplyService;
 import com.ray.dormitory.service.UserService;
 import com.ray.dormitory.util.bean.ExportData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,8 +41,6 @@ public class StayApplyController {
     private StayApplyService stayApplyService;
     @Autowired
     private UserService userService;
-//    @Autowired
-//    private SysConfig sysConfig;
 
     static {
         key = new ArrayList<>();
@@ -68,39 +70,41 @@ public class StayApplyController {
     }
 
     @GetMapping("")
-    public IPage<StayApply> getPage(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize, String student, String beginDate, String endDate) {
-
+    public IPage<StayApply> getPage(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize,
+                                    String student, @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginDate, @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
         IPage<StayApply> page = new Page<>(pageNum, pageSize);
         Wrapper<StayApply> wrapper = Wrappers.<StayApply>lambdaQuery()
-                .ge(StringUtils.isNotBlank(beginDate), StayApply::getBeginDate, beginDate)
-                .le(StringUtils.isNotBlank(endDate), StayApply::getEndDate, endDate)
-                .and(StringUtils.isNotBlank(student), i -> {
-                    i.like(StayApply::getStudentNum, student).or().like(StayApply::getStudentName, student);
-                })
+                .ge(ObjectUtils.isNotNull(beginDate), StayApply::getBeginDate, beginDate)
+                .le(ObjectUtils.isNotNull(endDate), StayApply::getEndDate, endDate)
+                .and(StringUtils.isNotBlank(student), i -> i.like(StayApply::getStudentNum, student)
+                        .or().like(StayApply::getStudentName, student)
+                )
                 .orderByDesc(StayApply::getCreateTime);
         return stayApplyService.page(page, wrapper);
     }
 
     @GetMapping("/export")
-    public ExportData<StayApply> export(String student, String beginDate, String endDate) {
-
+    public ExportData<StayApply> export(String student, @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginDate,
+                                        @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
         Wrapper<StayApply> wrapper = Wrappers.<StayApply>lambdaQuery()
-                .ge(StringUtils.isNotBlank(beginDate), StayApply::getBeginDate, beginDate)
-                .le(StringUtils.isNotBlank(endDate), StayApply::getEndDate, endDate)
-                .and(StringUtils.isNotBlank(student), i -> {
-                    i.like(StayApply::getStudentNum, student).or().like(StayApply::getStudentName, student);
-                })
+                .ge(ObjectUtils.isNotNull(beginDate), StayApply::getBeginDate, beginDate)
+                .le(ObjectUtils.isNotNull(endDate), StayApply::getEndDate, endDate)
+                .and(StringUtils.isNotBlank(student), i -> i.like(StayApply::getStudentNum, student)
+                        .or().like(StayApply::getStudentName, student))
                 .orderByDesc(StayApply::getCreateTime);
 
-        List<StayApply> data = stayApplyService.list(wrapper);
-        return new ExportData<>(header, key, data);
+        List<StayApply> rows = stayApplyService.list(wrapper);
+        String fileName = "留校申请-" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+        return new ExportData<>(fileName, header, key, rows);
     }
 
 
     @GetMapping("/self")
     public List<StayApply> getSelfApply(HttpServletRequest request) {
         String studentNum = userService.getCurrentUser(request).getAccount();
-        Wrapper<StayApply> wrapper = Wrappers.<StayApply>lambdaQuery().eq(StayApply::getStudentNum, studentNum).orderByDesc(StayApply::getCreateTime);
+        Wrapper<StayApply> wrapper = Wrappers.<StayApply>lambdaQuery()
+                .eq(StayApply::getStudentNum, studentNum)
+                .orderByDesc(StayApply::getCreateTime);
         return stayApplyService.list(wrapper);
     }
 
