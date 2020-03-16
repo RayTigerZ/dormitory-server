@@ -84,7 +84,10 @@ public class CostController {
         return noticeService.costNotice(ids);
     }
 
-    @GetMapping("/self")
+    /**
+     * 查询用户本人房间的费用账单
+     */
+    @GetMapping("/room")
     public IPage<Cost> getSelfPage(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize, HttpServletRequest request) {
         IPage<Cost> page = new Page<>(pageNum, pageSize);
         String roomNum = userService.getCurrentUser(request).getRoomNum();
@@ -105,6 +108,11 @@ public class CostController {
         List<Cost> rows = costService.list(wrapper);
         String fileName = "宿舍收费账单-" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
         return new ExportData<>(fileName, header, key, rows);
+    }
+
+    @PostMapping("/{id}/pay")
+    public boolean pay(@PathVariable int id) {
+        return costService.pay(id);
     }
 
 }

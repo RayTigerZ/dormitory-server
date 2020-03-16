@@ -14,4 +14,5 @@ import java.util.List;
 @Repository
 public interface OrganizationMapper extends BaseMapper<Organization> {
     List<OrganizationOption> getOptions();
+
 }

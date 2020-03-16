@@ -10,6 +10,7 @@ import com.ray.dormitory.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -23,14 +24,14 @@ public class SystemLogController {
     private SystemLogService systemLogService;
 
     @GetMapping("")
-    public IPage<SystemLog> getLogList(int pageNum, int pageSize, String account, String begin, String end) {
+    public IPage<SystemLog> getLogList(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize, String account, String begin, String end) {
 
         IPage<SystemLog> page = new Page<>(pageNum, pageSize);
         Wrapper<SystemLog> wrapper = Wrappers.<SystemLog>lambdaQuery()
-                .orderByDesc(SystemLog::getCreateTime)
                 .like(StringUtils.isNotBlank(account), SystemLog::getCreateUser, account)
                 .ge(StringUtils.isNotBlank(begin), SystemLog::getCreateTime, begin)
-                .le(StringUtils.isNotBlank(end), SystemLog::getCreateTime, end);
+                .le(StringUtils.isNotBlank(end), SystemLog::getCreateTime, end)
+                .orderByDesc(SystemLog::getCreateTime);
         return systemLogService.page(page, wrapper);
     }
 

@@ -12,4 +12,7 @@ import java.util.List;
  */
 public interface OrganizationService extends IService<Organization> {
     List<OrganizationOption> getOptions();
+
+
+    List<Organization> level(int level);
 }

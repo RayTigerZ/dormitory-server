@@ -11,6 +11,7 @@ import com.ray.dormitory.bean.po.User;
 import com.ray.dormitory.bean.po.UserRole;
 import com.ray.dormitory.service.UserRoleService;
 import com.ray.dormitory.service.UserService;
+import com.ray.dormitory.util.SysConfig;
 import com.ray.dormitory.util.UploadDataListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private UserRoleService userRoleService;
+    @Autowired
+    private SysConfig sysConfig;
 
 
     @GetMapping("")
@@ -65,8 +68,9 @@ public class UserController {
     }
 
     @PostMapping("/batchSave")
-    public boolean batchSave(MultipartFile file, String time) throws IOException {
-        EasyExcel.read(file.getInputStream(), User.class, new UploadDataListener(userService, time)).sheet().doRead();
+    public boolean batchSave(MultipartFile file, HttpServletRequest request) throws IOException {
+        String token = request.getHeader(sysConfig.getTokenName());
+        EasyExcel.read(file.getInputStream(), User.class, new UploadDataListener(userService, token)).sheet().doRead();
         return true;
     }
 

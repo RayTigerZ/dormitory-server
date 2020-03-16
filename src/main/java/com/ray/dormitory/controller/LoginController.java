@@ -70,11 +70,8 @@ public class LoginController {
                 redisService.remove(JwtUtil.getAccountUserKey(account));
                 redisService.set(JwtUtil.getAccountUserKey(account), token, sysConfig.getTokenTimeout());
 
-                Map<String, String> map = new HashMap<>(2);
-                map.put("token", token);
-                map.put("name", user.getName());
 
-                return new ResponseBean(200, "登录成功", map);
+                return new ResponseBean(200, "登录成功", token);
             }
             throw new CustomException(204, "用户名或密码错误");
 
@@ -118,7 +115,8 @@ public class LoginController {
                 .inSql(Role::getId, "select role_id from user_role where user_id=" + userId);
         List<Object> roles = roleService.listObjs(wrapper);
         map.put("roles", roles);
-        map.put("name", user.getName());
+        map.put("user", user);
         return map;
     }
+
 }

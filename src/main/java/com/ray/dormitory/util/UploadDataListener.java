@@ -32,7 +32,7 @@ public class UploadDataListener<T> extends AnalysisEventListener<T> {
      * 记录保存数据时的错误信息
      */
     private List<String> errorMsgs;
-    private String time;
+    private String token;
 
     /**
      * 假设这个是一个DAO，当然有业务逻辑这个也可以是一个service。当然如果不用存储这个对象没用。
@@ -45,9 +45,9 @@ public class UploadDataListener<T> extends AnalysisEventListener<T> {
      *
      * @param baseService
      */
-    public UploadDataListener(IService baseService, String time) {
+    public UploadDataListener(IService baseService, String token) {
         this.baseService = baseService;
-        this.time = time;
+        this.token = token;
         errorMsgs = new ArrayList<>();
     }
 
@@ -93,7 +93,7 @@ public class UploadDataListener<T> extends AnalysisEventListener<T> {
             errorMsgs.add(msg);
 
             log.error("data:{}, cause:{}", data, e.getMessage());
-            WebSocketServer.sendInfo(msg, time);
+            WebSocketServer.sendInfo(msg, token);
         }
 
 

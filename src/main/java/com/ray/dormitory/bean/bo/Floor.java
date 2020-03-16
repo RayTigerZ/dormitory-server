@@ -14,8 +14,20 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class Floor {
+
+    /**
+     * 楼层
+     */
     private int num;
+
+    /**
+     * 已住
+     */
     private int lived;
+
+    /**
+     * 空余
+     */
     private int free;
 
 

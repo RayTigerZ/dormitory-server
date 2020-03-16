@@ -30,7 +30,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         Wrapper<Organization> wrapper = Wrappers.<Organization>lambdaQuery().eq(Organization::getParentId, id);
 
         if (baseMapper.selectCount(wrapper) == 0) {
-            return baseMapper.deleteById(id) > 0;
+            return super.removeById(id);
         } else {
             throw new CustomException(ErrorEnum.CHILDREN_ORGANIZATION_EXIST);
         }
@@ -78,6 +78,36 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
     @Override
     public List<OrganizationOption> getOptions() {
-        return baseMapper.getOptions();
+        List<OrganizationOption> options = baseMapper.getOptions();
+        options.forEach(i -> {
+            i.getChildren().forEach(j -> {
+                j.getChildren().forEach(k -> k.setChildren(null));
+            });
+        });
+        return options;
+    }
+
+    @Override
+    public List<Organization> list(Wrapper<Organization> queryWrapper) {
+        List<Organization> organizations = super.list(queryWrapper);
+        //将组织树结构的第三层 children属性设置为null，方便前端渲染
+        organizations.forEach(i -> {
+            i.getChildren().forEach(j -> {
+                j.getChildren().forEach(k -> k.setChildren(null));
+            });
+        });
+        return organizations;
+    }
+
+    private static int[] values = {3, 5, 10};
+
+    @Override
+    public List<Organization> level(int level) {
+        Wrapper<Organization> wrapper = Wrappers.<Organization>query()
+                .eq("LENGTH(code)", values[level - 1])
+                .lambda().orderByAsc(Organization::getCode);
+        List<Organization> list = baseMapper.selectList(wrapper);
+        list.forEach(i -> i.setChildren(null));
+        return list;
     }
 }

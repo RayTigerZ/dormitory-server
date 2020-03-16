@@ -13,5 +13,5 @@ import com.ray.dormitory.bean.po.Cost;
  */
 public interface CostService extends IService<Cost> {
 
-
+    boolean pay(int id);
 }
