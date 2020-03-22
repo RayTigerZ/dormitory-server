@@ -11,13 +11,13 @@ import com.ray.dormitory.bean.po.Cost;
 import com.ray.dormitory.service.CostService;
 import com.ray.dormitory.service.NoticeService;
 import com.ray.dormitory.service.UserService;
+import com.ray.dormitory.util.Constants;
 import com.ray.dormitory.util.bean.ExportData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,8 +32,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/costs")
 public class CostController {
-    private static List<String> key;
-    private static List<String> header;
+
     @Autowired
     private CostService costService;
     @Autowired
@@ -41,30 +40,6 @@ public class CostController {
     @Autowired
     private NoticeService noticeService;
 
-    static {
-        key = new ArrayList<>();
-        key.add("roomNum");
-        key.add("chargeName");
-        key.add("chargePrice");
-        key.add("chargeUnit");
-        key.add("count");
-        key.add("cycle");
-        key.add("createTime");
-        key.add("isPayed");
-        key.add("payTime");
-
-        header = new ArrayList<>();
-        header.add("宿舍号");
-        header.add("收费项目");
-        header.add("单价");
-        header.add("单位");
-        header.add("数量");
-        header.add("缴费周期");
-        header.add("生成时间");
-        header.add("缴费状态");
-        header.add("缴费时间");
-
-    }
 
     @GetMapping("")
     public IPage<Cost> getPage(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize,
@@ -106,8 +81,8 @@ public class CostController {
                 .eq(ObjectUtils.isNotNull(payed), Cost::getIsPayed, payed)
                 .orderByDesc(Cost::getCycle);
         List<Cost> rows = costService.list(wrapper);
-        String fileName = "宿舍收费账单-" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
-        return new ExportData<>(fileName, header, key, rows);
+        String fileName = "宿舍收费账单-" + new SimpleDateFormat(Constants.EXPORT_FILE_DATE_FORMAT).format(new Date());
+        return new ExportData<>(fileName, rows);
     }
 
     @PostMapping("/{id}/pay")

@@ -32,7 +32,8 @@ public class ArticleController {
         IPage<Article> page = new Page<>(pageNum, pageSize);
         Wrapper<Article> wrapper = Wrappers.<Article>lambdaQuery()
                 .like(StringUtils.isNotBlank(title), Article::getTitle, title)
-                .eq(StringUtils.isNotBlank(articleTypeId), Article::getArticleTypeId, articleTypeId);
+                .eq(StringUtils.isNotBlank(articleTypeId), Article::getArticleTypeId, articleTypeId)
+                .orderByDesc(Article::getCreateTime);
         return articleService.page(page, wrapper);
     }
 

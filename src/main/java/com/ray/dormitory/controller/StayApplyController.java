@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,39 +34,11 @@ import java.util.List;
 @RequestMapping("/stayApplys")
 public class StayApplyController {
 
-    private static List<String> key;
-    private static List<String> header;
     @Autowired
     private StayApplyService stayApplyService;
     @Autowired
     private UserService userService;
 
-    static {
-        key = new ArrayList<>();
-        key.add("studentName");
-        key.add("studentNum");
-        key.add("beginDate");
-        key.add("endDate");
-        key.add("emergencyContact");
-        key.add("reason");
-        key.add("remark");
-        key.add("createTime");
-        key.add("isConsent");
-        key.add("processTime");
-
-        header = new ArrayList<>();
-        header.add("学生姓名");
-        header.add("学号");
-        header.add("开始时间");
-        header.add("结束时间");
-        header.add("紧急联系方式");
-        header.add("原因");
-        header.add("备注");
-        header.add("申请时间");
-        header.add("审核结果");
-        header.add("审核时间");
-
-    }
 
     @GetMapping("")
     public IPage<StayApply> getPage(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize,
@@ -95,7 +66,7 @@ public class StayApplyController {
 
         List<StayApply> rows = stayApplyService.list(wrapper);
         String fileName = "留校申请-" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
-        return new ExportData<>(fileName, header, key, rows);
+        return new ExportData<>(fileName, rows);
     }
 
 

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,30 +30,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/violationRecords")
 public class ViolationRecordController {
-    private static List<String> key;
-    private static List<String> header;
     @Autowired
     private ViolationRecordService violationRecordService;
 
-    static {
-        key = new ArrayList<>();
-        key.add("studentNum");
-        key.add("studentName");
-        key.add("violation");
-        key.add("punishment");
-        key.add("remark");
-        key.add("createUser");
-        key.add("createTime");
-
-        header = new ArrayList<>();
-        header.add("学号");
-        header.add("姓名");
-        header.add("违规事项");
-        header.add("处罚");
-        header.add("备注");
-        header.add("处理人");
-        header.add("处理时间");
-    }
 
     @GetMapping("")
     public IPage<ViolationRecord> getPage(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize, String student,
@@ -80,7 +58,7 @@ public class ViolationRecordController {
                 .orderByDesc(ViolationRecord::getCreateTime);
         List<ViolationRecord> rows = violationRecordService.list(wrapper);
         String fileName = "学生违规记录-" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
-        return new ExportData<>(fileName, header, key, rows);
+        return new ExportData<>(fileName, rows);
     }
 
     @PostMapping("")

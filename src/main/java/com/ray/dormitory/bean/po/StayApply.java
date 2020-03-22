@@ -3,6 +3,8 @@ package com.ray.dormitory.bean.po;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ray.dormitory.group.UpdateValid;
+import com.ray.dormitory.util.Export;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,7 +14,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -25,7 +29,7 @@ import java.util.Date;
 @Getter
 @Setter
 @TableName("stay_apply")
-public class StayApply implements Serializable {
+public class StayApply implements Serializable, Export {
 
     /**
      * ID
@@ -100,5 +104,46 @@ public class StayApply implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date processTime;
 
+    @Ignore
+    private static List<String> key;
+    @Ignore
+    private static List<String> header;
+
+    static {
+        key = new ArrayList<>();
+        key.add("studentName");
+        key.add("studentNum");
+        key.add("beginDate");
+        key.add("endDate");
+        key.add("emergencyContact");
+        key.add("reason");
+        key.add("remark");
+        key.add("createTime");
+        key.add("isConsent");
+        key.add("processTime");
+
+        header = new ArrayList<>();
+        header.add("学生姓名");
+        header.add("学号");
+        header.add("开始时间");
+        header.add("结束时间");
+        header.add("紧急联系方式");
+        header.add("原因");
+        header.add("备注");
+        header.add("申请时间");
+        header.add("审核结果");
+        header.add("审核时间");
+
+    }
+
+    @Override
+    public List<String> getKey() {
+        return key;
+    }
+
+    @Override
+    public List<String> getHeader() {
+        return header;
+    }
 
 }

@@ -51,7 +51,7 @@ public abstract class Kmeans<T extends Serializable> {
         List<List<T>> clusters;
         boolean result;
         do {
-            //System.out.println(centers.toString());
+
             clusters = new ArrayList<>(n);
             for (int i = 0; i < n; i++) {
                 clusters.add(new ArrayList<>(size));
@@ -62,9 +62,8 @@ public abstract class Kmeans<T extends Serializable> {
                 clustering(point, centers, clusters);
             }
             result = same(centers, oldCenters);
-            //System.out.println(result);
+
         } while (!result);
-        //System.out.println(centers);
 
 
         return clusters;

@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ray.dormitory.util.Export;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,7 +14,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -25,7 +29,7 @@ import java.util.Date;
 @Getter
 @Setter
 @TableName("visit_record")
-public class VisitRecord implements Serializable {
+public class VisitRecord implements Serializable, Export {
 
     /**
      * ID
@@ -66,6 +70,40 @@ public class VisitRecord implements Serializable {
      */
     @Size(max = 128, message = "备注最多为128个字符")
     private String remark;
+
+
+    //导出配置项
+    @JsonIgnore
+    private static List<String> key;
+    @JsonIgnore
+    private static List<String> header;
+
+    static {
+        key = new ArrayList<>();
+        key.add("trueName");
+        key.add("identity");
+        key.add("visitTime");
+        key.add("leaveTime");
+        key.add("remark");
+
+        header = new ArrayList<>();
+        header.add("真实姓名");
+        header.add("身份证号码");
+        header.add("来访时间");
+        header.add("离开时间");
+        header.add("备注");
+
+    }
+
+    @Override
+    public List<String> getKey() {
+        return key;
+    }
+
+    @Override
+    public List<String> getHeader() {
+        return header;
+    }
 
 
 }

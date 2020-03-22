@@ -23,7 +23,7 @@ public class QuestionnaireServiceImpl extends ServiceImpl<QuestionnaireMapper, Q
         Wrapper<Questionnaire> wrapper = Wrappers.<Questionnaire>lambdaQuery().select(Questionnaire::getPublished).eq(Questionnaire::getId, entity.getId());
         List<Object> objs = baseMapper.selectObjs(wrapper);
         boolean draft = (boolean) objs.get(0);
-        if (!draft) {
+        if (draft) {
             throw new CustomException(204, "问卷为发布状态，无法修改");
         }
         return super.updateById(entity);

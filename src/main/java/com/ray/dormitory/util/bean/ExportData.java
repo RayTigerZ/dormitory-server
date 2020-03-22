@@ -1,8 +1,7 @@
 package com.ray.dormitory.util.bean;
 
-import lombok.AllArgsConstructor;
+import com.ray.dormitory.util.Export;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -13,12 +12,23 @@ import java.util.List;
  */
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class ExportData<T> {
+public class ExportData<T extends Export> {
     private String fileName;
     private List<String> header;
     private List<String> key;
     private List<T> rows;
 
+
+    public ExportData(String fileName, List<T> rows) {
+        if (rows != null && rows.size() > 0) {
+            this.header = rows.get(0).getHeader();
+            this.key = rows.get(0).getKey();
+            this.fileName = fileName;
+            this.rows = rows;
+        }
+
+    }
+
+
 }
+

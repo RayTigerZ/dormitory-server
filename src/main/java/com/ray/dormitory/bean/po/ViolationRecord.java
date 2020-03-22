@@ -2,6 +2,8 @@ package com.ray.dormitory.bean.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ray.dormitory.util.Export;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,7 +11,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -22,7 +26,7 @@ import java.util.Date;
 @Getter
 @Setter
 @TableName("violation_record")
-public class ViolationRecord implements Serializable {
+public class ViolationRecord implements Serializable, Export {
 
     /**
      * ID
@@ -75,5 +79,39 @@ public class ViolationRecord implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     private String createUser;
 
+    @Ignore
+    private static List<String> key;
+    @Ignore
+    private static List<String> header;
 
+
+    static {
+        key = new ArrayList<>();
+        key.add("studentNum");
+        key.add("studentName");
+        key.add("violation");
+        key.add("punishment");
+        key.add("remark");
+        key.add("createUser");
+        key.add("createTime");
+
+        header = new ArrayList<>();
+        header.add("学号");
+        header.add("姓名");
+        header.add("违规事项");
+        header.add("处罚");
+        header.add("备注");
+        header.add("处理人");
+        header.add("处理时间");
+    }
+
+    @Override
+    public List<String> getKey() {
+        return key;
+    }
+
+    @Override
+    public List<String> getHeader() {
+        return header;
+    }
 }
