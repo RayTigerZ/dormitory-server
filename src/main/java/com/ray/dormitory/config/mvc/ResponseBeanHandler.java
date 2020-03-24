@@ -1,6 +1,5 @@
-package com.ray.dormitory.util;
+package com.ray.dormitory.config.mvc;
 
-import com.ray.dormitory.util.bean.ResponseBean;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;

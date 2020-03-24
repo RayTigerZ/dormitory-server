@@ -71,6 +71,11 @@ public class Survey implements Serializable {
     private Date endTime;
 
     /**
+     * 是否完成分配
+     */
+    private Boolean allocated;
+
+    /**
      * 问卷调查的创建人
      */
     @TableField(fill = FieldFill.INSERT)

@@ -1,4 +1,4 @@
-package com.ray.dormitory.util;
+package com.ray.dormitory.system;
 
 import lombok.Getter;
 import lombok.Setter;

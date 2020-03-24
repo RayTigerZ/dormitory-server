@@ -1,6 +1,5 @@
-package com.ray.dormitory.util.bean;
+package com.ray.dormitory.export;
 
-import com.ray.dormitory.util.Export;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -15,7 +15,7 @@ import com.ray.dormitory.mapper.RoomMapper;
 import com.ray.dormitory.mapper.UserMapper;
 import com.ray.dormitory.service.RepairRecordService;
 import com.ray.dormitory.service.UserRoleService;
-import com.ray.dormitory.util.SysConfig;
+import com.ray.dormitory.system.SysConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

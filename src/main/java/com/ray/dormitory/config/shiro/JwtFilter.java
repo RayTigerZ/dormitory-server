@@ -1,11 +1,11 @@
 package com.ray.dormitory.config.shiro;
 
+import com.ray.dormitory.config.mvc.ResponseBean;
+import com.ray.dormitory.exception.ErrorEnum;
 import com.ray.dormitory.service.RedisService;
+import com.ray.dormitory.system.SysConfig;
 import com.ray.dormitory.util.JwtUtil;
 import com.ray.dormitory.util.ResponseUtil;
-import com.ray.dormitory.util.SysConfig;
-import com.ray.dormitory.util.bean.ErrorEnum;
-import com.ray.dormitory.util.bean.ResponseBean;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;

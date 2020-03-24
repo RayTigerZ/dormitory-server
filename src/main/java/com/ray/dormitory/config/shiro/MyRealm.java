@@ -5,7 +5,6 @@ import com.ray.dormitory.bean.po.User;
 import com.ray.dormitory.mapper.MenuMapper;
 import com.ray.dormitory.service.UserService;
 import com.ray.dormitory.util.JwtUtil;
-import com.ray.dormitory.util.bean.WebToken;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

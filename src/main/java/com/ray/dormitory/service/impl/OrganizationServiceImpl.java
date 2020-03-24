@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ray.dormitory.bean.bo.OrganizationOption;
 import com.ray.dormitory.bean.po.Organization;
 import com.ray.dormitory.exception.CustomException;
+import com.ray.dormitory.exception.ErrorEnum;
 import com.ray.dormitory.mapper.OrganizationMapper;
 import com.ray.dormitory.service.OrganizationService;
-import com.ray.dormitory.util.bean.ErrorEnum;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;

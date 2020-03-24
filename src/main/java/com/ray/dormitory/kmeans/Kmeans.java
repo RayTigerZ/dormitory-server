@@ -1,16 +1,17 @@
-package com.ray.dormitory.util.kmean;
+package com.ray.dormitory.kmeans;
 
 import com.baomidou.mybatisplus.core.toolkit.SerializationUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Kmeans聚类算法
+ *
  * @author : Ray
  * @date : 2020.02.17 12:29
  */
-public abstract class Kmeans<T extends Serializable> {
+public class Kmeans<T extends Point> {
 
     /**
      * 所有数据
@@ -40,6 +41,8 @@ public abstract class Kmeans<T extends Serializable> {
      */
 
     public List<List<T>> clustering() {
+
+
         //初始化中心点集合
         ArrayList<T> centers = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
@@ -72,7 +75,7 @@ public abstract class Kmeans<T extends Serializable> {
     public boolean same(List<T> centers, List<T> oldCenters) {
         int len = centers.size();
         for (int i = 0; i < len; i++) {
-            if (!centers.get(i).equals(oldCenters.get(i))) {
+            if (!centers.get(i).samePosition(oldCenters.get(i))) {
                 return false;
             }
         }
@@ -139,7 +142,15 @@ public abstract class Kmeans<T extends Serializable> {
      * @return 返回数据的距离
      */
 
-    public abstract double getDistance(T center, T point);
+    public double getDistance(T center, T point) {
+        double sum = 0;
+        int length = center.getCoordinate().size();
+        for (int i = 0; i < length; i++) {
+            sum += Math.pow(center.getCoordinate().get(i) - point.getCoordinate().get(i), 2);
+        }
+
+        return sum;
+    }
 
 
     /**
@@ -148,7 +159,18 @@ public abstract class Kmeans<T extends Serializable> {
      * @param list   点族
      * @param center 中心点
      */
-    public abstract void updateCenterPoint(List<T> list, T center);
+    public void updateCenterPoint(List<T> list, T center) {
+        int size = center.getCoordinate().size();
+        for (int i = 0; i < size; i++) {
+            double sum = 0;
+            int length = list.size();
+            for (int j = 0; j < length; j++) {
+                sum += list.get(j).getCoordinate().get(i);
+            }
+
+            center.getCoordinate().set(i, sum / length);
+        }
+    }
 
 
 }

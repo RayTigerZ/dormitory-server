@@ -1,6 +1,6 @@
 package com.ray.dormitory.exception;
 
-import com.ray.dormitory.util.bean.ErrorEnum;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

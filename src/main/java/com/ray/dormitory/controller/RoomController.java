@@ -3,7 +3,7 @@ package com.ray.dormitory.controller;
 import com.alibaba.excel.EasyExcel;
 import com.ray.dormitory.bean.po.Room;
 import com.ray.dormitory.service.RoomService;
-import com.ray.dormitory.util.UploadDataListener;
+import com.ray.dormitory.upload.UploadDataListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

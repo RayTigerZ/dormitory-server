@@ -11,11 +11,24 @@
  Target Server Version : 50728
  File Encoding         : 65001
 
- Date: 22/03/2020 20:53:04
+ Date: 24/03/2020 13:34:03
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for allocate_temp
+-- ----------------------------
+DROP TABLE IF EXISTS `allocate_temp`;
+CREATE TABLE `allocate_temp`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `student_num` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '学号',
+  `name` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '学生姓名',
+  `room_num` varchar(8) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '宿舍号',
+  `survey_id` int(10) UNSIGNED NOT NULL COMMENT '问卷调查ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '宿舍预分配结果表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for answer
@@ -5727,22 +5740,23 @@ INSERT INTO `stay_apply` VALUES (10, NULL, 'rrr', NULL, NULL, NULL, NULL, NULL, 
 -- ----------------------------
 DROP TABLE IF EXISTS `survey`;
 CREATE TABLE `survey`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `questionnaire_id` int(10) UNSIGNED NULL DEFAULT NULL,
-  `begin_time` datetime(0) NULL DEFAULT NULL,
-  `end_time` datetime(0) NULL DEFAULT NULL,
-  `grade` int(11) NULL DEFAULT NULL,
-  `create_user` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `create_time` datetime(0) NULL DEFAULT NULL,
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '问卷调查名称',
+  `questionnaire_id` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '问卷ID',
+  `begin_time` datetime(0) NULL DEFAULT NULL COMMENT '开始时间',
+  `end_time` datetime(0) NULL DEFAULT NULL COMMENT '结束时间',
+  `grade` int(11) NULL DEFAULT NULL COMMENT '调查年级',
+  `allocated` bit(1) NULL DEFAULT b'0' COMMENT '是否分配完成',
+  `create_user` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '问卷调查' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of survey
 -- ----------------------------
-INSERT INTO `survey` VALUES (3, 'test', 2, '2020-02-20 00:00:00', '2020-02-28 00:00:00', 2016, '系统管理员(20100001)', '2020-02-19 23:32:36');
-INSERT INTO `survey` VALUES (4, '2020级宿舍分配', 2, '2020-03-22 00:00:00', '2020-04-05 00:00:00', 2020, '系统管理员(20100001)', '2020-03-21 11:17:42');
+INSERT INTO `survey` VALUES (3, 'test', 2, '2020-02-20 00:00:00', '2020-02-28 00:00:00', 2016, NULL, '系统管理员(20100001)', '2020-02-19 23:32:36');
+INSERT INTO `survey` VALUES (4, '2020级宿舍分配', 2, '2020-03-22 00:00:00', '2020-04-05 00:00:00', 2020, NULL, '系统管理员(20100001)', '2020-03-21 11:17:42');
 
 -- ----------------------------
 -- Table structure for system_log
@@ -5762,7 +5776,7 @@ CREATE TABLE `system_log`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15443 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15545 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_log
@@ -10797,6 +10811,108 @@ INSERT INTO `system_log` VALUES (15439, NULL, '127.0.0.1', '/surveys/3/export', 
 INSERT INTO `system_log` VALUES (15440, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{}', NULL, 79, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-21 12:52:25', NULL);
 INSERT INTO `system_log` VALUES (15441, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{}', NULL, 125587, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-21 12:55:23', NULL);
 INSERT INTO `system_log` VALUES (15442, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{}', NULL, 144009, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-21 13:02:40', NULL);
+INSERT INTO `system_log` VALUES (15443, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{}', NULL, 94, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 14:40:43', NULL);
+INSERT INTO `system_log` VALUES (15444, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{}', NULL, 125, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 14:41:47', NULL);
+INSERT INTO `system_log` VALUES (15445, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{}', NULL, 125, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 15:18:44', NULL);
+INSERT INTO `system_log` VALUES (15446, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{}', NULL, 120, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 15:24:51', NULL);
+INSERT INTO `system_log` VALUES (15447, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{}', NULL, 117, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 15:26:05', NULL);
+INSERT INTO `system_log` VALUES (15448, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{}', NULL, 118, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 15:33:31', NULL);
+INSERT INTO `system_log` VALUES (15449, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{}', NULL, 52, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 15:34:33', NULL);
+INSERT INTO `system_log` VALUES (15450, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{}', NULL, 239965, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 15:42:10', NULL);
+INSERT INTO `system_log` VALUES (15451, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{}', NULL, 112, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 16:38:34', NULL);
+INSERT INTO `system_log` VALUES (15452, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{}', NULL, 7, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 16:40:42', NULL);
+INSERT INTO `system_log` VALUES (15453, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{}', NULL, 4, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 16:40:47', NULL);
+INSERT INTO `system_log` VALUES (15454, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{\"state\":\"false\"}', NULL, 41, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 16:41:31', NULL);
+INSERT INTO `system_log` VALUES (15455, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{\"state\":\"true\"}', NULL, 6197, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 16:42:04', NULL);
+INSERT INTO `system_log` VALUES (15456, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{\"state\":\"true\"}', NULL, 42, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 16:43:51', NULL);
+INSERT INTO `system_log` VALUES (15457, NULL, '0:0:0:0:0:0:0:1', '/login', 'POST', '{\"password\":\"0192023a7bbd73250516f069df18b500\",\"account\":\"20100001\"}', NULL, 989, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', NULL, '2020-03-23 16:44:51', NULL);
+INSERT INTO `system_log` VALUES (15458, NULL, '0:0:0:0:0:0:0:1', '/userInfo', 'GET', '{}', NULL, 55, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 16:44:51', NULL);
+INSERT INTO `system_log` VALUES (15459, NULL, '0:0:0:0:0:0:0:1', '/questionnaires', 'GET', '{}', NULL, 27, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 16:45:00', NULL);
+INSERT INTO `system_log` VALUES (15460, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 16:45:03', NULL);
+INSERT INTO `system_log` VALUES (15461, NULL, '0:0:0:0:0:0:0:1', '/surveys', 'GET', '{\"pageSize\":\"10\",\"pageNum\":\"1\"}', NULL, 58, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 16:45:03', NULL);
+INSERT INTO `system_log` VALUES (15462, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/finishState', 'GET', '{}', NULL, 18, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 16:45:05', NULL);
+INSERT INTO `system_log` VALUES (15463, NULL, '0:0:0:0:0:0:0:1', '/surveys/3/finishState', 'GET', '{}', NULL, 22, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 16:45:10', NULL);
+INSERT INTO `system_log` VALUES (15464, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 14, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:44:56', NULL);
+INSERT INTO `system_log` VALUES (15465, NULL, '0:0:0:0:0:0:0:1', '/userInfo', 'GET', '{}', NULL, 13, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:45:26', NULL);
+INSERT INTO `system_log` VALUES (15466, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 10, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:45:27', NULL);
+INSERT INTO `system_log` VALUES (15467, NULL, '0:0:0:0:0:0:0:1', '/surveys', 'GET', '{\"pageSize\":\"10\",\"pageNum\":\"1\"}', NULL, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:45:27', NULL);
+INSERT INTO `system_log` VALUES (15468, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 3, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:45:29', NULL);
+INSERT INTO `system_log` VALUES (15469, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 4, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:45:33', NULL);
+INSERT INTO `system_log` VALUES (15470, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 4, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:45:36', NULL);
+INSERT INTO `system_log` VALUES (15471, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 7, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:45:40', NULL);
+INSERT INTO `system_log` VALUES (15472, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 4, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:45:46', NULL);
+INSERT INTO `system_log` VALUES (15473, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 4, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:45:49', NULL);
+INSERT INTO `system_log` VALUES (15474, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 3, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:45:51', NULL);
+INSERT INTO `system_log` VALUES (15475, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 3, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:45:53', NULL);
+INSERT INTO `system_log` VALUES (15476, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 3, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:00', NULL);
+INSERT INTO `system_log` VALUES (15477, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 3, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:01', NULL);
+INSERT INTO `system_log` VALUES (15478, NULL, '0:0:0:0:0:0:0:1', '/userInfo', 'GET', '{}', NULL, 18, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:09', NULL);
+INSERT INTO `system_log` VALUES (15479, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 3, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:10', NULL);
+INSERT INTO `system_log` VALUES (15480, NULL, '0:0:0:0:0:0:0:1', '/surveys', 'GET', '{\"pageSize\":\"10\",\"pageNum\":\"1\"}', NULL, 12, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:10', NULL);
+INSERT INTO `system_log` VALUES (15481, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 5, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:10', NULL);
+INSERT INTO `system_log` VALUES (15482, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 5, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:12', NULL);
+INSERT INTO `system_log` VALUES (15483, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 4, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:13', NULL);
+INSERT INTO `system_log` VALUES (15484, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 5, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:16', NULL);
+INSERT INTO `system_log` VALUES (15485, NULL, '0:0:0:0:0:0:0:1', '/userInfo', 'GET', '{}', NULL, 9, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:25', NULL);
+INSERT INTO `system_log` VALUES (15486, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 3, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:25', NULL);
+INSERT INTO `system_log` VALUES (15487, NULL, '0:0:0:0:0:0:0:1', '/surveys', 'GET', '{\"pageSize\":\"10\",\"pageNum\":\"1\"}', NULL, 9, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:25', NULL);
+INSERT INTO `system_log` VALUES (15488, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 3, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:28', NULL);
+INSERT INTO `system_log` VALUES (15489, NULL, '0:0:0:0:0:0:0:1', '/userInfo', 'GET', '{}', NULL, 10, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:35', NULL);
+INSERT INTO `system_log` VALUES (15490, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 4, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:36', NULL);
+INSERT INTO `system_log` VALUES (15491, NULL, '0:0:0:0:0:0:0:1', '/surveys', 'GET', '{\"pageSize\":\"10\",\"pageNum\":\"1\"}', NULL, 10, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:36', NULL);
+INSERT INTO `system_log` VALUES (15492, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 3, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:50', NULL);
+INSERT INTO `system_log` VALUES (15493, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 3, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:50', NULL);
+INSERT INTO `system_log` VALUES (15494, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 5, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:53', NULL);
+INSERT INTO `system_log` VALUES (15495, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 5, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:46:57', NULL);
+INSERT INTO `system_log` VALUES (15496, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 4, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:47:00', NULL);
+INSERT INTO `system_log` VALUES (15497, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/finishState', 'GET', '{}', NULL, 10, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:49:19', NULL);
+INSERT INTO `system_log` VALUES (15498, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/export', 'GET', '{}', NULL, 47, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:49:20', NULL);
+INSERT INTO `system_log` VALUES (15499, NULL, '0:0:0:0:0:0:0:1', '/surveys/3/finishState', 'GET', '{}', NULL, 10, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:49:42', NULL);
+INSERT INTO `system_log` VALUES (15500, NULL, '0:0:0:0:0:0:0:1', '/userInfo', 'GET', '{}', NULL, 11, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:50:02', NULL);
+INSERT INTO `system_log` VALUES (15501, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 6, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:50:03', NULL);
+INSERT INTO `system_log` VALUES (15502, NULL, '0:0:0:0:0:0:0:1', '/surveys', 'GET', '{\"pageSize\":\"10\",\"pageNum\":\"1\"}', NULL, 18, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:50:03', NULL);
+INSERT INTO `system_log` VALUES (15503, NULL, '0:0:0:0:0:0:0:1', '/surveys/3/finishState', 'GET', '{}', NULL, 11, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:50:17', NULL);
+INSERT INTO `system_log` VALUES (15504, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{\"state\":\"true\"}', NULL, 147, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 17:50:56', NULL);
+INSERT INTO `system_log` VALUES (15505, NULL, '0:0:0:0:0:0:0:1', '/userInfo', 'GET', '{}', NULL, 61, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:52:09', NULL);
+INSERT INTO `system_log` VALUES (15506, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 15, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:52:10', NULL);
+INSERT INTO `system_log` VALUES (15507, NULL, '0:0:0:0:0:0:0:1', '/surveys', 'GET', '{\"pageSize\":\"10\",\"pageNum\":\"1\"}', NULL, 71, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:52:10', NULL);
+INSERT INTO `system_log` VALUES (15508, NULL, '0:0:0:0:0:0:0:1', '/surveys/3/finishState', 'GET', '{}', NULL, 22, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:52:23', NULL);
+INSERT INTO `system_log` VALUES (15509, NULL, '0:0:0:0:0:0:0:1', '/surveys/3/export', 'GET', '{\"state\":\"true\"}', NULL, 17, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:52:30', NULL);
+INSERT INTO `system_log` VALUES (15510, NULL, '0:0:0:0:0:0:0:1', '/systemLogs', 'GET', '{\"pageSize\":\"10\",\"pageNum\":\"1\"}', NULL, 32, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 17:55:58', NULL);
+INSERT INTO `system_log` VALUES (15511, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{\"state\":\"false\"}', NULL, 5105, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 17:56:24', NULL);
+INSERT INTO `system_log` VALUES (15512, NULL, '127.0.0.1', '/surveys/3/export', 'GET', '{\"state\":\"false\"}', NULL, 1007, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 18:13:25', NULL);
+INSERT INTO `system_log` VALUES (15513, NULL, '0:0:0:0:0:0:0:1', '/userInfo', 'GET', '{}', NULL, 70, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:13:46', NULL);
+INSERT INTO `system_log` VALUES (15514, NULL, '0:0:0:0:0:0:0:1', '/systemLogs', 'GET', '{\"pageSize\":\"10\",\"pageNum\":\"1\"}', NULL, 65, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:13:47', NULL);
+INSERT INTO `system_log` VALUES (15515, NULL, '0:0:0:0:0:0:0:1', '/questionnaires', 'GET', '{}', NULL, 15, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:14:03', NULL);
+INSERT INTO `system_log` VALUES (15516, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 11, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:14:06', NULL);
+INSERT INTO `system_log` VALUES (15517, NULL, '0:0:0:0:0:0:0:1', '/surveys', 'GET', '{\"pageSize\":\"10\",\"pageNum\":\"1\"}', NULL, 25, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:14:06', NULL);
+INSERT INTO `system_log` VALUES (15518, NULL, '0:0:0:0:0:0:0:1', '/surveys/3/finishState', 'GET', '{}', NULL, 19, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:14:07', NULL);
+INSERT INTO `system_log` VALUES (15519, NULL, '0:0:0:0:0:0:0:1', '/surveys/3/export', 'GET', '{\"state\":\"true\"}', NULL, 11, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:14:10', NULL);
+INSERT INTO `system_log` VALUES (15520, NULL, '0:0:0:0:0:0:0:1', '/surveys/3/export', 'GET', '{\"state\":\"false\"}', NULL, 797, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:14:18', NULL);
+INSERT INTO `system_log` VALUES (15521, NULL, '0:0:0:0:0:0:0:1', '/systemLogs', 'GET', '{\"pageSize\":\"10\",\"pageNum\":\"1\"}', NULL, 17, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:16:10', NULL);
+INSERT INTO `system_log` VALUES (15522, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/finishState', 'GET', '{}', NULL, 15, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:17:13', NULL);
+INSERT INTO `system_log` VALUES (15523, NULL, '0:0:0:0:0:0:0:1', '/userInfo', 'GET', '{}', NULL, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:17:17', NULL);
+INSERT INTO `system_log` VALUES (15524, NULL, '0:0:0:0:0:0:0:1', '/questionnaires/options', 'GET', '{}', NULL, 5, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:17:17', NULL);
+INSERT INTO `system_log` VALUES (15525, NULL, '0:0:0:0:0:0:0:1', '/surveys', 'GET', '{\"pageSize\":\"10\",\"pageNum\":\"1\"}', NULL, 10, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:17:17', NULL);
+INSERT INTO `system_log` VALUES (15526, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/finishState', 'GET', '{}', NULL, 11, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:17:18', NULL);
+INSERT INTO `system_log` VALUES (15527, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/export', 'GET', '{\"state\":\"true\"}', NULL, 40, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 18:17:26', NULL);
+INSERT INTO `system_log` VALUES (15528, NULL, '127.0.0.1', '/surveys/4/export', 'GET', '{\"state\":\"false\"}', NULL, 121362, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 18:23:56', NULL);
+INSERT INTO `system_log` VALUES (15529, NULL, '127.0.0.1', '/surveys/4/export', 'GET', '{\"state\":\"false\"}', NULL, 73627, 'Apache-HttpClient/4.5.10 (Java/11.0.6)', NULL, '2020-03-23 18:52:14', NULL);
+INSERT INTO `system_log` VALUES (15530, NULL, '0:0:0:0:0:0:0:1', '/surveys/3/finishState', 'GET', '{}', NULL, 106, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 19:13:32', NULL);
+INSERT INTO `system_log` VALUES (15531, NULL, '0:0:0:0:0:0:0:1', '/surveys/3/export', 'GET', '{\"state\":\"false\"}', NULL, 321, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 19:13:36', NULL);
+INSERT INTO `system_log` VALUES (15532, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/finishState', 'GET', '{}', NULL, 20, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 19:15:41', NULL);
+INSERT INTO `system_log` VALUES (15533, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/export', 'GET', '{\"state\":\"false\"}', NULL, 44, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 19:15:42', NULL);
+INSERT INTO `system_log` VALUES (15534, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/export', 'GET', '{\"state\":\"true\"}', NULL, 13, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 19:15:44', NULL);
+INSERT INTO `system_log` VALUES (15535, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/export', 'GET', '{\"state\":\"false\"}', NULL, 84, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 20:02:31', NULL);
+INSERT INTO `system_log` VALUES (15536, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/export', 'GET', '{\"state\":\"false\"}', NULL, 14, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 20:03:04', NULL);
+INSERT INTO `system_log` VALUES (15537, NULL, '0:0:0:0:0:0:0:1', '/surveys/3/finishState', 'GET', '{}', NULL, 49, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 20:04:33', NULL);
+INSERT INTO `system_log` VALUES (15538, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/finishState', 'GET', '{}', NULL, 15, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 20:04:36', NULL);
+INSERT INTO `system_log` VALUES (15539, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/export', 'GET', '{\"state\":\"false\"}', NULL, 13, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 20:04:39', NULL);
+INSERT INTO `system_log` VALUES (15540, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/export', 'GET', '{\"state\":\"false\"}', NULL, 12, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 20:05:33', NULL);
+INSERT INTO `system_log` VALUES (15541, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/export', 'GET', '{\"state\":\"true\"}', NULL, 8, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 20:05:37', NULL);
+INSERT INTO `system_log` VALUES (15542, NULL, '0:0:0:0:0:0:0:1', '/surveys/3/finishState', 'GET', '{}', NULL, 13, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 20:06:03', NULL);
+INSERT INTO `system_log` VALUES (15543, NULL, '0:0:0:0:0:0:0:1', '/surveys/4/finishState', 'GET', '{}', NULL, 13, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 20:06:06', NULL);
+INSERT INTO `system_log` VALUES (15544, NULL, '0:0:0:0:0:0:0:1', '/surveys/answers', 'GET', '{}', NULL, 9, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '系统管理员(20100001)', '2020-03-23 20:06:14', NULL);
 
 -- ----------------------------
 -- Table structure for user

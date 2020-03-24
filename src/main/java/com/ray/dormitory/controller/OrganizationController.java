@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ray.dormitory.bean.bo.OrganizationOption;
 import com.ray.dormitory.bean.po.Organization;
 import com.ray.dormitory.service.OrganizationService;
-import com.ray.dormitory.util.UploadDataListener;
+import com.ray.dormitory.upload.UploadDataListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

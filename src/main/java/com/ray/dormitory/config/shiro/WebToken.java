@@ -1,4 +1,4 @@
-package com.ray.dormitory.util.bean;
+package com.ray.dormitory.config.shiro;
 
 import org.apache.shiro.authc.AuthenticationToken;
 

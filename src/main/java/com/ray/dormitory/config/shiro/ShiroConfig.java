@@ -3,7 +3,7 @@ package com.ray.dormitory.config.shiro;
 import com.ray.dormitory.service.RedisService;
 import com.ray.dormitory.service.ShiroService;
 import com.ray.dormitory.service.SystemLogService;
-import com.ray.dormitory.util.SysConfig;
+import com.ray.dormitory.system.SysConfig;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;

@@ -1,7 +1,8 @@
-package com.ray.dormitory.util.bean;
+package com.ray.dormitory.exception;
 
 /**
  * @author Ray
+ * @date 2020.01.19 21:21
  */
 
 public enum ErrorEnum {
@@ -10,7 +11,7 @@ public enum ErrorEnum {
     BUILDING_NAME_EXIST(202, "楼宇名称已存在"),
     CHILDREN_ORGANIZATION_EXIST(202, "该组织含有子组织，不允许删除"),
 
-
+    RECORD_NOT_EXIST(202, "记录不存在"),
     ERROR_201(201, "账号权限不足"),
 
     ERROR_500(500, "系统内部错误"),

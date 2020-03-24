@@ -3,8 +3,7 @@ package com.ray.dormitory.bean.bo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ray.dormitory.bean.po.User;
-import com.ray.dormitory.util.Export;
-import jdk.nashorn.internal.ir.annotations.Ignore;
+import com.ray.dormitory.export.Export;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +18,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-@JsonIgnoreProperties(value = {"handler"})
+@JsonIgnoreProperties(value = {"handler", "header", "key"})
 public class Student implements Export {
 
     private String name;
@@ -33,9 +32,9 @@ public class Student implements Export {
     private String roomNum;
 
 
-    @Ignore
+    @JsonIgnore
     private static List<String> key;
-    @Ignore
+    @JsonIgnore
     private static List<String> header;
 
     static {

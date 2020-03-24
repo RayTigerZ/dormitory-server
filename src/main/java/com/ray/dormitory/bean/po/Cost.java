@@ -2,8 +2,8 @@ package com.ray.dormitory.bean.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ray.dormitory.util.Export;
-import jdk.nashorn.internal.ir.annotations.Ignore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ray.dormitory.export.Export;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -83,9 +83,9 @@ public class Cost implements Serializable, Export {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date payTime;
 
-    @Ignore
+    @JsonIgnore
     private static List<String> key;
-    @Ignore
+    @JsonIgnore
     private static List<String> header;
 
     static {

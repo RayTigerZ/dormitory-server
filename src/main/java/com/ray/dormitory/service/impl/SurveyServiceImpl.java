@@ -27,4 +27,10 @@ public class SurveyServiceImpl extends ServiceImpl<SurveyMapper, Survey> impleme
             throw new CustomException(204, "开始时间要小于结束时间");
         }
     }
+
+    @Override
+    public boolean save(Survey entity) {
+        entity.setAllocated(false);
+        return super.save(entity);
+    }
 }

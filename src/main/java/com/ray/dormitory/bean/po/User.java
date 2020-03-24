@@ -29,7 +29,7 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     /**
-     * 问卷ID
+     * ID
      */
     @TableId(type = IdType.AUTO)
     private Integer id;

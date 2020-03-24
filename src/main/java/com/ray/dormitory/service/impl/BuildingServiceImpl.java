@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ray.dormitory.bean.bo.Floor;
 import com.ray.dormitory.bean.po.Building;
 import com.ray.dormitory.exception.CustomException;
+import com.ray.dormitory.exception.ErrorEnum;
 import com.ray.dormitory.mapper.BuildingMapper;
 import com.ray.dormitory.service.BuildingService;
-import com.ray.dormitory.util.bean.ErrorEnum;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

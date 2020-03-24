@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class CodeGenerator {
 
-    private static String tables = "notice";
+    private static String tables = "allocate_temp";
 
 
     public static void main(String[] args) throws IOException {

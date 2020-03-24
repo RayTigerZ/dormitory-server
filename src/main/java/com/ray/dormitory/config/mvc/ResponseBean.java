@@ -1,7 +1,8 @@
-package com.ray.dormitory.util.bean;
+package com.ray.dormitory.config.mvc;
 
 
 import com.ray.dormitory.exception.CustomException;
+import com.ray.dormitory.exception.ErrorEnum;
 import lombok.*;
 
 /**

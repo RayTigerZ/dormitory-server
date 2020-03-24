@@ -2,9 +2,9 @@ package com.ray.dormitory.bean.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ray.dormitory.export.Export;
 import com.ray.dormitory.group.UpdateValid;
-import com.ray.dormitory.util.Export;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -104,9 +104,9 @@ public class StayApply implements Serializable, Export {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date processTime;
 
-    @Ignore
+    @JsonIgnore
     private static List<String> key;
-    @Ignore
+    @JsonIgnore
     private static List<String> header;
 
     static {

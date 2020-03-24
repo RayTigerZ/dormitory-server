@@ -2,7 +2,9 @@ package com.ray.dormitory.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ray.dormitory.bean.bo.Student;
@@ -10,21 +12,21 @@ import com.ray.dormitory.bean.po.Answer;
 import com.ray.dormitory.bean.po.Questionnaire;
 import com.ray.dormitory.bean.po.Survey;
 import com.ray.dormitory.bean.po.User;
+import com.ray.dormitory.exception.CustomException;
+import com.ray.dormitory.exception.ErrorEnum;
+import com.ray.dormitory.export.ExportData;
 import com.ray.dormitory.service.AnswerService;
 import com.ray.dormitory.service.QuestionnaireService;
 import com.ray.dormitory.service.SurveyService;
 import com.ray.dormitory.service.UserService;
 import com.ray.dormitory.util.Constants;
-import com.ray.dormitory.util.bean.ExportData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -111,7 +113,9 @@ public class SurveyController {
     public Map<String, Integer> getFinishState(@PathVariable int id) {
         Map<String, Integer> map = new HashMap<>(2);
         Survey survey = surveyService.getById(id);
-        Wrapper<User> wrapper = Wrappers.<User>query().eq("LENGTH(account)", Constants.STUDENT_ACCOUNT_LEN).eq("LEFT(account," + Constants.GRADE_LEN + ")", survey.getGrade());
+        Wrapper<User> wrapper = Wrappers.<User>query()
+                .eq("LENGTH(account)", Constants.STUDENT_ACCOUNT_LEN)
+                .eq("LEFT(account," + Constants.GRADE_LEN + ")", survey.getGrade());
         map.put("sum", userService.count(wrapper));
         int finish = answerService.count(Wrappers.<Answer>lambdaQuery().eq(Answer::getSurveyId, survey.getId()));
         map.put("finish", finish);
@@ -120,18 +124,37 @@ public class SurveyController {
 
     @GetMapping("/{id}/export")
     public ExportData<Student> export(@PathVariable int id, boolean state) {
+        Survey survey = surveyService.getById(id);
+        if (survey == null) {
+            throw new CustomException(ErrorEnum.RECORD_NOT_EXIST);
+        }
 
-        //导出未完成问卷名单
         Wrapper<Answer> wrapper = Wrappers.<Answer>lambdaQuery().select(Answer::getUserId).eq(Answer::getSurveyId, id);
         List<Integer> ids = answerService.list(wrapper).stream().map(Answer::getUserId).collect(Collectors.toList());
+
+        LambdaQueryWrapper<User> userWrapper = Wrappers.<User>query()
+                .eq("LENGTH(account)", Constants.STUDENT_ACCOUNT_LEN)
+                .eq("LEFT(account," + Constants.GRADE_LEN + ")", survey.getGrade())
+                .lambda()
+                .select(User::getName, User::getAccount, User::getSex, User::getClassId);
+        List<User> list;
+
         if (state) {
-            List<Student> rows = userService.listObjs(Wrappers.<User>lambdaQuery().notIn(User::getId, ids), Student::to);
-            return new ExportData<>("", rows);
+            //完成问卷名单
+            if (CollectionUtils.isEmpty(ids)) {
+                return null;
+            }
+            userWrapper.in(User::getId, ids);
         } else {
-            //导出完成问卷名单
-            List<Student> rows = userService.listObjs(Wrappers.<User>lambdaQuery().in(User::getId, ids), Student::to);
-            System.out.println(rows.toString());
-            return new ExportData<>("", rows);
+            //未完成问卷名单
+            userWrapper.notIn(CollectionUtils.isNotEmpty(ids), User::getId, ids);
         }
+        list = userService.list(userWrapper);
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
+        List<Student> rows = list.stream().map(Student::to).collect(Collectors.toList());
+        String fileName = survey.getName() + (state ? " 完成名单-" : " 未完成名单-") + new SimpleDateFormat(Constants.EXPORT_FILE_DATE_FORMAT).format(new Date());
+        return new ExportData<>(fileName, rows);
     }
 }
