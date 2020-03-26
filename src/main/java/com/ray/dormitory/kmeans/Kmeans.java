@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.SerializationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Kmeans聚类算法
@@ -19,57 +20,65 @@ public class Kmeans<T extends Point> {
     private List<T> points;
 
     /**
-     * 点族的个数
+     * 单个点簇中点的个数
      */
     private int size;
 
-    /**
-     * 单个点族中点的个数
-     */
-    private int n;
 
-    public Kmeans(List<T> list, int size, int n) {
+    private WrongPointHandler<T> wrongPointHandler;
+
+    public Kmeans(List<T> list, int size) {
         this.size = size;
-        this.n = n;
-        points = list;
+        this.points = list;
+        this.wrongPointHandler = new DefaultWrongPointHandler<>();
+
     }
 
     /**
      * 数据聚类
      *
-     * @return 返回
+     * @return 点簇集合
      */
 
     public List<List<T>> clustering() {
 
+        //不合格的点簇集合
+        List<T> wrongCluster = new ArrayList<>();
 
-        //初始化中心点集合
-        ArrayList<T> centers = new ArrayList<>(n);
-        for (int i = 0; i < n; i++) {
-            T point = points.get(i);
+        //合格的点集合
+        List<T> qualifiedPoints = wrongPointHandler.handleWrong(points, wrongCluster);
+
+        //处理合格的点
+        boolean flag = qualifiedPoints.size() % size == 0;
+        int len = qualifiedPoints.size() / size + (flag ? 0 : 1);
+
+        ArrayList<T> centers = new ArrayList<>(len);
+        for (int i = 0; i < len; i++) {
+            T point = qualifiedPoints.get(i);
             centers.add(SerializationUtils.clone(point));
         }
 
-        //点族集合
-        List<List<T>> clusters;
+        List<List<T>> qualifiedClusters;
         boolean result;
         do {
-
-            clusters = new ArrayList<>(n);
-            for (int i = 0; i < n; i++) {
-                clusters.add(new ArrayList<>(size));
+            qualifiedClusters = new ArrayList<>(len);
+            for (int i = 0; i < len; i++) {
+                qualifiedClusters.add(new ArrayList<>(size));
             }
 
             List<T> oldCenters = SerializationUtils.clone(centers);
-            for (T point : points) {
-                clustering(point, centers, clusters);
+            for (T point : qualifiedPoints) {
+                clustering(point, centers, qualifiedClusters);
             }
+            qualifiedClusters = qualifiedClusters.stream().filter(item -> item.size() > 0).collect(Collectors.toList());
             result = same(centers, oldCenters);
 
         } while (!result);
 
 
-        return clusters;
+        qualifiedClusters.add(wrongCluster);
+
+        return qualifiedClusters;
     }
 
     public boolean same(List<T> centers, List<T> oldCenters) {
@@ -98,11 +107,11 @@ public class Kmeans<T extends Point> {
 
 
         for (int i = 0; i < range; i++) {
-            if (clusters.get(i).size() < size) {
-                T center = centers.get(i);
-                lengths.add(getDistance(center, point));
-                indexs.add(i);
-            }
+            //if (clusters.get(i).size() < size) {
+            T center = centers.get(i);
+            lengths.add(getDistance(center, point));
+            indexs.add(i);
+            //}
         }
 
         // 找出最小值的下标
@@ -164,8 +173,8 @@ public class Kmeans<T extends Point> {
         for (int i = 0; i < size; i++) {
             double sum = 0;
             int length = list.size();
-            for (int j = 0; j < length; j++) {
-                sum += list.get(j).getCoordinate().get(i);
+            for (T t : list) {
+                sum += t.getCoordinate().get(i);
             }
 
             center.getCoordinate().set(i, sum / length);

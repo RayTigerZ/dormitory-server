@@ -21,5 +21,8 @@ public class CustomException extends RuntimeException {
         this.msg = errorEnum.getErrorMsg();
     }
 
-
+    @Override
+    public String getMessage() {
+        return this.msg;
+    }
 }

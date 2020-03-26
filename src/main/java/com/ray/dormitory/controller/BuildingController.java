@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ray.dormitory.bean.bo.BuildingOption;
 import com.ray.dormitory.bean.bo.Floor;
 import com.ray.dormitory.bean.po.Building;
 import com.ray.dormitory.service.BuildingService;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author : Ray
@@ -41,8 +42,14 @@ public class BuildingController {
     }
 
     @GetMapping("/options")
-    public List<Map<String, Object>> getOptions() {
-        Wrapper<Building> wrapper = Wrappers.<Building>lambdaQuery().select(Building::getId, Building::getName);
-        return buildingService.listMaps(wrapper);
+    public List<BuildingOption> getOptions() {
+        Wrapper<Building> wrapper = Wrappers.<Building>lambdaQuery()
+                .select(Building::getId, Building::getName, Building::getType);
+        return buildingService.list(wrapper).stream().map(BuildingOption::convert).collect(Collectors.toList());
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean deleteById(@PathVariable int id) {
+        return buildingService.removeById(id);
     }
 }

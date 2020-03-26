@@ -85,10 +85,7 @@ public class SystemLogFilter extends AdviceFilter {
             String[] paramValues = httpServletRequest.getParameterValues(paramName);
             if (paramValues.length > 0) {
                 String paramValue = paramValues[0];
-                if (paramValue.length() != 0) {
-                    paramMap.put(paramName, paramValue);
-
-                }
+                paramMap.put(paramName, paramValue);
             }
         }
         String params = new Gson().toJson(paramMap);

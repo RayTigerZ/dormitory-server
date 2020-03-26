@@ -6,12 +6,15 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ray.dormitory.bean.bo.Sex;
 import com.ray.dormitory.bean.bo.Student;
+import com.ray.dormitory.valid.EnumValue;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -26,7 +29,7 @@ import java.util.List;
 @Setter
 @TableName("room")
 @JsonIgnoreProperties(value = {"handler"})
-public class Room {
+public class Room implements Serializable {
 
     /**
      * ID
@@ -42,18 +45,30 @@ public class Room {
     private String number;
 
     /**
-     * 最大可住
+     * 类型：男/女
      */
-    @ExcelProperty("最大可住")
-    @NotNull(message = "最大可住不能为空")
+    @EnumValue(target = Sex.class, message = "类型参数错误")
+    private String type;
+
+    /**
+     * 容量
+     */
+    @ExcelProperty("容量")
+    @NotNull(message = "容量不能为空")
     private Integer size;
 
     /**
      * 宿舍楼ID
      */
-    @ExcelProperty("宿舍楼")
     @NotNull(message = "宿舍楼ID不能为空")
     private Integer buildingId;
+
+    /**
+     * 宿舍楼名称
+     */
+    @ExcelProperty("宿舍楼")
+    @TableField(exist = false)
+    private String buildingName;
 
     /**
      * 已住人数

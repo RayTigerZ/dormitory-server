@@ -1,4 +1,4 @@
-package com.ray.dormitory.group;
+package com.ray.dormitory.valid.group;
 
 /**
  * <p>

@@ -13,37 +13,27 @@ import java.util.Random;
 public class StudentGenerate {
 
     public static void main(String[] args) {
-        List<ClassInfo> infos = new ArrayList<>();
-        infos.add(new ClassInfo("机械工程学院", "411", "机械设计制造及其自动化", "01", 0.9));
-        infos.add(new ClassInfo("机械工程学院", "411", "工业设计", "07", 0.7));
-        infos.add(new ClassInfo("机械工程学院", "411", "工业工程", "08", 0.7));
-        infos.add(new ClassInfo("文学与传媒学院", "423", "广播电视学", "10", 0.2));
 
-        infos.add(new ClassInfo("文学与传媒学院", "423", "汉语言文学", "02", 0.1));
-        infos.add(new ClassInfo("文学与传媒学院", "423", "文化产业管理", "12", 0.4));
-        infos.add(new ClassInfo("文学与传媒学院", "423", "英语（商务英语）", "04", 0.1));
+        List<ClassInfo> infos = ClassInfo.generate();
+        //String codePath = "D:\\Users\\Ray\\Desktop\\学院编码.xlsx";
 
-        String codePath = "D:\\Users\\Ray\\Desktop\\学院编码.xlsx";
-        String nameSexPath = "D:\\Users\\Ray\\Desktop\\name&sex.xlsx";
+        String nameSexPath = "D:\\graduation-project\\name&sex.xlsx";
 
         DataListener<NameSex> listener = new DataListener<NameSex>();
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
         EasyExcel.read(nameSexPath, NameSex.class, listener).sheet().doRead();
         List<NameSex> nameSexes = listener.getList();
         List<String> boyNames = new ArrayList<>(), girlNames = new ArrayList<>();
-        for (NameSex nameSex : nameSexes) {
-            if (nameSex.getSex().equals("男")) {
-                boyNames.add(nameSex.getName());
-            } else {
-                girlNames.add(nameSex.getName());
-            }
-        }
 
-        int minStu = 35, maxStu = 45;
+        nameSexes.forEach(i -> (i.getSex() == "男" ? boyNames : girlNames).add(i.getName()));
+
+        String phone = "13433678345", email = "13433678345@qq.com";
+        int minStu = 45, maxStu = 55;
+
         List<User> users = new ArrayList<>();
-        for (int year = 2016; year <= 2019; year++) {
+        for (int year = 2020; year <= 2020; year++) {
             for (ClassInfo info : infos) {
-                for (int classNum = 1; classNum <= 2; classNum++) {
+                for (int classNum = 1; classNum <= 5; classNum++) {
                     int stuNum = getRandom(minStu, maxStu);
                     for (int num = 1; num <= stuNum; num++) {
 
@@ -63,11 +53,11 @@ public class StudentGenerate {
                         String numStr;
                         String cla = year + "级" + info.getMajor() + classNum + "班";
                         if (num < 10) {
-                            numStr = "0" + String.valueOf(num);
+                            numStr = "0" + num;
                         } else {
                             numStr = String.valueOf(num);
                         }
-                        String phone = "13433678345", email = "13433678345@qq.com";
+
                         User user = new User(name, year + info.getCollegeCode() + info.getMajorCode() + classNum + numStr, phone, email, sex, cla, info.getCollege(), "学生");
                         users.add(user);
                     }
@@ -76,10 +66,8 @@ public class StudentGenerate {
             }
         }
 
-        // 写法1
-        String fileName = "D:/simpleWrite" + System.currentTimeMillis() + ".xlsx";
-        // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
-        // 如果这里想使用03 则 传入excelType参数即可
+
+        String fileName = "D:/student-" + System.currentTimeMillis() + ".xlsx";
         EasyExcel.write(fileName, User.class).sheet("模板").doWrite(users);
 
 

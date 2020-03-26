@@ -14,6 +14,7 @@ import com.ray.dormitory.service.UserService;
 import com.ray.dormitory.system.SysConfig;
 import com.ray.dormitory.upload.UploadDataListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -67,9 +68,18 @@ public class UserController {
         return userService.updatePassword(account, newPsw, oldPsw);
     }
 
+    /**
+     * 只能批量导入学生
+     *
+     * @param file    上传的文件
+     * @param request
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/batchSave")
     public boolean batchSave(MultipartFile file, HttpServletRequest request) throws IOException {
         String token = request.getHeader(sysConfig.getTokenName());
+        Assert.notNull(token, "token为空");
         EasyExcel.read(file.getInputStream(), User.class, new UploadDataListener(userService, token)).sheet().doRead();
         return true;
     }

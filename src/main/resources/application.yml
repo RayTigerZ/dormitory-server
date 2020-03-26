@@ -30,7 +30,7 @@ spring:
         exclusions: /druid/*,*.json
         url-pattern: /*
         enabled: true
-      filters: stat,wall,logback
+      filters: stat,wall,slf4j
 
   freemarker:
     template-loader-path: classpath:/notice-templates
@@ -48,10 +48,12 @@ mybatis-plus:
     local-cache-scope: session
 
 sys-config:
-  templatePath: D:/graduation-project/code/template-excel/
+  templatePath: D:/graduation-project/code/dormitory-server/src/main/resources/excel-templates/
   tokenName: Authorization
   tokenTimeout: 1800
   repairerRoleId: 3
+  studentRoleId: 4
 logging:
   level:
     com.ray.dormitory: TRACE
+

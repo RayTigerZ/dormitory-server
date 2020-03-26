@@ -8,30 +8,13 @@
         <result property="code" column="code"/>
         <result property="parentId" column="parent_id"/>
         <collection property="children" ofType="com.ray.dormitory.bean.po.Organization" select="getChildrenByParent"
-                    column="id"/>
-    </resultMap>
-
-    <resultMap id="organizationOption" type="com.ray.dormitory.bean.bo.OrganizationOption">
-        <id property="id" column="id"/>
-        <result property="name" column="name"/>
-        <collection property="children" ofType="com.ray.dormitory.bean.bo.OrganizationOption" select="getChildren"
-                    column="id" fetchType="lazy">
-        </collection>
+                    column="id" fetchType="lazy"/>
     </resultMap>
 
 
     <select id="getChildrenByParent" resultMap="organizationResultMap">
         select * from organization
             where parent_id=#{id} order by code
-    </select>
-
-    <select id="getChildren" resultMap="organizationOption">
-        select id,`name` from organization
-            where parent_id=#{id} order by code
-    </select>
-    <select id="getOptions" resultMap="organizationOption">
-        select id,`name` from organization
-            where parent_id is null order by code
     </select>
 
 

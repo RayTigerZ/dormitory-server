@@ -36,5 +36,10 @@ public interface UserService extends IService<User> {
 
     User getCurrentUser(HttpServletRequest request);
 
+    /**
+     * 获取维修人员
+     *
+     * @return 维修人员的信息
+     */
     List<Map<String, Object>> repairers();
 }

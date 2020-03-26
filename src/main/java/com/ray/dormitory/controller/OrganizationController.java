@@ -6,14 +6,18 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ray.dormitory.bean.bo.OrganizationOption;
 import com.ray.dormitory.bean.po.Organization;
 import com.ray.dormitory.service.OrganizationService;
+import com.ray.dormitory.system.SysConfig;
 import com.ray.dormitory.upload.UploadDataListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author : Ray
@@ -25,21 +29,12 @@ public class OrganizationController {
 
     @Autowired
     private OrganizationService organizationService;
+    @Autowired
+    private SysConfig sysConfig;
 
     @GetMapping("")
-    public List<Organization> list(Integer level) {
-
-        if (level == null) {
-            Wrapper<Organization> wrapper = Wrappers.<Organization>lambdaQuery()
-                    .isNull(Organization::getParentId)
-                    .orderByAsc(Organization::getCode);
-            return organizationService.list(wrapper);
-        } else {
-            //获取指定层级的组织"length(code)"
-
-            return organizationService.level(level);
-        }
-
+    public List<Organization> list(@RequestParam(defaultValue = "3") int level) {
+        return organizationService.list(level);
     }
 
 
@@ -54,15 +49,23 @@ public class OrganizationController {
     }
 
     @PostMapping("/batchSave")
-    public boolean save(String time, MultipartFile file) throws IOException {
-        UploadDataListener<Organization> listener = new UploadDataListener<>(organizationService, time);
-        EasyExcel.read(file.getInputStream(), Organization.class, listener).sheet().doRead();
+    public boolean save(HttpServletRequest request, MultipartFile file) throws IOException {
+        String token = request.getHeader(sysConfig.getTokenName());
+        Assert.notNull(token, "token为空");
+
+        EasyExcel.read(file.getInputStream(), Organization.class, new UploadDataListener(organizationService, token)).sheet().doRead();
         return true;
     }
 
     @GetMapping("/options")
     public List<OrganizationOption> getOptions() {
-        return organizationService.getOptions();
+        Wrapper<Organization> wrapper = Wrappers.<Organization>lambdaQuery()
+                .select(Organization::getId, Organization::getName)
+                .isNull(Organization::getParentId)
+                .orderByAsc(Organization::getCode);
+        List<OrganizationOption> options = organizationService.list(wrapper).stream().map(OrganizationOption::convert).collect(Collectors.toList());
+        options.forEach(i -> i.getChildren().forEach(j -> j.getChildren().forEach(k -> k.setChildren(null))));
+        return options;
     }
 
 }

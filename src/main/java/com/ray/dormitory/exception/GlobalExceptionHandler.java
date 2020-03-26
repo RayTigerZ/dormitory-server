@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({CustomException.class})
     public ResponseBean handler(CustomException e) {
-        log.error(e.getMessage());
+        log.error("1  " + e.getMessage());
         return new ResponseBean(e);
     }
 
@@ -44,14 +44,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({MissingServletRequestParameterException.class, MethodArgumentTypeMismatchException.class})
     public ResponseBean handlerParameter(Exception e) {
 
-        log.error(e.getMessage());
+        log.error("2  " + e.getMessage());
 
         return new ResponseBean(400, "请求参数错误");
     }
 
     @ExceptionHandler({BindException.class})
     public ResponseBean handlerBindException(BindException e) {
-        log.error(e.getMessage());
+        log.error("3  " + e.getMessage());
         return new ResponseBean(400, e.getAllErrors().get(0).getDefaultMessage());
     }
 

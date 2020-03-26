@@ -19,7 +19,7 @@ import com.ray.dormitory.service.AnswerService;
 import com.ray.dormitory.service.QuestionnaireService;
 import com.ray.dormitory.service.SurveyService;
 import com.ray.dormitory.service.UserService;
-import com.ray.dormitory.util.Constants;
+import com.ray.dormitory.system.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

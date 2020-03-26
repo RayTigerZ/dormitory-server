@@ -4,8 +4,10 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ray.dormitory.valid.group.SaveByFileValid;
 import com.ray.dormitory.websocket.WebSocketServer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -22,11 +24,6 @@ import java.util.List;
 
 @Slf4j
 public class UploadDataListener<T> extends AnalysisEventListener<T> {
-
-    /**
-     * 每隔5条存储数据库，实际使用中可以3000条，然后清理list ，方便内存回收
-     */
-    private static final int BATCH_COUNT = 5;
 
     /**
      * 记录保存数据时的错误信息
@@ -59,12 +56,7 @@ public class UploadDataListener<T> extends AnalysisEventListener<T> {
      */
     @Override
     public void invoke(T data, AnalysisContext context) {
-        log.info("解析到一条数据:{}", data.toString());
-
-        // 达到BATCH_COUNT了，需要去存储一次数据库，防止数据几万条数据在内存，容易OOM
-
         saveData(data);
-
     }
 
     /**
@@ -74,26 +66,29 @@ public class UploadDataListener<T> extends AnalysisEventListener<T> {
      */
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
-        // 这里也要保存数据，确保最后遗留的数据也存储到数据库
-//        saveData();
+        WebSocketServer.sendInfo(token, "#over");
         log.info("所有数据解析完成！");
     }
 
     /**
      * 加上存储数据库
      */
-    private void saveData(T data) {
+    private void saveData(@Validated({SaveByFileValid.class}) T data) {
         String msg;
         try {
-            baseService.save(data);
+            boolean result = baseService.save(data);
+            if (result) {
+                log.info("存储数据库成功！");
+            } else {
+                log.error("存储数据库失败！！！");
+            }
 
-            log.info("存储数据库成功！");
         } catch (Exception e) {
             msg = "数据：[" + getData(data) + "]\n错误信息:" + e.getMessage();
             errorMsgs.add(msg);
 
             log.error("data:{}, cause:{}", data, e.getMessage());
-            WebSocketServer.sendInfo(msg, token);
+            WebSocketServer.sendInfo(token, msg);
         }
 
 

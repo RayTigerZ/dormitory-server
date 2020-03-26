@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ray.dormitory.bean.bo.RoleOption;
 import com.ray.dormitory.bean.po.Menu;
 import com.ray.dormitory.bean.po.Role;
 import com.ray.dormitory.bean.po.RoleMenu;
@@ -18,6 +19,8 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Ray
@@ -76,14 +79,15 @@ public class RoleController {
 
     @ApiOperation(value = "更新角色对应的菜单权限")
     @PostMapping("/{id}/menus")
-    public boolean saveRoleMenu(@PathVariable int id, int[] ids) {
+    public boolean saveRoleMenu(@PathVariable int id, Set<Integer> ids) {
         return roleMenuService.save(id, ids);
     }
 
 
     @GetMapping("/options")
-    public List<Map<String, Object>> getRoleOptions() {
-        return roleService.listMaps(Wrappers.<Role>lambdaQuery().select(Role::getId, Role::getNameZh));
+    public List<RoleOption> getRoleOptions() {
+        return roleService.list(Wrappers.<Role>lambdaQuery().select(Role::getId, Role::getNameZh))
+                .stream().map(RoleOption::convert).collect(Collectors.toList());
     }
 
 }

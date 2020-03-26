@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.gson.annotations.Expose;
+import com.ray.dormitory.bean.bo.Sex;
+import com.ray.dormitory.valid.EnumValue;
+import com.ray.dormitory.valid.group.SaveByFileValid;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * <p>
@@ -85,6 +89,7 @@ public class User implements Serializable {
      * 性别
      */
     @ExcelProperty("性别")
+    @EnumValue(message = "性别只能取男或女", target = Sex.class)
     private String sex;
 
     /**
@@ -108,28 +113,26 @@ public class User implements Serializable {
      */
     @ExcelProperty("班级")
     @TableField(exist = false)
+    @NotBlank(message = "班级名称不能为空", groups = {SaveByFileValid.class})
     private String cla;
 
     /**
      * 专业
      */
-    @ExcelProperty("专业")
     @TableField(exist = false)
     private String major;
 
     /**
      * 学院名称
      */
-    @ExcelProperty("学院")
     @TableField(exist = false)
     private String college;
 
-    @ExcelProperty("角色")
     @TableField(exist = false)
     private String roles;
 
     @TableField(exist = false)
-    private Integer[] roleIds;
+    private Set<Integer> roleIds;
 
 
 }

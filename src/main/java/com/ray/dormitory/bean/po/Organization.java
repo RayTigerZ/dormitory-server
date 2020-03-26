@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ray.dormitory.valid.group.SaveByFileValid;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,7 +36,7 @@ public class Organization implements Serializable {
     /**
      * 名称
      */
-    @ExcelProperty("组织名称")
+    @ExcelProperty("名称")
     @NotBlank(message = "名称不能为空")
     @Size(min = 1, max = 32, message = "名称长度不超过32")
     private String name;
@@ -43,22 +44,30 @@ public class Organization implements Serializable {
     /**
      * 代码
      */
-    @ExcelProperty("组织代码")
+    @ExcelProperty("代码")
     @NotBlank(message = "代码不能为空")
     @Size(min = 1, max = 16, message = "代码长度不超过16")
     private String code;
 
     /**
-     * 父组织ID
+     * 层级
+     * 1：学院，2：专业，3：班级
      */
-    @NotNull(message = "父组织ID不能为空")
+    @ExcelProperty("层级")
+    @NotNull(message = "层级不能为空")
+    private Integer level;
+
+    /**
+     * 父级ID
+     */
     private Integer parentId;
 
     @TableField(exist = false)
     private List<Organization> children;
 
     @JsonIgnore
-    @ExcelProperty("父组织名称")
+    @ExcelProperty("父级名称")
+    @NotBlank(message = "父级名称不能为空", groups = {SaveByFileValid.class})
     @TableField(exist = false)
     private String parent;
 }

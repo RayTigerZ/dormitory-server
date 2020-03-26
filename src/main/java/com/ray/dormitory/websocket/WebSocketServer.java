@@ -36,7 +36,7 @@ public class WebSocketServer {
     /**
      * 群发自定义消息
      */
-    public static void sendInfo(String message, String token) {
+    public static void sendInfo(String token, String message) {
         log.info("推送消息到窗口" + token + "，推送内容:" + message);
         for (WebSocketServer item : webSocketSet) {
             try {
@@ -65,13 +65,6 @@ public class WebSocketServer {
         webSocketSet.add(this);
 
         log.info("有新窗口开始监听:" + token);
-
-//        try {
-//            sendMessage("连接成功");
-//        } catch (IOException e) {
-//            log.error("websocket IO异常:{}", e.getMessage());
-//        }
-
 
     }
 

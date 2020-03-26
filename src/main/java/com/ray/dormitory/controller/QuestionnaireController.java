@@ -1,6 +1,7 @@
 package com.ray.dormitory.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ray.dormitory.bean.bo.QuestionnaireOption;
 import com.ray.dormitory.bean.po.Questionnaire;
 import com.ray.dormitory.service.QuestionnaireService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author : Ray
@@ -46,7 +47,8 @@ public class QuestionnaireController {
     }
 
     @GetMapping("/options")
-    public List<Map<String, Object>> getOptions() {
-        return questionnaireService.listMaps(Wrappers.<Questionnaire>lambdaQuery().select(Questionnaire::getId, Questionnaire::getTitle));
+    public List<QuestionnaireOption> getOptions() {
+        return questionnaireService.list(Wrappers.<Questionnaire>lambdaQuery().select(Questionnaire::getId, Questionnaire::getTitle).eq(Questionnaire::getPublished, true))
+                .stream().map(QuestionnaireOption::convert).collect(Collectors.toList());
     }
 }

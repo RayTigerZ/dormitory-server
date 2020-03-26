@@ -1,17 +1,18 @@
 package com.ray.dormitory.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ray.dormitory.bean.bo.Student;
-import com.ray.dormitory.bean.po.Role;
+import com.ray.dormitory.bean.po.Organization;
 import com.ray.dormitory.bean.po.User;
-import com.ray.dormitory.bean.po.UserRole;
-import com.ray.dormitory.mapper.RoleMapper;
+import com.ray.dormitory.exception.CustomException;
+import com.ray.dormitory.exception.ErrorEnum;
+import com.ray.dormitory.mapper.OrganizationMapper;
 import com.ray.dormitory.mapper.UserMapper;
-import com.ray.dormitory.mapper.UserRoleMapper;
+import com.ray.dormitory.service.UserRoleService;
 import com.ray.dormitory.service.UserService;
 import com.ray.dormitory.system.SysConfig;
 import com.ray.dormitory.util.JwtUtil;
@@ -19,11 +20,13 @@ import com.ray.dormitory.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Ray Z
@@ -33,11 +36,11 @@ import java.util.Map;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Autowired
-    private RoleMapper roleMapper;
-    @Autowired
-    private UserRoleMapper userRoleMapper;
+    private UserRoleService userRoleService;
     @Autowired
     private SysConfig sysConfig;
+    @Autowired
+    private OrganizationMapper organizationMapper;
 
 
     @Override
@@ -67,100 +70,47 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public boolean resetPassword(int id) {
         User user = baseMapper.selectById(id);
-        String account = user.getAccount();
-        String salt = MD5Util.getSalt();
-        String password = account.substring(account.length() - 6);
-        password = MD5Util.getMD5(password);
-        password = MD5Util.getMD5(password + salt);
-        return update(Wrappers.<User>lambdaUpdate().set(User::getSalt, salt).set(User::getPassword, password).eq(User::getId, id));
+        Assert.notNull(user, "");
 
+        initPassword(user);
+        Wrapper<User> wrapper = Wrappers.<User>lambdaUpdate()
+                .set(User::getSalt, user.getSalt())
+                .set(User::getPassword, user.getPassword())
+                .eq(User::getId, id);
+        return update(wrapper);
+
+    }
+
+    private void initPassword(User user) {
+        //初始化密码(加密)和盐
+        String account = user.getAccount();
+        String password = MD5Util.getMD5(account.substring(account.length() - 6));
+        String salt = MD5Util.getSalt();
+        password = MD5Util.getMD5(password + salt);
+        user.setSalt(salt);
+        user.setPassword(password);
     }
 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean save(User user) {
+        preprocess(user);
+        initPassword(user);
 
-        Integer[] roleIds = user.getRoleIds();
-        if (roleIds != null && roleIds.length > 0) {
-            int count = baseMapper.selectCount(Wrappers.<User>lambdaQuery().eq(User::getAccount, user.getAccount()));
-            if (count == 0) {
-                String account = user.getAccount();
-
-                String password = MD5Util.getMD5(account.substring(account.length() - 6));
-                String salt = MD5Util.getSalt();
-                password = MD5Util.getMD5(password + salt);
-                user.setSalt(salt);
-                user.setPassword(password);
-
-                baseMapper.insert(user);
-                int userId = user.getId();
-                for (int roleId : roleIds) {
-                    userRoleMapper.insert(new UserRole(null, userId, roleId));
-                }
-
-            } else {
-                throw new NullPointerException(user.getAccount() + "--" + user.getName() + " 帐号已存在");
-            }
-        }
-
-        return true;
+        return super.save(user) && userRoleService.save(user.getId(), user.getRoleIds());
     }
 
-
-    /**
-     * 通过user的roles或者role属性获取roleId（role优先）
-     *
-     * @param user
-     * @return
-     */
-    private List<Integer> getRoleId(User user) {
-        List<Integer> ids = Arrays.asList(user.getRoleIds());
-
-        if (ids != null && ids.size() > 0) {
-            for (int id : ids) {
-
-                int count = roleMapper.selectCount(new QueryWrapper<Role>().eq("id", id));
-                if (count == 0) {
-                    throw new NullPointerException("角色不存在");
-                } else {
-                    ids.add(id);
-                }
-
-            }
-        } else {
-            String roleStr = user.getRoles();
-            if (StringUtils.isBlank(roleStr)) {
-                throw new NullPointerException("角色信息不能为空");
-            }
-            String[] roleStrs = roleStr.split(",");
-            for (String s : roleStrs) {
-                QueryWrapper<Role> queryWrapper = new QueryWrapper<Role>().eq("name_zh", s);
-                Role role = roleMapper.selectOne(queryWrapper);
-                if (role == null) {
-                    throw new NullPointerException("角色不存在");
-                } else {
-                    ids.add(role.getId());
-                }
-            }
-        }
-        return ids;
-    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateById(User entity) {
+    public boolean updateById(User user) {
+        preprocess(user);
 
-        int userId = entity.getId();
-        Integer[] roleIds = entity.getRoleIds();
-        userRoleMapper.delete(Wrappers.<UserRole>lambdaUpdate().eq(UserRole::getUserId, userId));
-        for (int roleId : roleIds) {
-            userRoleMapper.insert(new UserRole(null, userId, roleId));
-        }
         //防止密码和盐注入
-        entity.setPassword(null);
-        entity.setSalt(null);
-        return super.updateById(entity);
+        user.setPassword(null);
+        user.setSalt(null);
+        return userRoleService.save(user.getId(), user.getRoleIds()) && super.updateById(user);
     }
 
 
@@ -183,4 +133,49 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .inSql(User::getId, "select user_id from user_role where role_id=" + sysConfig.getRepairerRoleId());
         return baseMapper.selectMaps(wrapper);
     }
+
+    public void preprocess(User user) {
+        Integer id = user.getId();
+        Wrapper<User> userWrapper = Wrappers.<User>lambdaQuery()
+                .ne(id != null, User::getId, id)
+                .eq(User::getAccount, user.getAccount());
+        //判断账户唯一性
+        if (baseMapper.selectCount(userWrapper) > 0) {
+            throw new CustomException(ErrorEnum.USER_ACCOUNT_NOT_UNIQUE);
+        }
+
+        //处理班级
+        Integer classId = user.getClassId();
+        String className = user.getCla();
+        if (classId == null && StringUtils.isBlank(className)) {
+            throw new CustomException(ErrorEnum.CLASS_NOT_EXIST);
+        } else if (classId != null) {
+            Wrapper<Organization> wrapper = Wrappers.<Organization>lambdaQuery()
+                    .eq(Organization::getId, classId)
+                    .eq(Organization::getLevel, 3);
+            if (organizationMapper.selectCount(wrapper) == 0) {
+                throw new CustomException(ErrorEnum.CLASS_NOT_EXIST);
+            }
+        } else if (StringUtils.isNotBlank(className)) {
+            Wrapper<Organization> wrapper = Wrappers.<Organization>lambdaQuery()
+                    .eq(Organization::getName, className)
+                    .eq(Organization::getLevel, 3);
+            Organization cla = organizationMapper.selectOne(wrapper);
+            if (cla == null) {
+                throw new CustomException(ErrorEnum.CLASS_NOT_EXIST);
+            }
+            user.setClassId(cla.getId());
+        }
+
+        //处理角色,角色为空时补上学生角色
+        Set<Integer> roleIds = user.getRoleIds();
+        if (CollectionUtils.isEmpty(roleIds)) {
+            if (roleIds == null) {
+                roleIds = new HashSet<>();
+            }
+            roleIds.add(sysConfig.getStudentRoleId());
+        }
+    }
+
+
 }

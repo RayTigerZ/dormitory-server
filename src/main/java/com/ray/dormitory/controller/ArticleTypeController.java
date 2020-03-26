@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ray.dormitory.bean.bo.ArticleTypeOption;
 import com.ray.dormitory.bean.po.ArticleType;
 import com.ray.dormitory.service.ArticleTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -45,9 +46,9 @@ public class ArticleTypeController {
     }
 
     @GetMapping("/options")
-    public List<Map<String, Object>> getOptions() {
+    public List<ArticleTypeOption> getOptions() {
         Wrapper<ArticleType> wrapper = Wrappers.<ArticleType>lambdaQuery()
                 .select(ArticleType::getId, ArticleType::getName);
-        return articleTypeService.listMaps(wrapper);
+        return articleTypeService.list(wrapper).stream().map(ArticleTypeOption::convert).collect(Collectors.toList());
     }
 }

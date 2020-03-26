@@ -12,7 +12,7 @@ import com.ray.dormitory.export.ExportData;
 import com.ray.dormitory.service.CostService;
 import com.ray.dormitory.service.NoticeService;
 import com.ray.dormitory.service.UserService;
-import com.ray.dormitory.util.Constants;
+import com.ray.dormitory.system.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
