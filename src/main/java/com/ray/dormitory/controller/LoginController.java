@@ -107,12 +107,10 @@ public class LoginController {
     public Map<String, Object> getUserInfo(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>(2);
         User user = userService.getCurrentUser(request);
-        Integer userId = user.getId();
-        if (userId == null) {
-            throw new CustomException(202, "请重新登录");
-        }
-        Wrapper<Role> wrapper = Wrappers.<Role>lambdaQuery().select(Role::getName)
-                .inSql(Role::getId, "select role_id from user_role where user_id=" + userId);
+
+        Wrapper<Role> wrapper = Wrappers.<Role>lambdaQuery()
+                .select(Role::getName)
+                .inSql(Role::getId, "select role_id from user_role where user_id=" + user.getId());
         List<Object> roles = roleService.listObjs(wrapper);
         map.put("roles", roles);
         map.put("user", user);

@@ -122,6 +122,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User getCurrentUser(HttpServletRequest request) {
         String token = request.getHeader(sysConfig.getTokenName());
+        if (token == null || !JwtUtil.verifyToken(token)) {
+            throw new CustomException(ErrorEnum.NO_LOGIN);
+        }
         Integer userId = JwtUtil.getId(token);
         return baseMapper.selectById(userId);
     }

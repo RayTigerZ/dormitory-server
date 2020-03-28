@@ -6,6 +6,7 @@
         <result property="questionnaireId" column="questionnaire_id"/>
         <result property="beginTime" column="begin_time"/>
         <result property="endTime" column="end_time"/>
+        <result property="status" column="status"/>
         <association property="questionnaireName" column="questionnaire_id"
                      javaType="string"
                      select="getQuestionnaire">

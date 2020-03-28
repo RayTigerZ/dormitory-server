@@ -18,14 +18,15 @@ import java.util.List;
  */
 @Getter
 @Setter
-@JsonIgnoreProperties(value = {"handler", "header", "key"})
+@JsonIgnoreProperties(value = {"header", "key"})
 public class Student implements Export {
 
     private String name;
     private String studentNum;
     private String sex;
-    @JsonIgnore
-    private Integer classId;
+    private String phone;
+    private String email;
+
     private String cla;
     private String major;
     private String college;
@@ -68,13 +69,15 @@ public class Student implements Export {
         return header;
     }
 
-    public static Student to(Object obj) {
+    public static Student convert(Object obj) {
         if (obj instanceof User) {
             User user = (User) obj;
             Student student = new Student();
             student.setName(user.getName());
             student.setStudentNum(user.getAccount());
             student.setSex(user.getSex());
+            student.setPhone(user.getPhone());
+            student.setEmail(user.getEmail());
             student.setCla(user.getCla());
             student.setMajor(user.getMajor());
             student.setCollege(user.getCollege());

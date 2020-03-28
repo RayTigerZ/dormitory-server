@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ray.dormitory.bean.bo.Question;
+import com.ray.dormitory.util.CustomHandler;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -53,7 +53,7 @@ public class Questionnaire implements Serializable {
     /**
      * 问卷内容
      */
-    @TableField(typeHandler = JacksonTypeHandler.class)
+    @TableField(typeHandler = CustomHandler.class)
     private List<Question> questions;
 
 }

@@ -5,22 +5,21 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ray.dormitory.bean.bo.AllocateTempDetail;
+import com.ray.dormitory.bean.bo.Question;
 import com.ray.dormitory.bean.bo.Student;
-import com.ray.dormitory.bean.po.Answer;
-import com.ray.dormitory.bean.po.Questionnaire;
-import com.ray.dormitory.bean.po.Survey;
-import com.ray.dormitory.bean.po.User;
+import com.ray.dormitory.bean.bo.SurveyOption;
+import com.ray.dormitory.bean.po.*;
 import com.ray.dormitory.exception.CustomException;
 import com.ray.dormitory.exception.ErrorEnum;
 import com.ray.dormitory.export.ExportData;
-import com.ray.dormitory.service.AnswerService;
-import com.ray.dormitory.service.QuestionnaireService;
-import com.ray.dormitory.service.SurveyService;
-import com.ray.dormitory.service.UserService;
+import com.ray.dormitory.service.*;
 import com.ray.dormitory.system.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +47,8 @@ public class SurveyController {
     private AnswerService answerService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private AllocateTempService allocateTempService;
 
 
     @GetMapping("")
@@ -97,7 +98,11 @@ public class SurveyController {
     }
 
     @PostMapping("/answers")
-    public boolean answer(@RequestBody Answer entity) {
+    public boolean answer(@RequestBody @Valid Answer entity, HttpServletRequest request) {
+        User user = userService.getCurrentUser(request);
+        Assert.notNull(user, "用户未登录");
+
+        entity.setUserId(user.getId());
         return answerService.save(entity);
     }
 
@@ -153,8 +158,105 @@ public class SurveyController {
         if (CollectionUtils.isEmpty(list)) {
             return null;
         }
-        List<Student> rows = list.stream().map(Student::to).collect(Collectors.toList());
+        List<Student> rows = list.stream().map(Student::convert).collect(Collectors.toList());
         String fileName = survey.getName() + (state ? " 完成名单-" : " 未完成名单-") + new SimpleDateFormat(Constants.EXPORT_FILE_DATE_FORMAT).format(new Date());
         return new ExportData<>(fileName, rows);
+    }
+
+    /**
+     * 自动生成对应survey的问卷调查结果集
+     * note:请勿随意调用
+     *
+     * @param id survey ID
+     * @return
+     */
+    @PostMapping("/{id}/generate")
+    public String generate(@PathVariable int id, String psw) {
+        if (!"admin1234".equals(psw)) {
+            return "error";
+        }
+        Survey survey = surveyService.getById(id);
+        Assert.notNull(survey, "问卷调查不存在");
+
+        Questionnaire questionnaire = questionnaireService.getById(survey.getQuestionnaireId());
+        List<Question> questions = questionnaire.getQuestions();
+
+        Wrapper<User> wrapper = Wrappers.<User>query()
+                .eq("LENGTH(account)", Constants.STUDENT_ACCOUNT_LEN)
+                .eq("LEFT(account," + Constants.GRADE_LEN + ")", survey.getGrade());
+        List<User> users = userService.list(wrapper);
+        Random random = new Random();
+        List<Answer> answerList = new ArrayList<>();
+        for (User user : users) {
+            Answer answer = new Answer();
+            answer.setUserId(user.getId());
+            answer.setSurveyId(id);
+            List<Double> list = new ArrayList<>();
+
+            for (Question question : questions) {
+                int a = random.nextInt(question.getOptions().size()) + 1;
+                list.add(new Double(a));
+            }
+
+            answer.setAnswer(list);
+            answerList.add(answer);
+            try {
+                answerService.save(answer);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+        }
+
+        return "ok";
+    }
+
+
+    @GetMapping("/{id}/allocateTemps")
+    public IPage<AllocateTemp> getAllocateTemps(@PathVariable int id, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize,
+                                                String studentNum, String name, String roomNum) {
+        IPage<AllocateTemp> page = new Page<>(pageNum, pageSize);
+        Wrapper<AllocateTemp> wrapper = Wrappers.<AllocateTemp>lambdaQuery()
+                .eq(AllocateTemp::getSurveyId, id)
+                .like(StringUtils.isNotBlank(studentNum), AllocateTemp::getStudentNum, studentNum)
+                .like(StringUtils.isNotBlank(name), AllocateTemp::getName, name)
+                .like(StringUtils.isNotBlank(roomNum), AllocateTemp::getRoomNum, roomNum);
+        return allocateTempService.page(page, wrapper);
+
+    }
+
+    @GetMapping("/options")
+    public List<SurveyOption> getOptions(HttpServletRequest request) {
+        User user = userService.getCurrentUser(request);
+        Assert.notNull(user, "");
+        Wrapper<Survey> wrapper = Wrappers.<Survey>lambdaQuery()
+                .select(Survey::getId, Survey::getName)
+                .eq(Survey::getGrade, user.getAccount().substring(0, Constants.GRADE_LEN));
+        return surveyService.list(wrapper).stream().map(SurveyOption::convert).collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}/allocateTemps/student")
+    public List<AllocateTempDetail> queryTemps(@PathVariable int id, HttpServletRequest request) {
+
+        User user = userService.getCurrentUser(request);
+        Wrapper<AllocateTemp> wrapper = Wrappers.<AllocateTemp>lambdaQuery()
+                .eq(AllocateTemp::getSurveyId, id)
+                .eq(AllocateTemp::getStudentNum, user.getAccount());
+        AllocateTemp temp = allocateTempService.getOne(wrapper);
+
+        wrapper = Wrappers.<AllocateTemp>lambdaQuery()
+                .eq(AllocateTemp::getSurveyId, id)
+                .eq(AllocateTemp::getRoomNum, temp.getRoomNum());
+        List<AllocateTemp> temps = allocateTempService.list(wrapper);
+
+        List<AllocateTempDetail> details = new ArrayList<>();
+        temps.forEach(i -> details.add(new AllocateTempDetail(i, userService.getUserByAccount(i.getStudentNum()))));
+
+        return details;
+    }
+
+    @PostMapping("/{id}/allocate")
+    public boolean allocate(@PathVariable int id) {
+        return allocateTempService.allocate(id);
     }
 }

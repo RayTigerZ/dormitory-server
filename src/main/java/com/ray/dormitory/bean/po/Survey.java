@@ -3,6 +3,7 @@ package com.ray.dormitory.bean.po;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ray.dormitory.bean.enums.AllocateStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -73,7 +74,7 @@ public class Survey implements Serializable {
     /**
      * 是否完成分配
      */
-    private Boolean allocated;
+    private AllocateStatus status;
 
     /**
      * 问卷调查的创建人

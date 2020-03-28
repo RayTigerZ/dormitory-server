@@ -41,6 +41,7 @@ spring:
 mybatis-plus:
   mapperLocations: classpath:/mapper/*Mapper.xml
   typeAliasesPackage: com.ray.dormitory.bean
+  typeEnumsPackage: com.ray.dormitory.bean.enums
   configuration:
     lazy-loading-enabled: true
     aggressive-lazy-loading: false

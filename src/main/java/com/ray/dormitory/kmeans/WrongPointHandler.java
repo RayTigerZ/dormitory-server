@@ -8,7 +8,7 @@ import java.util.List;
  * @author : Ray
  * @date : 2020.03.24 14:12
  */
-public interface WrongPointHandler<T extends Point> {
+public interface WrongPointHandler {
 
     /**
      * 判断不合格的点
@@ -16,7 +16,7 @@ public interface WrongPointHandler<T extends Point> {
      * @param point
      * @return 合格：true，不合格：false
      */
-    default boolean isWrong(T point) {
+    default boolean isWrong(Point point) {
         return point.getCoordinate() == null;
     }
 
@@ -27,6 +27,6 @@ public interface WrongPointHandler<T extends Point> {
      * @param wrongCluster：不合格的点簇集合
      * @return 合格的point集合
      */
-    List<T> handleWrong(List<T> points, List<T> wrongCluster);
+    List<Point> handleWrong(List<Point> points, List<Point> wrongCluster);
 
 }

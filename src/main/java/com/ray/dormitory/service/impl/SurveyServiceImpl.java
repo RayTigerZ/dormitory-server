@@ -1,6 +1,7 @@
 package com.ray.dormitory.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ray.dormitory.bean.enums.AllocateStatus;
 import com.ray.dormitory.bean.po.Survey;
 import com.ray.dormitory.exception.CustomException;
 import com.ray.dormitory.mapper.SurveyMapper;
@@ -30,7 +31,7 @@ public class SurveyServiceImpl extends ServiceImpl<SurveyMapper, Survey> impleme
 
     @Override
     public boolean save(Survey entity) {
-        entity.setAllocated(false);
+        entity.setStatus(AllocateStatus.NOT_ALLOCATE);
         return super.save(entity);
     }
 }

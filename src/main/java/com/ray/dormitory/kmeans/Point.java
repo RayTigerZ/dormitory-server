@@ -24,4 +24,6 @@ public interface Point extends Serializable {
      * @return 相同：true，不相同：false
      */
     boolean samePosition(Point point);
+
+    Point clone();
 }

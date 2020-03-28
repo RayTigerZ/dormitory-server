@@ -2,7 +2,8 @@ package com.ray.dormitory;
 
 import org.junit.Test;
 
-import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author : Ray
@@ -11,8 +12,39 @@ import javax.validation.constraints.NotNull;
 public class NormalTest {
     @Test
     public void test() {
-        @NotNull
-        Integer i = null;
-        System.out.println("123");
+        List<As> list = new ArrayList<>();
+        list.add(new As(1));
+        list.add(new As(2));
+        list.add(new As(3));
+        new Open<As>(list).out();
+    }
+}
+
+interface Foo {
+    int getScore();
+}
+
+class As implements Foo {
+    private int sc;
+
+    public As(int s) {
+        sc = s;
+    }
+
+    @Override
+    public int getScore() {
+        return sc;
+    }
+}
+
+class Open<T extends Foo> {
+    List<T> list;
+
+    public Open(List<T> list) {
+        this.list = list;
+    }
+
+    public void out() {
+        list.forEach(a -> System.out.println(a.getScore()));
     }
 }

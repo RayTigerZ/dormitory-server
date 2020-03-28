@@ -7,13 +7,13 @@ import java.util.List;
  * @author : Ray
  * @date : 2020.03.24 14:26
  */
-public class DefaultWrongPointHandler<T extends Point> implements WrongPointHandler<T> {
+public class DefaultWrongPointHandler implements WrongPointHandler {
     @Override
-    public List<T> handleWrong(List<T> points, List<T> wrongCluster) {
+    public List<Point> handleWrong(List<Point> points, List<Point> wrongCluster) {
         int wrongCount = 0;
-        List<T> qualifiedPoints = new ArrayList<>();
+        List<Point> qualifiedPoints = new ArrayList<>();
 
-        for (T point : points) {
+        for (Point point : points) {
             if (isWrong(point)) {
 
                 wrongCount++;

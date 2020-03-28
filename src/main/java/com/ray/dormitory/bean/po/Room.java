@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ray.dormitory.bean.bo.Sex;
 import com.ray.dormitory.bean.bo.Student;
+import com.ray.dormitory.bean.enums.Sex;
 import com.ray.dormitory.valid.EnumValue;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+
 
 /**
  * <p>

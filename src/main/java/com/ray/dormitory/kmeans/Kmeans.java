@@ -1,6 +1,5 @@
 package com.ray.dormitory.kmeans;
 
-import com.baomidou.mybatisplus.core.toolkit.SerializationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +11,12 @@ import java.util.stream.Collectors;
  * @author : Ray
  * @date : 2020.02.17 12:29
  */
-public class Kmeans<T extends Point> {
+public class Kmeans {
 
     /**
      * 所有数据
      */
-    private List<T> points;
+    private List<Point> points;
 
     /**
      * 单个点簇中点的个数
@@ -25,12 +24,12 @@ public class Kmeans<T extends Point> {
     private int size;
 
 
-    private WrongPointHandler<T> wrongPointHandler;
+    private WrongPointHandler wrongPointHandler;
 
-    public Kmeans(List<T> list, int size) {
+    public Kmeans(List<Point> list, int size) {
         this.size = size;
         this.points = list;
-        this.wrongPointHandler = new DefaultWrongPointHandler<>();
+        this.wrongPointHandler = new DefaultWrongPointHandler();
 
     }
 
@@ -40,25 +39,25 @@ public class Kmeans<T extends Point> {
      * @return 点簇集合
      */
 
-    public List<List<T>> clustering() {
+    public List<List<Point>> clustering() {
 
         //不合格的点簇集合
-        List<T> wrongCluster = new ArrayList<>();
+        List<Point> wrongCluster = new ArrayList<>();
 
         //合格的点集合
-        List<T> qualifiedPoints = wrongPointHandler.handleWrong(points, wrongCluster);
+        List<Point> qualifiedPoints = wrongPointHandler.handleWrong(points, wrongCluster);
 
         //处理合格的点
         boolean flag = qualifiedPoints.size() % size == 0;
         int len = qualifiedPoints.size() / size + (flag ? 0 : 1);
 
-        ArrayList<T> centers = new ArrayList<>(len);
+        List<Point> centers = new ArrayList<>();
+
         for (int i = 0; i < len; i++) {
-            T point = qualifiedPoints.get(i);
-            centers.add(SerializationUtils.clone(point));
+            centers.add(qualifiedPoints.get(i).clone());
         }
 
-        List<List<T>> qualifiedClusters;
+        List<List<Point>> qualifiedClusters;
         boolean result;
         do {
             qualifiedClusters = new ArrayList<>(len);
@@ -66,8 +65,10 @@ public class Kmeans<T extends Point> {
                 qualifiedClusters.add(new ArrayList<>(size));
             }
 
-            List<T> oldCenters = SerializationUtils.clone(centers);
-            for (T point : qualifiedPoints) {
+            List<Point> oldCenters = new ArrayList<>();
+            centers.forEach(c -> oldCenters.add(c.clone()));
+
+            for (Point point : qualifiedPoints) {
                 clustering(point, centers, qualifiedClusters);
             }
             qualifiedClusters = qualifiedClusters.stream().filter(item -> item.size() > 0).collect(Collectors.toList());
@@ -81,7 +82,7 @@ public class Kmeans<T extends Point> {
         return qualifiedClusters;
     }
 
-    public boolean same(List<T> centers, List<T> oldCenters) {
+    public boolean same(List<Point> centers, List<Point> oldCenters) {
         int len = centers.size();
         for (int i = 0; i < len; i++) {
             if (!centers.get(i).samePosition(oldCenters.get(i))) {
@@ -99,25 +100,23 @@ public class Kmeans<T extends Point> {
      * @param centers  中心数据集合
      * @param clusters 聚类集合
      */
-    public void clustering(T point, List<T> centers, List<List<T>> clusters) {
-        List<Double> lengths = new ArrayList<>();
+    public void clustering(Point point, List<Point> centers, List<List<Point>> clusters) {
+        List<Double> distances = new ArrayList<>();
         List<Integer> indexs = new ArrayList<>();
 
-        int range = centers.size();
+        int len = centers.size();
 
-
-        for (int i = 0; i < range; i++) {
-            //if (clusters.get(i).size() < size) {
-            T center = centers.get(i);
-            lengths.add(getDistance(center, point));
+        for (int i = 0; i < len; i++) {
+            Point center = centers.get(i);
+            double distance = getDistance(center, point);
+            distances.add(distance);
             indexs.add(i);
-            //}
         }
 
         // 找出最小值的下标
-        int index = indexs.get(getIndexOfMin(lengths));
+        int index = indexs.get(getIndexOfMin(distances));
 
-        List<T> cluster = clusters.get(index);
+        List<Point> cluster = clusters.get(index);//bug
         cluster.add(point);
         updateCenterPoint(cluster, centers.get(index));
     }
@@ -151,7 +150,7 @@ public class Kmeans<T extends Point> {
      * @return 返回数据的距离
      */
 
-    public double getDistance(T center, T point) {
+    public double getDistance(Point center, Point point) {
         double sum = 0;
         int length = center.getCoordinate().size();
         for (int i = 0; i < length; i++) {
@@ -168,12 +167,12 @@ public class Kmeans<T extends Point> {
      * @param list   点族
      * @param center 中心点
      */
-    public void updateCenterPoint(List<T> list, T center) {
+    public void updateCenterPoint(List<Point> list, Point center) {
         int size = center.getCoordinate().size();
         for (int i = 0; i < size; i++) {
             double sum = 0;
             int length = list.size();
-            for (T t : list) {
+            for (Point t : list) {
                 sum += t.getCoordinate().get(i);
             }
 

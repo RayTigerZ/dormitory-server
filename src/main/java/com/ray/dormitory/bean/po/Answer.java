@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
@@ -34,19 +35,19 @@ public class Answer implements Serializable {
     /**
      * 学生ID
      */
-    @NotNull
+    @NotNull(message = "学生不能为空")
     private Integer userId;
 
     /**
      * 问卷调查ID
      */
-    @NotNull
+    @NotNull(message = "问卷调查不能为空")
     private Integer surveyId;
 
     /**
      * 问卷调查答案
      */
-    @NotNull()
+    @NotEmpty(message = "答案不能为空")
     @TableField(typeHandler = JacksonTypeHandler.class)
     private List<Double> answer;
 

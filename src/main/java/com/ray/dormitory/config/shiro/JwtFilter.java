@@ -131,7 +131,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         if (isAccess) {
             return true;
         } else {
-            ResponseUtil.sendJson(servletRequest, servletResponse, new ResponseBean(ErrorEnum.ERROR_301));
+            ResponseUtil.sendJson(servletRequest, servletResponse, new ResponseBean(ErrorEnum.NO_LOGIN));
             return false;
         }
 

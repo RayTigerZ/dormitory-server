@@ -1,8 +1,6 @@
 package com.ray.dormitory.bean.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,12 +29,20 @@ public class AllocateTemp implements Serializable {
     /**
      * 学号
      */
+    @TableField(updateStrategy = FieldStrategy.NEVER)
     private String studentNum;
 
     /**
      * 学生姓名
      */
+    @TableField(updateStrategy = FieldStrategy.NEVER)
     private String name;
+
+    /**
+     * 性别
+     */
+    @TableField(updateStrategy = FieldStrategy.NEVER)
+    private String sex;
 
     /**
      * 宿舍号
@@ -46,6 +52,7 @@ public class AllocateTemp implements Serializable {
     /**
      * 问卷调查ID
      */
+    @TableField(updateStrategy = FieldStrategy.NEVER)
     private Integer surveyId;
 
 
