@@ -21,16 +21,16 @@
         <collection property="roleIds" column="id" select="getRoleIds" ofType="integer"/>
     </resultMap>
 
-    <resultMap id="studentMap" type="com.ray.dormitory.bean.bo.Student">
-        <result property="name" column="name"/>
-        <result property="studentNum" column="account"/>
-        <result property="sex" column="sex"/>
-        <result property="classId" column="class_id"/>
-        <result property="roomNum" column="room_num"/>
-        <association property="cla" column="class_id" select="getCla" javaType="string"/>
-        <association property="college" column="class_id" select="getCollege" javaType="string"/>
-        <association property="college" column="class_id" select="getCollege" javaType="string"/>
-    </resultMap>
+    <!--    <resultMap id="studentMap" type="com.ray.dormitory.bean.bo.Student">-->
+    <!--        <result property="name" column="name"/>-->
+    <!--        <result property="studentNum" column="account"/>-->
+    <!--        <result property="sex" column="sex"/>-->
+    <!--        <result property="classId" column="class_id"/>-->
+    <!--        <result property="roomNum" column="room_num"/>-->
+    <!--        <association property="cla" column="class_id" select="getCla" javaType="string"/>-->
+    <!--        <association property="college" column="class_id" select="getCollege" javaType="string"/>-->
+    <!--        <association property="college" column="class_id" select="getCollege" javaType="string"/>-->
+    <!--    </resultMap>-->
 
 
     <select id="getCla" resultType="string">
@@ -58,10 +58,6 @@
 
     <select id="getRoleIds" resultType="integer">
         select role_id from user_role where user_id=#{id}
-    </select>
-
-    <select id="getStudentInfo" resultMap="studentMap">
-        select `name`,account,sex,class_id,room_num  from user where account=#{account}
     </select>
 
 </mapper>

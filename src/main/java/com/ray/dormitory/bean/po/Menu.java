@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ray.dormitory.bean.enums.MenuType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,15 +31,16 @@ public class Menu {
     @TableId(type = IdType.AUTO)
     private Integer id;
     private String title;
-    private String name;
-    private String path;
+
+
     private String component;
 
     private String icon;
     private Integer parentId;
     private Boolean noCache;
     private Boolean hidden;
-    private String redirect;
+    private MenuType type;
+
     @TableField("`order`")
     private Integer order;
 

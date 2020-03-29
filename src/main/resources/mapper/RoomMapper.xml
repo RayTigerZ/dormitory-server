@@ -6,10 +6,10 @@
         <result property="number" column="number"/>
         <result property="size" column="size"/>
         <result property="buildingId" column="building_id"/>
-        <collection property="students" ofType="com.ray.dormitory.bean.bo.Student" fetchType="lazy"
-                    select="getTenant" column="number">
+        <!--        <collection property="students" ofType="com.ray.dormitory.bean.bo.Student" fetchType="lazy"-->
+        <!--                    select="com.ray.dormitory.mapper.UserMapper." column="number">-->
 
-        </collection>
+        <!--        </collection>-->
     </resultMap>
 
     <select id="getRoomsOfFloor" resultMap="roomResultMap">
@@ -17,7 +17,5 @@
             where building_id=#{buildingId} and substring(number, 3, 2)=#{floor}
     </select>
 
-    <select id="getTenant" resultMap="com.ray.dormitory.mapper.UserMapper.studentMap">
-        select `name`,account,sex,class_id,room_num  from user where room_num=#{number}
-    </select>
+
 </mapper>

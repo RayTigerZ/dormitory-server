@@ -1,7 +1,6 @@
 package com.ray.dormitory.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ray.dormitory.bean.bo.Student;
 import com.ray.dormitory.bean.po.User;
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserMapper extends BaseMapper<User> {
-
-    Student getStudentInfo(String account);
-
 
 }

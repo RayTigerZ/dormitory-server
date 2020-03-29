@@ -116,7 +116,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Student getStudentInfo(String account) {
-        return baseMapper.getStudentInfo(account);
+        return Student.convert(getUserByAccount(account));
     }
 
     @Override
