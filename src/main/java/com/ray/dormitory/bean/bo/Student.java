@@ -1,7 +1,7 @@
 package com.ray.dormitory.bean.bo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ray.dormitory.bean.enums.Sex;
 import com.ray.dormitory.bean.po.User;
 import com.ray.dormitory.export.Export;
 import lombok.Getter;
@@ -23,19 +23,16 @@ public class Student implements Export {
 
     private String name;
     private String studentNum;
-    private String sex;
+    private Sex sex;
     private String phone;
     private String email;
-
     private String cla;
     private String major;
     private String college;
     private String roomNum;
 
 
-    @JsonIgnore
     private static List<String> key;
-    @JsonIgnore
     private static List<String> header;
 
     static {
@@ -43,6 +40,8 @@ public class Student implements Export {
         key.add("name");
         key.add("studentNum");
         key.add("sex");
+        key.add("phone");
+        key.add("email");
         key.add("cla");
         key.add("major");
         key.add("college");
@@ -52,6 +51,8 @@ public class Student implements Export {
         header.add("学生姓名");
         header.add("学号");
         header.add("性别");
+        header.add("手机号码");
+        header.add("电子邮箱");
         header.add("班级");
         header.add("专业");
         header.add("学院");

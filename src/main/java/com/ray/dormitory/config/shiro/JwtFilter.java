@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * JWT过滤器
  *
  * @author Ray Z
+ * @date 2019/11/23 16:10
  */
 @Slf4j
 public class JwtFilter extends BasicHttpAuthenticationFilter {
@@ -39,29 +40,19 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
-        HttpServletRequest req = (HttpServletRequest) request;
-        String authorization = req.getHeader(sysConfig.getTokenName());
-        return authorization != null;
+
+        return getToken(request) != null;
     }
 
     /**
      *
      */
     @Override
-    protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String authorization = httpServletRequest.getHeader(sysConfig.getTokenName());
+    protected boolean executeLogin(ServletRequest request, ServletResponse response) {
 
-        //获取URI
-        String uri = httpServletRequest.getRequestURI();
+        String authorization = getToken(request);
 
-        /*
-         *  两步校验
-         *  (1) token是否正确
-         * （2）单点登陆，从缓存中读取该用户对应的token
-         */
         boolean result = false;
-
 
         if (authorization != null && JwtUtil.verifyToken(authorization)) {
 
@@ -103,35 +94,24 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
 
-        HttpServletRequest servletRequest = (HttpServletRequest) request;
-        HttpServletResponse servletResponse = (HttpServletResponse) response;
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
 
-        String url = servletRequest.getServletPath();
+        String url = req.getServletPath();
         log.info("JwtFilter preHandle url: {}", url);
 
 
         //处理跨域问题，跨域的请求首先会发一个options类型的请求
 
-        if (servletRequest.getMethod().equals(HttpMethod.OPTIONS.name())) {
+        if (req.getMethod().equals(HttpMethod.OPTIONS.name())) {
             return true;
         }
-
-//        boolean flag = false;
-//        for (Map.Entry<String, Object> entry : appliedPaths.entrySet()) {
-//            if (pathsMatch(entry.getKey(), request)) {
-//                flag = true;
-//                break;
-//            }
-//        }
-//        if (!flag) {
-//            return false;
-//        }
 
         boolean isAccess = isAccessAllowed(request, response, "");
         if (isAccess) {
             return true;
         } else {
-            ResponseUtil.sendJson(servletRequest, servletResponse, new ResponseBean(ErrorEnum.NO_LOGIN));
+            ResponseUtil.sendJson(req, res, new ResponseBean(ErrorEnum.NO_LOGIN));
             return false;
         }
 
@@ -154,6 +134,13 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
             // 匹配当前请求的 http method 与 过滤器链中的的是否一致
             return httpMethod.equals(strings[1].toUpperCase()) && this.pathsMatch(strings[0], requestUri);
         }
+    }
+
+
+    private String getToken(ServletRequest request) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        return httpServletRequest.getHeader(sysConfig.getTokenName());
+
     }
 
 }

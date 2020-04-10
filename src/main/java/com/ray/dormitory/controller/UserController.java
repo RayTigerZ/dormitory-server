@@ -6,10 +6,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ray.dormitory.bean.bo.RepairerOption;
 import com.ray.dormitory.bean.bo.Student;
 import com.ray.dormitory.bean.po.User;
-import com.ray.dormitory.bean.po.UserRole;
-import com.ray.dormitory.service.UserRoleService;
+import com.ray.dormitory.export.ExportData;
 import com.ray.dormitory.service.UserService;
 import com.ray.dormitory.system.SysConfig;
 import com.ray.dormitory.upload.UploadDataListener;
@@ -21,9 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -37,28 +36,32 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private UserRoleService userRoleService;
-    @Autowired
     private SysConfig sysConfig;
 
 
     @GetMapping("")
-    public IPage<User> getPage(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize, String account, Integer roleId, Integer[] classId) {
+    public IPage<User> getPage(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize, String user, Integer roleId, Integer[] classId) {
         IPage<User> page = new Page<>(pageNum, pageSize);
-        List<Object> userIds = new ArrayList<>();
-        if (roleId != null) {
-            userIds = userRoleService.listObjs(Wrappers.<UserRole>lambdaQuery().select(UserRole::getUserId).eq(UserRole::getRoleId, roleId));
-            if (userIds.size() == 0) {
-                return page;
-            }
-        }
 
         Wrapper<User> wrapper = Wrappers.<User>lambdaQuery()
-                .like(StringUtils.isNotBlank(account), User::getAccount, account)
-                .in(roleId != null, User::getId, userIds)
+                .and(StringUtils.isNotBlank(user), w -> w.like(User::getAccount, user).or().like(User::getName, user))
+                .inSql(roleId != null, User::getId, "SELECT user_id from user_role where role_id='" + roleId + "'")
                 .in(classId != null, User::getClassId, classId);
 
         return userService.page(page, wrapper);
+    }
+
+    @GetMapping("/export")
+    public ExportData<Student> export(String user, Integer roleId, Integer[] classId) {
+
+        Wrapper<User> wrapper = Wrappers.<User>lambdaQuery()
+                .and(StringUtils.isNotBlank(user), w -> w.like(User::getAccount, user).or().like(User::getName, user))
+                .inSql(roleId != null, User::getId, "SELECT user_id from user_role where role_id='" + roleId + "'")
+                .in(classId != null, User::getClassId, classId);
+
+        List<Student> rows = userService.list(wrapper).stream().map(Student::convert).collect(Collectors.toList());
+        String fileName = "学生资料";
+        return new ExportData(fileName, rows);
     }
 
 
@@ -110,8 +113,8 @@ public class UserController {
     }
 
     @GetMapping("/repairers")
-    public List<Map<String, Object>> getRepairers() {
-        return userService.repairers();
+    public List<RepairerOption> getRepairerOptions() {
+        return userService.getRepairerOptions();
     }
 
 }

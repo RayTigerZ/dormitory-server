@@ -58,14 +58,14 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         return menu;
     }
 
-    void deleteNoChildNode(Menu menu) {
-        if (menu.getChildren() == null) {
-            menu = null;
-        }
-        for (Menu menu1 : menu.getChildren()) {
-            deleteNoChildNode(menu1);
-        }
-    }
+//    void deleteNoChildNode(Menu menu) {
+//        if (menu.getChildren() == null) {
+//            menu = null;
+//        }
+//        for (Menu menu1 : menu.getChildren()) {
+//            deleteNoChildNode(menu1);
+//        }
+//    }
 
     @Override
     public Menu getAllPermission() {
@@ -73,5 +73,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         return formatMenu(menus);
     }
 
-
+    @Override
+    public List<Menu> getTree() {
+        return baseMapper.selectList(Wrappers.<Menu>lambdaQuery().isNull(Menu::getParentId).orderByAsc(Menu::getOrder));
+    }
 }

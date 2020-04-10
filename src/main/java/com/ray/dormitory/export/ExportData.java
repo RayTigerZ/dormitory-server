@@ -20,8 +20,9 @@ public class ExportData<T extends Export> {
 
     public ExportData(String fileName, List<T> rows) {
         if (rows != null && rows.size() > 0) {
-            this.header = rows.get(0).getHeader();
-            this.key = rows.get(0).getKey();
+            T row = rows.get(0);
+            this.header = row.getHeader();
+            this.key = row.getKey();
             this.fileName = fileName;
             this.rows = rows;
         }

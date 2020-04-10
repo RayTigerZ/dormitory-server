@@ -12,6 +12,11 @@ import com.ray.dormitory.bean.po.Cost;
  * @date 2020-2-26 14:56:49
  */
 public interface CostService extends IService<Cost> {
-
+    /**
+     * 支付账单
+     *
+     * @param id 账单ID
+     * @return
+     */
     boolean pay(int id);
 }

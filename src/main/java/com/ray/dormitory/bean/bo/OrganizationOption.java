@@ -32,13 +32,11 @@ public class OrganizationOption {
             option.setId(organization.getId());
             option.setName(organization.getName());
             List<Organization> children = organization.getChildren();
-            if (children != null) {
-                List<OrganizationOption> optionChildren = new ArrayList<>();
+            List<OrganizationOption> optionChildren = new ArrayList<>();
+            if (children != null && !children.isEmpty()) {
                 children.forEach(child -> optionChildren.add(convert(child)));
-                option.setChildren(optionChildren);
-            } else {
-                option.setChildren(new ArrayList<>());
             }
+            option.setChildren(optionChildren);
             return option;
         }
         return null;

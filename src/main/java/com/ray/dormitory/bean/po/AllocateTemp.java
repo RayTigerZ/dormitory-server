@@ -1,6 +1,7 @@
 package com.ray.dormitory.bean.po;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.ray.dormitory.bean.enums.Sex;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,7 +43,7 @@ public class AllocateTemp implements Serializable {
      * 性别
      */
     @TableField(updateStrategy = FieldStrategy.NEVER)
-    private String sex;
+    private Sex sex;
 
     /**
      * 宿舍号

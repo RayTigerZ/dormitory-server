@@ -67,12 +67,12 @@ public class AllocateRoom {
             //男/女数据分离，
             List<Point> boys = new ArrayList<>(), girls = new ArrayList<>();
             users.forEach(user -> {
-                String sex = user.getSex();
+                Sex sex = user.getSex();
                 Wrapper<Answer> answerWrapper = Wrappers.<Answer>lambdaQuery()
                         .eq(Answer::getSurveyId, survey.getId())
                         .eq(Answer::getUserId, user.getId());
                 Answer answer = answerService.getOne(answerWrapper);
-                ("男".equals(sex) ? boys : girls).add(new Data(user, answer));
+                (Sex.MAN.equals(sex) ? boys : girls).add(new Data(user, answer));
             });
 
             //进行聚类

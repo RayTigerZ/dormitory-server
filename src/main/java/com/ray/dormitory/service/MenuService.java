@@ -3,6 +3,8 @@ package com.ray.dormitory.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ray.dormitory.bean.po.Menu;
 
+import java.util.List;
+
 /**
  * @author : Ray
  * @date : 2019.11.21 12:45
@@ -22,6 +24,8 @@ public interface MenuService extends IService<Menu> {
      * @return
      */
     Menu getAllPermission();
+
+    List<Menu> getTree();
 
 
 }

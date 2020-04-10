@@ -1,10 +1,12 @@
 package com.ray.dormitory.exception;
 
+import lombok.Getter;
+
 /**
  * @author Ray
  * @date 2020.01.19 21:21
  */
-
+@Getter
 public enum ErrorEnum {
 
 
@@ -23,13 +25,17 @@ public enum ErrorEnum {
     ERROR_201(201, "账号权限不足"),
 
     NO_LOGIN(301, "未登录或登录超时"),
-    USER_ACCOUNT_NOT_UNIQUE(202, "用户账号已存在");
+    USER_ACCOUNT_NOT_UNIQUE(202, "用户账号已存在"),
+
+    REPEAT_COST(202, "账单重复"),
+
+    CHARGE_NOT_EXIST(202, "收费项目不存在");
 
 
-    private Integer errorCode;
-    private String errorMsg;
+    private final int errorCode;
+    private final String errorMsg;
 
-    private ErrorEnum(Integer errorCode, String errorMsg) {
+    ErrorEnum(Integer errorCode, String errorMsg) {
         this.errorCode = errorCode;
         this.errorMsg = errorMsg;
     }
@@ -38,15 +44,8 @@ public enum ErrorEnum {
         return errorCode;
     }
 
-    public void setErrorCode(Integer errorCode) {
-        this.errorCode = errorCode;
-    }
-
     public String getErrorMsg() {
         return errorMsg;
     }
 
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
 }

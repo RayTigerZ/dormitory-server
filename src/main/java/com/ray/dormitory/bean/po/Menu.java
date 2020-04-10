@@ -45,6 +45,9 @@ public class Menu {
     private Integer order;
 
     @TableField(exist = false)
+    private List<String> roles;
+
+    @TableField(exist = false)
     private List<Menu> children;
 
 }

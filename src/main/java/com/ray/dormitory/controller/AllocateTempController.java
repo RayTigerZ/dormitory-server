@@ -3,6 +3,7 @@ package com.ray.dormitory.controller;
 
 import com.ray.dormitory.bean.po.AllocateTemp;
 import com.ray.dormitory.service.AllocateTempService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,8 @@ public class AllocateTempController {
     private AllocateTempService allocateTempService;
 
     @PostMapping("")
-    public boolean save(AllocateTemp allocateTemp) {
+    @ApiOperation(value = "更新预分配结果")
+    public boolean updateById(AllocateTemp allocateTemp) {
         Assert.notNull(allocateTemp.getId(), "参数错误");
         return allocateTempService.updateById(allocateTemp);
     }

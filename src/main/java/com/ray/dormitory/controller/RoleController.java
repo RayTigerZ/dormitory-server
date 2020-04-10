@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ray.dormitory.bean.bo.RoleOption;
-import com.ray.dormitory.bean.po.Menu;
 import com.ray.dormitory.bean.po.Role;
 import com.ray.dormitory.bean.po.RoleMenu;
 import com.ray.dormitory.service.MenuService;
@@ -16,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -64,30 +61,28 @@ public class RoleController {
 
 
     @ApiOperation(value = "获取角色对应的菜单权限")
-    @GetMapping("/{id}/menus")
-    public Map<String, Object> getRolePermissions(@PathVariable Integer id) {
+    @GetMapping("/{id}/menuIds")
+    public List<Integer> getRolePermissions(@PathVariable Integer id) {
         Wrapper<RoleMenu> wrapper = Wrappers.<RoleMenu>lambdaQuery()
-                .select(RoleMenu::getMenuId).eq(RoleMenu::getRoleId, id);
-        List<Object> ids = roleMenuService.listObjs(wrapper);
-        List<Menu> menus = menuService.list();
-        Map<String, Object> map = new HashMap<>(2);
-        map.put("ids", ids);
-        map.put("menus", menus);
-        return map;
+                .select(RoleMenu::getMenuId)
+                .eq(RoleMenu::getRoleId, id);
+        List<Object> objects = roleMenuService.listObjs(wrapper);
+        return objects.stream().map(obj -> ((Long) obj).intValue()).collect(Collectors.toList());
+
     }
 
 
     @ApiOperation(value = "更新角色对应的菜单权限")
     @PostMapping("/{id}/menus")
-    public boolean saveRoleMenu(@PathVariable int id, Set<Integer> ids) {
+    public boolean saveRoleMenu(@PathVariable int id, @RequestParam("ids") Set<Integer> ids) {
         return roleMenuService.save(id, ids);
     }
 
 
     @GetMapping("/options")
     public List<RoleOption> getRoleOptions() {
-        return roleService.list(Wrappers.<Role>lambdaQuery().select(Role::getId, Role::getNameZh))
-                .stream().map(RoleOption::convert).collect(Collectors.toList());
+        List<Role> roles = roleService.list(Wrappers.<Role>lambdaQuery().select(Role::getId, Role::getNameZh));
+        return roles.stream().map(RoleOption::convert).collect(Collectors.toList());
     }
 
 }

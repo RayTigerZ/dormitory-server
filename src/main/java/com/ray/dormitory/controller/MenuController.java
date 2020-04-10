@@ -1,6 +1,7 @@
 package com.ray.dormitory.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ray.dormitory.bean.bo.MenuOption;
 import com.ray.dormitory.bean.po.Menu;
 import com.ray.dormitory.bean.po.Operation;
 import com.ray.dormitory.service.MenuService;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author : Ray
@@ -25,8 +27,8 @@ public class MenuController {
     private OperationService operationService;
 
     @GetMapping("")
-    public List<Menu> getAllMenus() {
-        return menuService.list();
+    public List<Menu> getList() {
+        return menuService.getTree();
     }
 
     @PostMapping("")
@@ -42,6 +44,12 @@ public class MenuController {
     @GetMapping("/{id}/operations")
     public List<Operation> getOperations(@PathVariable int id) {
         return operationService.list(Wrappers.<Operation>lambdaQuery().eq(Operation::getMenuId, id));
+    }
+
+    @GetMapping("/options")
+    public List<MenuOption> getOptions() {
+        List<Menu> menus = menuService.getTree();
+        return menus.stream().map(MenuOption::convert).collect(Collectors.toList());
     }
 
 

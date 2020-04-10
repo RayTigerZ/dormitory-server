@@ -1,6 +1,7 @@
 package com.ray.dormitory.controller;
 
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
@@ -12,13 +13,15 @@ import com.ray.dormitory.export.ExportData;
 import com.ray.dormitory.service.CostService;
 import com.ray.dormitory.service.NoticeService;
 import com.ray.dormitory.service.UserService;
-import com.ray.dormitory.system.Constants;
+import com.ray.dormitory.system.SysConfig;
+import com.ray.dormitory.upload.UploadDataListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -39,6 +42,8 @@ public class CostController {
     private UserService userService;
     @Autowired
     private NoticeService noticeService;
+    @Autowired
+    private SysConfig sysConfig;
 
 
     @GetMapping("")
@@ -81,13 +86,22 @@ public class CostController {
                 .eq(ObjectUtils.isNotNull(payed), Cost::getIsPayed, payed)
                 .orderByDesc(Cost::getCycle);
         List<Cost> rows = costService.list(wrapper);
-        String fileName = "宿舍收费账单-" + new SimpleDateFormat(Constants.EXPORT_FILE_DATE_FORMAT).format(new Date());
+        String fileName = "宿舍账单";
         return new ExportData<>(fileName, rows);
     }
 
     @PostMapping("/{id}/pay")
     public boolean pay(@PathVariable int id) {
         return costService.pay(id);
+    }
+
+    @PostMapping("/batchSave")
+    public boolean save(HttpServletRequest request, MultipartFile file) throws IOException {
+        String token = request.getHeader(sysConfig.getTokenName());
+        Assert.notNull(token, "token为空");
+
+        EasyExcel.read(file.getInputStream(), Cost.class, new UploadDataListener(costService, token)).sheet().doRead();
+        return true;
     }
 
 }

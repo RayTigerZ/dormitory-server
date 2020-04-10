@@ -1,5 +1,6 @@
 package com.ray.dormitory.schedule;
 
+import com.ray.dormitory.bean.enums.Sex;
 import com.ray.dormitory.bean.po.Answer;
 import com.ray.dormitory.bean.po.User;
 import com.ray.dormitory.kmeans.Point;
@@ -20,7 +21,7 @@ import java.util.List;
 public class Data implements Point {
     private String studentNum;
     private String name;
-    private String sex;
+    private Sex sex;
     private List<Double> answer;
 
     public Data(User user, Answer answer) {

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.gson.annotations.Expose;
 import com.ray.dormitory.bean.enums.Sex;
-import com.ray.dormitory.valid.EnumValue;
 import com.ray.dormitory.valid.group.SaveByFileValid;
 import lombok.Getter;
 import lombok.Setter;
@@ -89,8 +88,8 @@ public class User implements Serializable {
      * 性别
      */
     @ExcelProperty("性别")
-    @EnumValue(message = "性别只能取男或女", target = Sex.class)
-    private String sex;
+    //@EnumValue(message = "性别只能取男或女", target = Sex.class)
+    private Sex sex;
 
     /**
      * 房间号

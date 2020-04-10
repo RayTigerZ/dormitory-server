@@ -12,15 +12,16 @@
         <result property="order" column="order"/>
         <collection property="children" column="id" ofType="com.ray.dormitory.bean.po.Menu" fetchType="lazy"
                     select="getChildren"/>
-
+        <collection property="roles" column="id" ofType="string" fetchType="lazy"
+                    select="getRoles"/>
     </resultMap>
 
-    <select id="selectList" resultMap="menuMap">
-        select * from menu m where m.parent_id is null order by `order`
+    <select id="getChildren" resultMap="menuMap">
+        select * from menu m where m.parent_id = #{id} order by `order`
     </select>
 
-    <select id="getChildren" resultType="com.ray.dormitory.bean.po.Menu">
-        select * from menu m where m.parent_id = #{id} order by `order`
+    <select id="getRoles" resultType="string">
+        select name from role r where r.id in (select role_id from role_menu where menu_id=#{id})
     </select>
 
     <select id="getMenusByUserId" resultType="com.ray.dormitory.bean.po.Menu">

@@ -1,12 +1,15 @@
 package com.ray.dormitory.config.mvc.converter;
 
-import com.ray.dormitory.bean.enums.IEnum;
+
+import com.baomidou.mybatisplus.core.enums.IEnum;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 /**
+ * String转IEnum
+ *
  * @author : Ray
  * @date : 2020.03.29 14:43
  */
@@ -17,7 +20,7 @@ public class IEnumConverterFactory implements ConverterFactory<String, IEnum> {
         return new IEnumConverter<>(targetType);
     }
 
-    @SuppressWarnings("all")
+
     private static class IEnumConverter<T extends IEnum> implements Converter<String, T> {
         private Class<T> targetType;
 

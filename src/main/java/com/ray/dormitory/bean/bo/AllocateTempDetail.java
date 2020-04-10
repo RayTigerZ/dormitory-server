@@ -1,5 +1,6 @@
 package com.ray.dormitory.bean.bo;
 
+import com.ray.dormitory.bean.enums.Sex;
 import com.ray.dormitory.bean.po.AllocateTemp;
 import com.ray.dormitory.bean.po.User;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import java.io.Serializable;
 public class AllocateTempDetail implements Serializable {
     private String name;
     private String studentNum;
-    private String sex;
+    private Sex sex;
     private String roomNum;
     private String phone;
     private String email;

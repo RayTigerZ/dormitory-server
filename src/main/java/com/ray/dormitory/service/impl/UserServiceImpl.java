@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ray.dormitory.bean.bo.RepairerOption;
 import com.ray.dormitory.bean.bo.Student;
 import com.ray.dormitory.bean.po.Organization;
 import com.ray.dormitory.bean.po.User;
@@ -25,8 +26,8 @@ import org.springframework.util.Assert;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Ray Z
@@ -81,8 +82,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     }
 
+    /**
+     * 初始化密码和盐，登录密码取帐号后6位
+     *
+     * @param user 用户信息
+     */
     private void initPassword(User user) {
-        //初始化密码(加密)和盐
         String account = user.getAccount();
         String password = MD5Util.getMD5(account.substring(account.length() - 6));
         String salt = MD5Util.getSalt();
@@ -130,11 +135,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public List<Map<String, Object>> repairers() {
+    public List<RepairerOption> getRepairerOptions() {
         Wrapper<User> wrapper = Wrappers.<User>lambdaQuery()
                 .select(User::getAccount, User::getName)
                 .inSql(User::getId, "select user_id from user_role where role_id=" + sysConfig.getRepairerRoleId());
-        return baseMapper.selectMaps(wrapper);
+        return baseMapper.selectList(wrapper).stream().map(RepairerOption::convert).collect(Collectors.toList());
     }
 
     public void preprocess(User user) {

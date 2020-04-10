@@ -1,7 +1,7 @@
 package com.ray.dormitory.bean.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.baomidou.mybatisplus.core.enums.IEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
@@ -21,10 +21,8 @@ public enum MenuType implements IEnum<Integer> {
     private final Integer value;
     private final String desc;
 
-    @JsonCreator
     MenuType(Integer value, String desc) {
         this.value = value;
         this.desc = desc;
-
     }
 }
