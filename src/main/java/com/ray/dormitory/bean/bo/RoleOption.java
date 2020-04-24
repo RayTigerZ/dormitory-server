@@ -22,7 +22,7 @@ public class RoleOption {
 
 
     public static RoleOption convert(Object object) {
-        if (object != null && object instanceof Role) {
+        if (object instanceof Role) {
             Role role = (Role) object;
             return new RoleOption(role.getId(), role.getNameZh());
         }

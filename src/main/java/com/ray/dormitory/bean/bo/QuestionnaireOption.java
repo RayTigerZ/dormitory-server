@@ -21,7 +21,7 @@ public class QuestionnaireOption {
     private String title;
 
     public static QuestionnaireOption convert(Object object) {
-        if (object != null && object instanceof Questionnaire) {
+        if (object instanceof Questionnaire) {
             Questionnaire questionnaire = (Questionnaire) object;
             return new QuestionnaireOption(questionnaire.getId(), questionnaire.getTitle());
         }

@@ -21,7 +21,7 @@ public class SurveyOption implements Serializable {
     private String name;
 
     public static SurveyOption convert(Object object) {
-        if (object != null && object instanceof Survey) {
+        if (object instanceof Survey) {
             Survey survey = (Survey) object;
             return new SurveyOption(survey.getId(), survey.getName());
         }

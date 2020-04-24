@@ -19,7 +19,7 @@ public class ArticleTypeOption {
     private String name;
 
     public static ArticleTypeOption convert(Object object) {
-        if (object != null && object instanceof ArticleType) {
+        if (object instanceof ArticleType) {
             ArticleType type = (ArticleType) object;
             return new ArticleTypeOption(type.getId(), type.getName());
         }

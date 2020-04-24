@@ -116,7 +116,7 @@ public class Kmeans {
         // 找出最小值的下标
         int index = indexs.get(getIndexOfMin(distances));
 
-        List<Point> cluster = clusters.get(index);//bug
+        List<Point> cluster = clusters.get(index);
         cluster.add(point);
         updateCenterPoint(cluster, centers.get(index));
     }

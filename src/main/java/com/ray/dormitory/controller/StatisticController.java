@@ -28,7 +28,7 @@ public class StatisticController {
     private CostService costService;
 
     @GetMapping("")
-    public Map<String, Object> statis() {
+    public Map<String, Object> statistic() {
         Map<String, Object> map = new HashMap<>(8);
         map.put("visitSum", visitRecordService.count());
         map.put("violationSum", violationRecordService.count());

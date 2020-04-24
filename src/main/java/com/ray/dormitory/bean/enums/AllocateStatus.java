@@ -13,8 +13,17 @@ import lombok.Getter;
  */
 @Getter
 public enum AllocateStatus implements IEnum<Integer> {
+    /**
+     * 未进行宿舍预分配
+     */
     NOT_ALLOCATE(0, "未分配"),
+    /**
+     * 已进行宿舍的预分配
+     */
     PRE_ALLOCATE(1, "预分配"),
+    /**
+     * 已进行宿舍的正式分配
+     */
     ALLOCATED(2, "已分配");
 
     @EnumValue

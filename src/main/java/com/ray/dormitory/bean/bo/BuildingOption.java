@@ -1,5 +1,6 @@
 package com.ray.dormitory.bean.bo;
 
+import com.ray.dormitory.bean.enums.Sex;
 import com.ray.dormitory.bean.po.Building;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,10 +18,10 @@ import lombok.Setter;
 public class BuildingOption {
     private int id;
     private String name;
-    private String type;
+    private Sex type;
 
     public static BuildingOption convert(Object object) {
-        if (object != null && object instanceof Building) {
+        if (object instanceof Building) {
             Building building = (Building) object;
             return new BuildingOption(building.getId(), building.getName(), building.getType());
         }

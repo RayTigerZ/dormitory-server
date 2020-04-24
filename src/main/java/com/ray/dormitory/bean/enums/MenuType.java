@@ -13,7 +13,13 @@ import lombok.Getter;
  */
 @Getter
 public enum MenuType implements IEnum<Integer> {
+    /**
+     * 目录
+     */
     CATALOG(1, "目录"),
+    /**
+     * 菜单
+     */
     MENU(2, "菜单");
 
     @EnumValue

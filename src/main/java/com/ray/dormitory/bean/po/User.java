@@ -88,7 +88,6 @@ public class User implements Serializable {
      * 性别
      */
     @ExcelProperty("性别")
-    //@EnumValue(message = "性别只能取男或女", target = Sex.class)
     private Sex sex;
 
     /**

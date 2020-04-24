@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ray.dormitory.bean.enums.Sex;
-import com.ray.dormitory.valid.EnumValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,6 +45,5 @@ public class Building implements Serializable {
     /**
      * 类型：男/女
      */
-    @EnumValue(target = Sex.class, message = "类型参数错误")
-    private String type;
+    private Sex type;
 }

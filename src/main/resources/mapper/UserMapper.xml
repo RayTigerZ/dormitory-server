@@ -21,16 +21,16 @@
         <collection property="roleIds" column="id" select="getRoleIds" ofType="integer"/>
     </resultMap>
 
-    <!--    <resultMap id="studentMap" type="com.ray.dormitory.bean.bo.Student">-->
-    <!--        <result property="name" column="name"/>-->
-    <!--        <result property="studentNum" column="account"/>-->
-    <!--        <result property="sex" column="sex"/>-->
-    <!--        <result property="classId" column="class_id"/>-->
-    <!--        <result property="roomNum" column="room_num"/>-->
-    <!--        <association property="cla" column="class_id" select="getCla" javaType="string"/>-->
-    <!--        <association property="college" column="class_id" select="getCollege" javaType="string"/>-->
-    <!--        <association property="college" column="class_id" select="getCollege" javaType="string"/>-->
-    <!--    </resultMap>-->
+    <resultMap id="studentMap" type="com.ray.dormitory.bean.bo.Student">
+        <result property="name" column="name"/>
+        <result property="studentNum" column="account"/>
+        <result property="sex" column="sex"/>
+        <result property="classId" column="class_id"/>
+        <result property="roomNum" column="room_num"/>
+        <association property="cla" column="class_id" select="getCla" javaType="string"/>
+        <association property="college" column="class_id" select="getCollege" javaType="string"/>
+        <association property="major" column="class_id" select="getMajor" javaType="string"/>
+    </resultMap>
 
 
     <select id="getCla" resultType="string">
@@ -38,26 +38,30 @@
     </select>
     <select id="getMajor" resultType="string">
         select name from organization where id=(
-            select parent_id from organization where id=#{id}
+        select parent_id from organization where id=#{id}
         )
     </select>
     <select id="getCollege" resultType="string">
         select name from organization where id=(
-            select parent_id from organization where id=(
-                select parent_id from organization where id=#{id}
-            )
+        select parent_id from organization where id=(
+        select parent_id from organization where id=#{id}
+        )
         )
     </select>
 
     <select id="getRoles" resultType="string">
         select group_concat(`name`) from role
-            where id in(
-                select role_id from user_role where user_id=#{id}
-            )
+        where id in(
+        select role_id from user_role where user_id=#{id}
+        )
     </select>
 
     <select id="getRoleIds" resultType="integer">
         select role_id from user_role where user_id=#{id}
+    </select>
+
+    <select id="getRoomMates" resultMap="studentMap" resultType="list">
+        select name,account,sex,class_id,room_num from user where room_num=#{num}
     </select>
 
 </mapper>

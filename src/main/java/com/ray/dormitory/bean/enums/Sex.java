@@ -13,7 +13,14 @@ import lombok.Getter;
  */
 @Getter
 public enum Sex implements IEnum<String> {
-    MAN("男"), WOMAN("女");
+    /**
+     * 男生
+     */
+    MAN("男"),
+    /**
+     * 女生
+     */
+    WOMAN("女");
 
     @EnumValue
     @JsonValue

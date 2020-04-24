@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-@JsonIgnoreProperties(value = {"header", "key"})
+@JsonIgnoreProperties(value = {"header", "key", "classId", "handler"})
 public class Student implements Export {
 
     private String name;
@@ -26,6 +26,7 @@ public class Student implements Export {
     private Sex sex;
     private String phone;
     private String email;
+    private Integer classId;
     private String cla;
     private String major;
     private String college;
