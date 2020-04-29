@@ -3,6 +3,8 @@ package com.ray.dormitory.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ray.dormitory.bean.bo.Count;
+import com.ray.dormitory.bean.enums.CycleType;
 import com.ray.dormitory.bean.po.Charge;
 import com.ray.dormitory.bean.po.Cost;
 import com.ray.dormitory.bean.po.Room;
@@ -16,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -47,6 +51,36 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost> implements Co
                 .set(Cost::getPayTime, new Date())
                 .eq(Cost::getId, id);
         return update(wrapper);
+    }
+
+    @Override
+    public int countWater() {
+        Wrapper<Cost> wrapper = Wrappers.<Cost>query().select("sum(count)").eq("charge_name", "水费");
+        return ((Double) baseMapper.selectObjs(wrapper).get(0)).intValue();
+    }
+
+    @Override
+    public int countElectric() {
+        Wrapper<Cost> wrapper = Wrappers.<Cost>query().select("sum(count)").eq("charge_name", "电费");
+        return ((Double) baseMapper.selectObjs(wrapper).get(0)).intValue();
+    }
+
+    @Override
+    public List<Count> statisticWater(CycleType type, int last) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = last; i > 0; i--) {
+            list.add(i - 1);
+        }
+        return baseMapper.statistic("水费", type, list);
+    }
+
+    @Override
+    public List<Count> statisticElectric(CycleType type, int last) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = last; i > 0; i--) {
+            list.add(i - 1);
+        }
+        return baseMapper.statistic("电费", type, list);
     }
 
     @Override

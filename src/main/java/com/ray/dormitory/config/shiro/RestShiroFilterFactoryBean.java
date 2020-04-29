@@ -20,8 +20,6 @@ public class RestShiroFilterFactoryBean extends ShiroFilterFactoryBean {
     @Override
     protected AbstractShiroFilter createInstance() {
 
-        log.debug("Creating Shiro Filter instance.");
-
         SecurityManager securityManager = this.getSecurityManager();
         if (securityManager == null) {
             String msg = "SecurityManager property must be set.";

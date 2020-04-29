@@ -38,24 +38,15 @@ public class ShiroService {
     public Map<String, String> getApiPermissionMap() {
         Map<String, String> apiPermissionMap = new LinkedHashMap<>();
 
-        // 所有请求通过我们自己的JWT Filter
-        apiPermissionMap.put("/user/login", "anon");
-        apiPermissionMap.put("/user/logout", "jwt");
-
-        apiPermissionMap.put("/shiro/updatePermission", "anon");
-        //门户获取系统数据
-        apiPermissionMap.put("/portal/portal/**", "anon");
-        //门户登录
-        apiPermissionMap.put("/mhLogin/auth/**", "anon");
-        // 访问401和404页面不通过我们的Filter
-        apiPermissionMap.put("/401", "anon");
-        apiPermissionMap.put("/500", "anon");
-
+        apiPermissionMap.put("/login", "anon");
+        apiPermissionMap.put("/menus", "jwt");
+        apiPermissionMap.put("/logout", "jwt");
+        apiPermissionMap.put("/*/options", "jwt");
+        apiPermissionMap.put("/articles/indexShow", "anon");
+        apiPermissionMap.put("/articles/all", "anon");
+        apiPermissionMap.put("/download/batchExcel", "jwt,roles[admin]");
 
         List<Operation> operations = operationMapper.selectList(Wrappers.emptyWrapper());
-
-
-        log.info("apiPermission: {}", operations);
         Map<String, String> operateType = new HashMap<>(16);
         String format = "roles[%s]";
         for (Operation operation : operations) {

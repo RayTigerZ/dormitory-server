@@ -22,7 +22,7 @@ public class IEnumConverterFactory implements ConverterFactory<String, IEnum> {
 
 
     private static class IEnumConverter<T extends IEnum> implements Converter<String, T> {
-        private Class<T> targetType;
+        private final Class<T> targetType;
 
         public IEnumConverter(Class<T> targetType) {
             this.targetType = targetType;
@@ -33,11 +33,11 @@ public class IEnumConverterFactory implements ConverterFactory<String, IEnum> {
             if (StringUtils.isEmpty(source)) {
                 return null;
             }
-            return (T) IEnumConverterFactory.getIEnum(this.targetType, source);
+            return (T) IEnumConverterFactory.getEnum(this.targetType, source);
         }
     }
 
-    public static <T extends IEnum> Object getIEnum(Class<T> target, String source) {
+    public static <T extends IEnum> Object getEnum(Class<T> target, String source) {
         for (T enumObj : target.getEnumConstants()) {
             if (source.equals(String.valueOf(enumObj.getValue()))) {
                 return enumObj;

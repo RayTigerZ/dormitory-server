@@ -17,7 +17,7 @@ import com.ray.dormitory.service.UserRoleService;
 import com.ray.dormitory.service.UserService;
 import com.ray.dormitory.system.SysConfig;
 import com.ray.dormitory.util.JwtUtil;
-import com.ray.dormitory.util.MD5Util;
+import com.ray.dormitory.util.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,9 +54,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = getUserByAccount(account);
         if (user != null) {
 
-            if (user.getPassword().equals(MD5Util.getMD5(oldPsw + user.getSalt()))) {
-                String salt = MD5Util.getSalt();
-                String password = MD5Util.getMD5(newPsw + salt);
+            if (user.getPassword().equals(Md5Util.getMD5(oldPsw + user.getSalt()))) {
+                String salt = Md5Util.getSalt();
+                String password = Md5Util.getMD5(newPsw + salt);
 
                 return update(Wrappers.<User>lambdaUpdate().eq(User::getId, user.getId()).set(User::getPassword, password).set(User::getSalt, salt));
 
@@ -89,9 +89,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     private void initPassword(User user) {
         String account = user.getAccount();
-        String password = MD5Util.getMD5(account.substring(account.length() - 6));
-        String salt = MD5Util.getSalt();
-        password = MD5Util.getMD5(password + salt);
+        String password = Md5Util.getMD5(account.substring(account.length() - 6));
+        String salt = Md5Util.getSalt();
+        password = Md5Util.getMD5(password + salt);
         user.setSalt(salt);
         user.setPassword(password);
     }

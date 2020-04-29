@@ -72,7 +72,6 @@ public class VisitRecordController {
     @PostMapping("/{id}/leave")
     public boolean leave(@PathVariable int id) {
         return visitRecordService.leave(id);
-
     }
-
+    
 }

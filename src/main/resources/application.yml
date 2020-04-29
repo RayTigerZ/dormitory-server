@@ -54,7 +54,7 @@ sys-config:
   tokenTimeout: 1800
   repairerRoleId: 3
   studentRoleId: 4
-logging:
-  level:
-    com.ray.dormitory: TRACE
+#logging:
+#  level:
+#    com.ray.dormitory: TRACE
 

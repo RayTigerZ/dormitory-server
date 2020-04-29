@@ -1,7 +1,11 @@
 package com.ray.dormitory.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ray.dormitory.bean.bo.Count;
+import com.ray.dormitory.bean.enums.CycleType;
 import com.ray.dormitory.bean.po.ViolationRecord;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +16,5 @@ import com.ray.dormitory.bean.po.ViolationRecord;
  * @date 2020-2-15 16:37:24
  */
 public interface ViolationRecordService extends IService<ViolationRecord> {
-
+    List<Count> statistic(CycleType type, int last);
 }

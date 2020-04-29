@@ -25,8 +25,6 @@ public class RestPathMatchingFilterChainResolver extends PathMatchingFilterChain
 
         String requestURI = getPathWithinApplication(request);
         String method = ((HttpServletRequest) request).getMethod().toUpperCase();
-        //the 'chain names' in this implementation are actually path patterns defined by the user.  We just use them
-        //as the chain name for the FilterChainManager's requirements
 
         for (String pathPattern : filterChainManager.getChainNames()) {
             String pattern = null;
@@ -42,10 +40,7 @@ public class RestPathMatchingFilterChainResolver extends PathMatchingFilterChain
 
             // 只用过滤器链的 URL 部分与请求的 URL 进行匹配
             if (pattern != null && pathMatches(pattern, requestURI)) {
-                if (log.isTraceEnabled()) {
-                    log.trace("Matched path pattern [{}] for requestURI [{} {}].  " +
-                            "Utilizing corresponding filter chain...", pathPattern, method, requestURI);
-                }
+                log.info(" [{}] match url [{} {}]", pathPattern, method, requestURI);
                 return filterChainManager.proxy(originalChain, pathPattern);
             }
         }

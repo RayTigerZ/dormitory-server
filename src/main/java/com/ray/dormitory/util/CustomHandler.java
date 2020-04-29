@@ -17,7 +17,7 @@ import java.util.List;
 public class CustomHandler extends JacksonTypeHandler {
 
     private static ObjectMapper mapper = new ObjectMapper();
-    private JavaType type;
+    private final JavaType type;
 
 
     public CustomHandler(Class<Object> type) {
@@ -45,7 +45,7 @@ public class CustomHandler extends JacksonTypeHandler {
     }
 
     public static void setObjectMapper(ObjectMapper objectMapper) {
-        Assert.notNull(objectMapper, "ObjectMapper should not be null", new Object[0]);
+        Assert.notNull(objectMapper, "ObjectMapper should not be null");
         CustomHandler.mapper = objectMapper;
     }
 }

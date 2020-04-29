@@ -1,7 +1,11 @@
 package com.ray.dormitory.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ray.dormitory.bean.bo.Count;
+import com.ray.dormitory.bean.enums.CycleType;
 import com.ray.dormitory.bean.po.Cost;
+
+import java.util.List;
 
 /**
  * <p>
@@ -19,4 +23,12 @@ public interface CostService extends IService<Cost> {
      * @return
      */
     boolean pay(int id);
+
+    int countWater();
+
+    int countElectric();
+
+    List<Count> statisticWater(CycleType type, int last);
+
+    List<Count> statisticElectric(CycleType type, int last);
 }

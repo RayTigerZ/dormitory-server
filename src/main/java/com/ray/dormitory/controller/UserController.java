@@ -46,7 +46,7 @@ public class UserController {
         Wrapper<User> wrapper = Wrappers.<User>lambdaQuery()
                 .and(StringUtils.isNotBlank(user), w -> w.like(User::getAccount, user).or().like(User::getName, user))
                 .inSql(roleId != null, User::getId, "SELECT user_id from user_role where role_id='" + roleId + "'")
-                .in(classId != null, User::getClassId, classId);
+                .in(classId != null, User::getClassId, (Object[]) classId);
 
         return userService.page(page, wrapper);
     }
@@ -57,7 +57,7 @@ public class UserController {
         Wrapper<User> wrapper = Wrappers.<User>lambdaQuery()
                 .and(StringUtils.isNotBlank(user), w -> w.like(User::getAccount, user).or().like(User::getName, user))
                 .inSql(roleId != null, User::getId, "SELECT user_id from user_role where role_id='" + roleId + "'")
-                .in(classId != null, User::getClassId, classId);
+                .in(classId != null, User::getClassId, (Object[]) classId);
 
         List<Student> rows = userService.list(wrapper).stream().map(Student::convert).collect(Collectors.toList());
         String fileName = "学生资料";

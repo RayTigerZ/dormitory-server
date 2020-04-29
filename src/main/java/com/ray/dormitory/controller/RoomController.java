@@ -37,8 +37,8 @@ public class RoomController {
         return roomService.saveOrUpdate(room);
     }
 
-    @PostMapping("/uploadBatch")
-    public boolean uploadBatch(MultipartFile file, HttpServletRequest request) throws IOException {
+    @PostMapping("/batchSave")
+    public boolean batchSave(MultipartFile file, HttpServletRequest request) throws IOException {
         String token = request.getHeader(sysConfig.getTokenName());
         Assert.notNull(token, "token为空");
 

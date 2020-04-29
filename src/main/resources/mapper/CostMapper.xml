@@ -2,4 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ray.dormitory.mapper.CostMapper">
 
+    <select id="statistic" resultType="com.ray.dormitory.bean.bo.Count">
+        <bind name="format" value="type.getFormat()"/>
+        SELECT a.cycle,SUM(b.count) count
+        FROM (
+        <foreach collection="list" item="item">
+            SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL ${item} MONTH),#{format}) AS cycle UNION
+            <if test="item==0">
+                SELECT DATE_FORMAT(CURDATE(),#{format}) AS cycle
+            </if>
+        </foreach>
+        ) a
+        LEFT JOIN
+        (select count,cycle from cost where charge_name=#{charge}) b
+        on a.cycle=DATE_FORMAT(b.cycle,#{format})
+        GROUP BY a.cycle
+    </select>
+
 </mapper>

@@ -13,7 +13,7 @@ import com.ray.dormitory.service.RoleService;
 import com.ray.dormitory.service.UserService;
 import com.ray.dormitory.system.SysConfig;
 import com.ray.dormitory.util.JwtUtil;
-import com.ray.dormitory.util.MD5Util;
+import com.ray.dormitory.util.Md5Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +53,7 @@ public class LoginController {
             }
 
             String str = password + user.getSalt();
-            if (user.getPassword().equals(MD5Util.getMD5(str))) {
+            if (user.getPassword().equals(Md5Util.getMD5(str))) {
                 if (user.getIsUsable() == null && !user.getIsUsable()) {
                     throw new UnsupportedEncodingException("该用户已被禁用");
                 }
