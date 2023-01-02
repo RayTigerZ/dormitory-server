@@ -19,7 +19,8 @@ import com.ray.dormitory.system.SysConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * <p>
@@ -67,7 +68,7 @@ public class RepairRecordServiceImpl extends ServiceImpl<RepairRecordMapper, Rep
     }
 
     @Override
-    public boolean setAppointTime(int id, Date time) {
+    public boolean setAppointTime(int id, LocalDateTime time) {
         RepairRecord record = getById(id);
         if (record.getStatus() == 3 || ObjectUtils.isNotNull(record.getAppointTime())) {
             throw new CustomException(204, "已安排上门时间，请勿重复安排");

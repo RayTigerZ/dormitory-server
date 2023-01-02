@@ -7,8 +7,9 @@ import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+
 
 /**
  * 账单周期转化
@@ -17,12 +18,14 @@ import java.util.Date;
  * @author : Ray
  * @date : 2020.04.10 19:44
  */
-public class CycleConverter implements Converter<Date> {
+public class CycleConverter implements Converter<YearMonth> {
     private String dateFormat = "yyyy-MM";
 
+    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat);
+
     @Override
-    public Class supportJavaTypeKey() {
-        return Date.class;
+    public Class<?> supportJavaTypeKey() {
+        return YearMonth.class;
     }
 
     @Override
@@ -31,13 +34,13 @@ public class CycleConverter implements Converter<Date> {
     }
 
     @Override
-    public Date convertToJavaData(ReadCellData cellData, ExcelContentProperty excelContentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-        return new SimpleDateFormat(dateFormat).parse(cellData.getStringValue());
+    public YearMonth convertToJavaData(ReadCellData cellData, ExcelContentProperty excelContentProperty, GlobalConfiguration globalConfiguration) throws Exception {
+        return YearMonth.parse(cellData.getStringValue(), dateTimeFormatter);
     }
 
     @Override
-    public WriteCellData<?> convertToExcelData(Date date, ExcelContentProperty excelContentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-        String cycle = new SimpleDateFormat(dateFormat).format(date);
+    public WriteCellData<?> convertToExcelData(YearMonth date, ExcelContentProperty excelContentProperty, GlobalConfiguration globalConfiguration) throws Exception {
+        String cycle = date.format(dateTimeFormatter);
         return new WriteCellData<>(cycle);
     }
 }

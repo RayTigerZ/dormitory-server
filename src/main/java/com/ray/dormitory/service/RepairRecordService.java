@@ -3,7 +3,8 @@ package com.ray.dormitory.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ray.dormitory.infrastructure.entity.RepairRecord;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * <p>
@@ -16,7 +17,7 @@ import java.util.Date;
 public interface RepairRecordService extends IService<RepairRecord> {
     boolean setRepairer(int id, String account);
 
-    boolean setAppointTime(int id, Date time);
+    boolean setAppointTime(int id, LocalDateTime time);
 
     boolean setFeedback(int id, String feedBack);
 

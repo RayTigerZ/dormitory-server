@@ -18,8 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.validation.Valid;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 /**
@@ -48,7 +50,7 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost> implements Co
         }
         Wrapper<Cost> wrapper = Wrappers.<Cost>lambdaUpdate()
                 .set(Cost::getIsPayed, true)
-                .set(Cost::getPayTime, new Date())
+                .set(Cost::getPayTime, LocalDateTime.now())
                 .eq(Cost::getId, id);
         return update(wrapper);
     }

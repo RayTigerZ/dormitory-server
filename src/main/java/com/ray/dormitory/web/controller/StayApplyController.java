@@ -12,6 +12,7 @@ import com.ray.dormitory.infrastructure.entity.User;
 import com.ray.dormitory.export.ExportData;
 import com.ray.dormitory.service.StayApplyService;
 import com.ray.dormitory.service.UserService;
+import com.ray.dormitory.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 /**
@@ -42,7 +44,7 @@ public class StayApplyController {
 
     @GetMapping("")
     public IPage<StayApply> getPage(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize,
-                                    String student, @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginDate, @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+                                    String student, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate beginDate, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         IPage<StayApply> page = new Page<>(pageNum, pageSize);
         Wrapper<StayApply> wrapper = Wrappers.<StayApply>lambdaQuery()
                 .ge(ObjectUtils.isNotNull(beginDate), StayApply::getBeginDate, beginDate)
@@ -55,8 +57,8 @@ public class StayApplyController {
     }
 
     @GetMapping("/export")
-    public ExportData<StayApply> export(String student, @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginDate,
-                                        @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+    public ExportData<StayApply> export(String student, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate beginDate,
+                                        @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         Wrapper<StayApply> wrapper = Wrappers.<StayApply>lambdaQuery()
                 .ge(ObjectUtils.isNotNull(beginDate), StayApply::getBeginDate, beginDate)
                 .le(ObjectUtils.isNotNull(endDate), StayApply::getEndDate, endDate)
@@ -65,7 +67,7 @@ public class StayApplyController {
                 .orderByDesc(StayApply::getCreateTime);
 
         List<StayApply> rows = stayApplyService.list(wrapper);
-        String fileName = "留校申请-" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+        String fileName = "留校申请-" + YearMonth.now().format(DateUtils.EXPORT_FILE_DATE_FORMATTER);
         return new ExportData<>(fileName, rows);
     }
 

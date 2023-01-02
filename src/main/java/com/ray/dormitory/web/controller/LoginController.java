@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +63,7 @@ public class LoginController {
                         .withClaim("account", account)
                         .withClaim("name", user.getName())
                         .withClaim("roles", user.getRoles())
-                        .withClaim("loginTime", new Date())
+                        .withClaim("loginTime", System.currentTimeMillis())
                         .sign(algorithm);
 
                 redisService.remove(JwtUtil.getAccountUserKey(account));

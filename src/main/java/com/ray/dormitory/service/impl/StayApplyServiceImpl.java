@@ -9,7 +9,8 @@ import com.ray.dormitory.infrastructure.mapper.StayApplyMapper;
 import com.ray.dormitory.service.StayApplyService;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * <p>
@@ -30,7 +31,7 @@ public class StayApplyServiceImpl extends ServiceImpl<StayApplyMapper, StayApply
         if (stayApply != null) {
             //判断记录是否已处理
             if (stayApply.getProcessTime() == null) {
-                Wrapper<StayApply> wrapper = Wrappers.<StayApply>lambdaUpdate().eq(StayApply::getId, id).set(StayApply::getIsConsent, result).set(StayApply::getProcessTime, new Date());
+                Wrapper<StayApply> wrapper = Wrappers.<StayApply>lambdaUpdate().eq(StayApply::getId, id).set(StayApply::getIsConsent, result).set(StayApply::getProcessTime, LocalDateTime.now());
                 return update(wrapper);
             } else {
                 throw new CustomException(204, "该记录已审核");

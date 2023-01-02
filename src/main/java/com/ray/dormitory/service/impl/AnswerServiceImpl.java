@@ -13,11 +13,11 @@ import com.ray.dormitory.infrastructure.mapper.SurveyMapper;
 import com.ray.dormitory.infrastructure.mapper.UserMapper;
 import com.ray.dormitory.service.AnswerService;
 import com.ray.dormitory.system.Constants;
-import com.ray.dormitory.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * <p>
@@ -54,8 +54,8 @@ public class AnswerServiceImpl extends ServiceImpl<AnswerMapper, Answer> impleme
             throw new CustomException(202, "不能回答该问卷调查");
         }
 
-        Date now = new Date();
-        if (!DateUtils.compare(survey.getBeginTime(), now) || !DateUtils.compare(now, survey.getEndTime())) {
+        LocalDateTime now = LocalDateTime.now();
+        if (!survey.getBeginTime().isBefore(now) || now.isBefore(survey.getEndTime())) {
             throw new CustomException(204, "不在问卷调查填写时间内");
         }
 

@@ -13,8 +13,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 /**
@@ -74,7 +76,7 @@ public class Cost implements Serializable, Export {
     @ExcelProperty(value = "周期", converter = CycleConverter.class)
     @JsonFormat(pattern = "yyyy-MM", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM")
-    private Date cycle;
+    private YearMonth cycle;
 
     /**
      * 创建时间
@@ -82,7 +84,7 @@ public class Cost implements Serializable, Export {
     @TableField(fill = FieldFill.INSERT)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 是否缴费
@@ -94,7 +96,7 @@ public class Cost implements Serializable, Export {
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date payTime;
+    private LocalDateTime payTime;
 
 
     private static List<String> key;

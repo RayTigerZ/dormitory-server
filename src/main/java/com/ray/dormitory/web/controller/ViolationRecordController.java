@@ -10,13 +10,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ray.dormitory.infrastructure.entity.ViolationRecord;
 import com.ray.dormitory.export.ExportData;
 import com.ray.dormitory.service.ViolationRecordService;
+import com.ray.dormitory.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 
 /**
@@ -36,7 +38,7 @@ public class ViolationRecordController {
 
     @GetMapping("")
     public IPage<ViolationRecord> getPage(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize, String student,
-                                          @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date beginTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime) {
+                                          @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime beginTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endTime) {
         IPage<ViolationRecord> page = new Page<>(pageNum, pageSize);
         Wrapper<ViolationRecord> wrapper = Wrappers.<ViolationRecord>lambdaQuery()
                 .like(StringUtils.isNotBlank(student), ViolationRecord::getStudentName, student)
@@ -48,8 +50,8 @@ public class ViolationRecordController {
     }
 
     @GetMapping("/export")
-    public ExportData<ViolationRecord> export(String student, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date beginTime,
-                                              @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime) {
+    public ExportData<ViolationRecord> export(String student, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime beginTime,
+                                              @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endTime) {
         Wrapper<ViolationRecord> wrapper = Wrappers.<ViolationRecord>lambdaQuery()
                 .like(StringUtils.isNotBlank(student), ViolationRecord::getStudentName, student)
                 .or().like(StringUtils.isNotBlank(student), ViolationRecord::getStudentNum, student)
@@ -57,7 +59,7 @@ public class ViolationRecordController {
                 .le(ObjectUtils.isNotNull(endTime), ViolationRecord::getCreateTime, endTime)
                 .orderByDesc(ViolationRecord::getCreateTime);
         List<ViolationRecord> rows = violationRecordService.list(wrapper);
-        String fileName = "学生违规记录-" + new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+        String fileName = "学生违规记录-" + YearMonth.now().format(DateUtils.EXPORT_FILE_DATE_FORMATTER);
         return new ExportData<>(fileName, rows);
     }
 

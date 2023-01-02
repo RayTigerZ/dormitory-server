@@ -6,7 +6,6 @@ import com.ray.dormitory.infrastructure.entity.Survey;
 import com.ray.dormitory.exception.CustomException;
 import com.ray.dormitory.infrastructure.mapper.SurveyMapper;
 import com.ray.dormitory.service.SurveyService;
-import com.ray.dormitory.util.DateUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,7 +21,7 @@ public class SurveyServiceImpl extends ServiceImpl<SurveyMapper, Survey> impleme
 
     @Override
     public boolean saveOrUpdate(Survey entity) {
-        if (DateUtils.compare(entity.getBeginTime(), entity.getEndTime())) {
+        if (entity.getBeginTime().isBefore(entity.getEndTime())) {
             return super.saveOrUpdate(entity);
         } else {
             throw new CustomException(204, "开始时间要小于结束时间");

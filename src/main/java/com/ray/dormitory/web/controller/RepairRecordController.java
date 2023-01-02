@@ -16,7 +16,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -82,7 +83,7 @@ public class RepairRecordController {
     }
 
     @PostMapping("/{id}/appointTime")
-    public boolean setAppointTime(@PathVariable int id, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date time) {
+    public boolean setAppointTime(@PathVariable int id, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime time) {
         return repairRecordService.setAppointTime(id, time);
     }
 

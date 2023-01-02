@@ -11,8 +11,8 @@ import com.ray.dormitory.infrastructure.mapper.VisitRecordMapper;
 import com.ray.dormitory.service.VisitRecordService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,7 +32,7 @@ public class VisitRecordServiceImpl extends ServiceImpl<VisitRecordMapper, Visit
         VisitRecord record = baseMapper.selectById(id);
         if (record != null) {
             if (record.getLeaveTime() == null) {
-                Wrapper<VisitRecord> wrapper = Wrappers.<VisitRecord>lambdaUpdate().set(VisitRecord::getLeaveTime, new Date()).eq(VisitRecord::getId, id);
+                Wrapper<VisitRecord> wrapper = Wrappers.<VisitRecord>lambdaUpdate().set(VisitRecord::getLeaveTime, LocalDateTime.now()).eq(VisitRecord::getId, id);
                 return update(wrapper);
             } else {
                 throw new CustomException(204, "该访客记录已填写离开时间");
@@ -54,7 +54,7 @@ public class VisitRecordServiceImpl extends ServiceImpl<VisitRecordMapper, Visit
 
     @Override
     public boolean save(VisitRecord entity) {
-        entity.setVisitTime(new Date());
+        entity.setVisitTime(LocalDateTime.now());
         return super.save(entity);
     }
 }

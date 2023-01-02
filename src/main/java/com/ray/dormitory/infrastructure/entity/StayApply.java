@@ -14,8 +14,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 /**
@@ -55,7 +57,7 @@ public class StayApply implements Serializable, Export {
     @NotNull(message = "开始时间不能为空")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date beginDate;
+    private LocalDate beginDate;
 
     /**
      * 留宿结束时间
@@ -63,7 +65,7 @@ public class StayApply implements Serializable, Export {
     @NotNull(message = "结束时间不能为空")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date endDate;
+    private LocalDate endDate;
 
     /**
      * 紧急联系电话
@@ -90,7 +92,7 @@ public class StayApply implements Serializable, Export {
     @TableField(fill = FieldFill.INSERT)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 是否同意
@@ -102,7 +104,7 @@ public class StayApply implements Serializable, Export {
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date processTime;
+    private LocalDateTime processTime;
 
     @JsonIgnore
     private static List<String> key;

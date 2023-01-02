@@ -11,13 +11,15 @@ import com.ray.dormitory.infrastructure.entity.VisitRecord;
 import com.ray.dormitory.export.ExportData;
 import com.ray.dormitory.service.VisitRecordService;
 import com.ray.dormitory.system.Constants;
+import com.ray.dormitory.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 
 /**
@@ -37,7 +39,7 @@ public class VisitRecordController {
 
     @GetMapping("")
     public IPage<VisitRecord> getPage(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize, String visitor,
-                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date beginTime, @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
+                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime beginTime, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime endTime) {
         IPage<VisitRecord> page = new Page<>(pageNum, pageSize);
         Wrapper<VisitRecord> wrapper = Wrappers.<VisitRecord>lambdaQuery()
                 .ge(ObjectUtils.isNotNull(beginTime), VisitRecord::getVisitTime, beginTime)
@@ -49,8 +51,8 @@ public class VisitRecordController {
     }
 
     @GetMapping("/export")
-    public ExportData<VisitRecord> export(String visitor, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date beginTime,
-                                          @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime) {
+    public ExportData<VisitRecord> export(String visitor, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime beginTime,
+                                          @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endTime) {
         Wrapper<VisitRecord> wrapper = Wrappers.<VisitRecord>lambdaQuery()
                 .select(VisitRecord::getTrueName, VisitRecord::getIdentity, VisitRecord::getVisitTime, VisitRecord::getLeaveTime, VisitRecord::getRemark)
                 .ge(ObjectUtils.isNotNull(beginTime), VisitRecord::getVisitTime, beginTime)
@@ -60,7 +62,7 @@ public class VisitRecordController {
                 .orderByDesc(VisitRecord::getVisitTime);
 
         List<VisitRecord> rows = visitRecordService.list(wrapper);
-        String fileName = "访客记录-" + new SimpleDateFormat(Constants.EXPORT_FILE_DATE_FORMAT).format(new Date());
+        String fileName = "访客记录-" + YearMonth.now().format(DateUtils.EXPORT_FILE_DATE_FORMATTER);
         return new ExportData<>(fileName, rows);
     }
 

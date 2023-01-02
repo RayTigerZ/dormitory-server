@@ -14,7 +14,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.function.Supplier;
 
 /**
@@ -46,7 +47,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
 
-        this.strictInsertFill(metaObject, "createTime", Date.class, new Date());
+        this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
 
         String authorization = request.getHeader(sysConfig.getTokenName());
         if (authorization == null) {
@@ -65,7 +66,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
 
-        this.strictUpdateFill(metaObject, "modifyTime", Date.class, new Date());
+        this.strictUpdateFill(metaObject, "modifyTime", LocalDateTime.class, LocalDateTime.now());
 
         String authorization = request.getHeader(sysConfig.getTokenName());
         if (authorization == null) {
