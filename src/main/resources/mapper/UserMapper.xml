@@ -21,7 +21,7 @@
         <collection property="roleIds" column="id" select="getRoleIds" ofType="integer"/>
     </resultMap>
 
-    <resultMap id="studentMap" type="com.ray.dormitory.bean.bo.Student">
+    <resultMap id="studentMap" type="com.ray.dormitory.web.bo.Student">
         <result property="name" column="name"/>
         <result property="studentNum" column="account"/>
         <result property="sex" column="sex"/>

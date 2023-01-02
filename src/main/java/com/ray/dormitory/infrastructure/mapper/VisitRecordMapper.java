@@ -1,8 +1,8 @@
 package com.ray.dormitory.infrastructure.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ray.dormitory.bean.bo.Count;
-import com.ray.dormitory.bean.enums.CycleType;
+import com.ray.dormitory.web.bo.Count;
+import com.ray.dormitory.infrastructure.enums.CycleType;
 import com.ray.dormitory.infrastructure.entity.VisitRecord;
 import org.springframework.stereotype.Repository;
 

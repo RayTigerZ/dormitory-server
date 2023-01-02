@@ -1,8 +1,8 @@
 package com.ray.dormitory.web.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ray.dormitory.bean.bo.Sum;
-import com.ray.dormitory.bean.enums.CycleType;
+import com.ray.dormitory.web.bo.Sum;
+import com.ray.dormitory.infrastructure.enums.CycleType;
 import com.ray.dormitory.infrastructure.entity.Cost;
 import com.ray.dormitory.service.CostService;
 import com.ray.dormitory.service.ViolationRecordService;

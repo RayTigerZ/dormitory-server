@@ -3,7 +3,7 @@ package com.ray.dormitory.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ray.dormitory.bean.enums.AllocateStatus;
+import com.ray.dormitory.infrastructure.enums.AllocateStatus;
 import com.ray.dormitory.infrastructure.entity.AllocateTemp;
 import com.ray.dormitory.infrastructure.entity.Room;
 import com.ray.dormitory.infrastructure.entity.Survey;

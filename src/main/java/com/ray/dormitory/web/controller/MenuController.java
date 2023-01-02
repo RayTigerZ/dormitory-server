@@ -1,7 +1,7 @@
 package com.ray.dormitory.web.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ray.dormitory.bean.bo.MenuOption;
+import com.ray.dormitory.web.bo.MenuOption;
 import com.ray.dormitory.infrastructure.entity.Menu;
 import com.ray.dormitory.infrastructure.entity.Operation;
 import com.ray.dormitory.service.MenuService;

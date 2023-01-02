@@ -1,8 +1,8 @@
 package com.ray.dormitory.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ray.dormitory.bean.bo.Count;
-import com.ray.dormitory.bean.enums.CycleType;
+import com.ray.dormitory.web.bo.Count;
+import com.ray.dormitory.infrastructure.enums.CycleType;
 import com.ray.dormitory.infrastructure.entity.ViolationRecord;
 
 import java.util.List;

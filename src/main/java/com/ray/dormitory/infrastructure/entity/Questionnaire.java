@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ray.dormitory.bean.bo.Question;
+import com.ray.dormitory.web.bo.Question;
 import com.ray.dormitory.infrastructure.type.ListTypeHandler;
 import lombok.Getter;
 import lombok.Setter;

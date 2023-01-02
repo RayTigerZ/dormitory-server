@@ -1,4 +1,4 @@
-package com.ray.dormitory.bean.bo;
+package com.ray.dormitory.web.bo;
 
 import com.ray.dormitory.infrastructure.entity.User;
 import lombok.Getter;

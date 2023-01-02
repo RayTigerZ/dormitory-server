@@ -1,7 +1,7 @@
-package com.ray.dormitory.bean.bo;
+package com.ray.dormitory.web.bo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ray.dormitory.bean.enums.Sex;
+import com.ray.dormitory.infrastructure.enums.Sex;
 import com.ray.dormitory.infrastructure.entity.User;
 import com.ray.dormitory.web.excel.Export;
 import lombok.Getter;

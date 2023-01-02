@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ray.dormitory.bean.bo.RoleOption;
+import com.ray.dormitory.web.bo.RoleOption;
 import com.ray.dormitory.infrastructure.entity.Role;
 import com.ray.dormitory.infrastructure.entity.RoleMenu;
 import com.ray.dormitory.service.MenuService;

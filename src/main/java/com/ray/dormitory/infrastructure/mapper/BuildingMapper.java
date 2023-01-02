@@ -1,7 +1,7 @@
 package com.ray.dormitory.infrastructure.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ray.dormitory.bean.bo.Floor;
+import com.ray.dormitory.web.bo.Floor;
 import com.ray.dormitory.infrastructure.entity.Building;
 import org.springframework.stereotype.Repository;
 

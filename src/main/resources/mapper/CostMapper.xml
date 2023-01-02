@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ray.dormitory.infrastructure.mapper.CostMapper">
 
-    <select id="statistic" resultType="com.ray.dormitory.bean.bo.Count">
+    <select id="statistic" resultType="com.ray.dormitory.web.bo.Count">
         <bind name="format" value="type.getFormat()"/>
         SELECT a.cycle,SUM(b.count) count
         FROM (

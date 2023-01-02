@@ -1,6 +1,6 @@
 package com.ray.dormitory.schedule;
 
-import com.ray.dormitory.bean.enums.Sex;
+import com.ray.dormitory.infrastructure.enums.Sex;
 import com.ray.dormitory.infrastructure.entity.Answer;
 import com.ray.dormitory.infrastructure.entity.User;
 import com.ray.dormitory.kmeans.Point;

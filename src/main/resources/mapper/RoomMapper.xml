@@ -6,7 +6,7 @@
         <result property="number" column="number"/>
         <result property="size" column="size"/>
         <result property="buildingId" column="building_id"/>
-        <collection property="students" ofType="com.ray.dormitory.bean.bo.Student" fetchType="lazy"
+        <collection property="students" ofType="com.ray.dormitory.web.bo.Student" fetchType="lazy"
                     select="com.ray.dormitory.infrastructure.mapper.UserMapper.getRoomMates" column="number">
 
         </collection>

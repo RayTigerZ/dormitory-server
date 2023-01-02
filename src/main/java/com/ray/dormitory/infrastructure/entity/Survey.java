@@ -3,7 +3,7 @@ package com.ray.dormitory.infrastructure.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ray.dormitory.bean.enums.AllocateStatus;
+import com.ray.dormitory.infrastructure.enums.AllocateStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;

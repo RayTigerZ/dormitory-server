@@ -2,8 +2,8 @@ package com.ray.dormitory.schedule;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ray.dormitory.bean.enums.AllocateStatus;
-import com.ray.dormitory.bean.enums.Sex;
+import com.ray.dormitory.infrastructure.enums.AllocateStatus;
+import com.ray.dormitory.infrastructure.enums.Sex;
 import com.ray.dormitory.exception.CustomException;
 import com.ray.dormitory.infrastructure.entity.AllocateTemp;
 import com.ray.dormitory.infrastructure.entity.Answer;

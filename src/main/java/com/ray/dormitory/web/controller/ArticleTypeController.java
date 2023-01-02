@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ray.dormitory.bean.bo.ArticleTypeOption;
+import com.ray.dormitory.web.bo.ArticleTypeOption;
 import com.ray.dormitory.infrastructure.entity.ArticleType;
 import com.ray.dormitory.service.ArticleTypeService;
 import org.springframework.beans.factory.annotation.Autowired;

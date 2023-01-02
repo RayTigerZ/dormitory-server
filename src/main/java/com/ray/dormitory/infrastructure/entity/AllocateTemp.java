@@ -1,7 +1,7 @@
 package com.ray.dormitory.infrastructure.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.ray.dormitory.bean.enums.Sex;
+import com.ray.dormitory.infrastructure.enums.Sex;
 import lombok.Getter;
 import lombok.Setter;
 

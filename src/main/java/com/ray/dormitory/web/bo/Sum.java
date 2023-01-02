@@ -1,4 +1,4 @@
-package com.ray.dormitory.bean.bo;
+package com.ray.dormitory.web.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

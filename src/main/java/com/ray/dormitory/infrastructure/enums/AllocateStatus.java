@@ -1,4 +1,4 @@
-package com.ray.dormitory.bean.enums;
+package com.ray.dormitory.infrastructure.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.baomidou.mybatisplus.annotation.IEnum;

@@ -1,8 +1,8 @@
 package com.ray.dormitory.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ray.dormitory.bean.bo.RepairerOption;
-import com.ray.dormitory.bean.bo.Student;
+import com.ray.dormitory.web.bo.RepairerOption;
+import com.ray.dormitory.web.bo.Student;
 import com.ray.dormitory.infrastructure.entity.User;
 
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,7 +1,7 @@
 package com.ray.dormitory.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ray.dormitory.bean.enums.AllocateStatus;
+import com.ray.dormitory.infrastructure.enums.AllocateStatus;
 import com.ray.dormitory.infrastructure.entity.Survey;
 import com.ray.dormitory.exception.CustomException;
 import com.ray.dormitory.infrastructure.mapper.SurveyMapper;

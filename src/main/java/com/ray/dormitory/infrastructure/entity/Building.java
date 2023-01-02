@@ -3,7 +3,7 @@ package com.ray.dormitory.infrastructure.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ray.dormitory.bean.enums.Sex;
+import com.ray.dormitory.infrastructure.enums.Sex;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
