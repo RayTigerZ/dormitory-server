@@ -1,4 +1,4 @@
-package com.ray.dormitory.upload;
+package com.ray.dormitory.web.excel;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.context.AnalysisContext;

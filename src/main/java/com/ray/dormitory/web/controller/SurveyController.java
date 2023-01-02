@@ -14,7 +14,7 @@ import com.ray.dormitory.bean.bo.Student;
 import com.ray.dormitory.bean.bo.SurveyOption;
 import com.ray.dormitory.exception.CustomException;
 import com.ray.dormitory.exception.ErrorEnum;
-import com.ray.dormitory.export.ExportData;
+import com.ray.dormitory.web.excel.ExportData;
 import com.ray.dormitory.infrastructure.entity.AllocateTemp;
 import com.ray.dormitory.infrastructure.entity.Answer;
 import com.ray.dormitory.infrastructure.entity.Questionnaire;

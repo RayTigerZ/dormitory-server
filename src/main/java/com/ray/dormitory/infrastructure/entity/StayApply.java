@@ -3,7 +3,7 @@ package com.ray.dormitory.infrastructure.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ray.dormitory.export.Export;
+import com.ray.dormitory.web.excel.Export;
 import com.ray.dormitory.web.validator.group.UpdateValid;
 import lombok.Getter;
 import lombok.Setter;

@@ -7,7 +7,7 @@ import com.ray.dormitory.bean.bo.OrganizationOption;
 import com.ray.dormitory.infrastructure.entity.Organization;
 import com.ray.dormitory.service.OrganizationService;
 import com.ray.dormitory.system.SysConfig;
-import com.ray.dormitory.upload.UploadDataListener;
+import com.ray.dormitory.web.excel.UploadDataListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
