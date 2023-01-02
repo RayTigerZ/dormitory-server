@@ -1,4 +1,4 @@
-package com.ray.dormitory.controller;
+package com.ray.dormitory.web.controller;
 
 
 import com.ray.dormitory.system.SysConfig;

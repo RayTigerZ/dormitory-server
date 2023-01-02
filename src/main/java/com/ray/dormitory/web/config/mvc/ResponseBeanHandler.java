@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @author : Ray
  * @date : 2019.12.03 17:53
  */
-@RestControllerAdvice(basePackages = "com.ray.dormitory.controller")
+@RestControllerAdvice(basePackages = "com.ray.dormitory.web.controller")
 public class ResponseBeanHandler implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
