@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Ray
  */
 @SpringBootApplication
-@MapperScan("com.ray.dormitory.mapper")
+@MapperScan("com.ray.dormitory.infrastructure.mapper")
 public class DormitoryApplication {
 
     public static void main(String[] args) {
