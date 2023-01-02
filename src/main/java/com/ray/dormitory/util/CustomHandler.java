@@ -1,11 +1,11 @@
 package com.ray.dormitory.util;
 
-import com.baomidou.mybatisplus.core.toolkit.Assert;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ray.dormitory.bean.bo.Question;
+import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.util.List;
