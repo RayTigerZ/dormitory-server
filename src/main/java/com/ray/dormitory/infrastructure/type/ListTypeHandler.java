@@ -1,11 +1,9 @@
-package com.ray.dormitory.util;
+package com.ray.dormitory.infrastructure.type;
 
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ray.dormitory.bean.bo.Question;
-import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,15 +12,15 @@ import java.util.List;
  * @author : Ray
  * @date : 2020.03.27 15:37
  */
-public class CustomHandler extends JacksonTypeHandler {
+public class ListTypeHandler extends JacksonTypeHandler {
 
     private static ObjectMapper mapper = new ObjectMapper();
     private final JavaType type;
 
 
-    public CustomHandler(Class<Object> type) {
+    public ListTypeHandler(Class<Object> type) {
         super(type);
-        this.type = mapper.getTypeFactory().constructParametricType(List.class, Question.class);
+        this.type = mapper.getTypeFactory().constructParametricType(List.class, type);
     }
 
 
@@ -42,10 +40,5 @@ public class CustomHandler extends JacksonTypeHandler {
         } catch (JsonProcessingException var3) {
             throw new RuntimeException(var3);
         }
-    }
-
-    public static void setObjectMapper(ObjectMapper objectMapper) {
-        Assert.notNull(objectMapper, "ObjectMapper should not be null");
-        CustomHandler.mapper = objectMapper;
     }
 }

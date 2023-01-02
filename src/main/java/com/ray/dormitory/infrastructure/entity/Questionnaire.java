@@ -6,13 +6,14 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ray.dormitory.bean.bo.Question;
-import com.ray.dormitory.util.CustomHandler;
+import com.ray.dormitory.infrastructure.type.ListTypeHandler;
 import lombok.Getter;
 import lombok.Setter;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class Questionnaire implements Serializable {
     /**
      * 问卷内容
      */
-    @TableField(typeHandler = CustomHandler.class)
+    @TableField(typeHandler = ListTypeHandler.class, javaType = true)
     private List<Question> questions;
 
 }
