@@ -1,4 +1,4 @@
-package com.ray.dormitory.websocket;
+package com.ray.dormitory.web.socket;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
