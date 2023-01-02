@@ -1,4 +1,4 @@
-package com.ray.dormitory.config.mvc.converter;
+package com.ray.dormitory.web.config.mvc.converter;
 
 
 import com.baomidou.mybatisplus.annotation.IEnum;

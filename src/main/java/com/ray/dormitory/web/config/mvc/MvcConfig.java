@@ -1,6 +1,6 @@
-package com.ray.dormitory.config.mvc;
+package com.ray.dormitory.web.config.mvc;
 
-import com.ray.dormitory.config.mvc.converter.IEnumConverterFactory;
+import com.ray.dormitory.web.config.mvc.converter.IEnumConverterFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -15,8 +15,6 @@ public class MvcConfig implements WebMvcConfigurer {
 
     /**
      * 配置跨域
-     *
-     * @param registry
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {

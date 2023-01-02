@@ -1,4 +1,4 @@
-package com.ray.dormitory.config.mvc;
+package com.ray.dormitory.web.config.mvc;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;

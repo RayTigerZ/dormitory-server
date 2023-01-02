@@ -1,9 +1,12 @@
-package com.ray.dormitory.config.mvc;
+package com.ray.dormitory.web.config.mvc;
 
 
 import com.ray.dormitory.exception.CustomException;
 import com.ray.dormitory.exception.ErrorEnum;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author Ray
@@ -13,7 +16,6 @@ import lombok.*;
  */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseBean {
