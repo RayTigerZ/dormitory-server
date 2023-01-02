@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ray.dormitory.bean.po.ViolationRecord;
+import com.ray.dormitory.infrastructure.entity.ViolationRecord;
 import com.ray.dormitory.export.ExportData;
 import com.ray.dormitory.service.ViolationRecordService;
 import org.springframework.beans.factory.annotation.Autowired;

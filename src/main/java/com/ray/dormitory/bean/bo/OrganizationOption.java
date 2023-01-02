@@ -1,6 +1,6 @@
 package com.ray.dormitory.bean.bo;
 
-import com.ray.dormitory.bean.po.Organization;
+import com.ray.dormitory.infrastructure.entity.Organization;
 import lombok.Getter;
 import lombok.Setter;
 

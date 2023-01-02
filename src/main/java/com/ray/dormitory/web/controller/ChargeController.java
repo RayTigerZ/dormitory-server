@@ -1,7 +1,7 @@
 package com.ray.dormitory.web.controller;
 
 
-import com.ray.dormitory.bean.po.Charge;
+import com.ray.dormitory.infrastructure.entity.Charge;
 import com.ray.dormitory.service.ChargeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

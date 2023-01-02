@@ -1,7 +1,7 @@
 package com.ray.dormitory.bean.bo;
 
 import com.ray.dormitory.bean.enums.Sex;
-import com.ray.dormitory.bean.po.Building;
+import com.ray.dormitory.infrastructure.entity.Building;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

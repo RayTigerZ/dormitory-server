@@ -4,7 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ray.dormitory.bean.bo.OrganizationOption;
-import com.ray.dormitory.bean.po.Organization;
+import com.ray.dormitory.infrastructure.entity.Organization;
 import com.ray.dormitory.service.OrganizationService;
 import com.ray.dormitory.system.SysConfig;
 import com.ray.dormitory.upload.UploadDataListener;

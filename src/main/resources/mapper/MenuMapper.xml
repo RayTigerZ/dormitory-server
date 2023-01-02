@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ray.dormitory.mapper.MenuMapper">
-    <resultMap id="menuMap" type="com.ray.dormitory.bean.po.Menu">
+<mapper namespace="com.ray.dormitory.infrastructure.mapper.MenuMapper">
+    <resultMap id="menuMap" type="com.ray.dormitory.infrastructure.entity.Menu">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
         <result property="component" column="component"/>
@@ -10,7 +10,7 @@
         <result property="noCache" column="no_cache"/>
         <result property="hidden" column="hidden"/>
         <result property="order" column="order"/>
-        <collection property="children" column="id" ofType="com.ray.dormitory.bean.po.Menu" fetchType="lazy"
+        <collection property="children" column="id" ofType="com.ray.dormitory.infrastructure.entity.Menu" fetchType="lazy"
                     select="getChildren"/>
         <collection property="roles" column="id" ofType="string" fetchType="lazy"
                     select="getRoles"/>
@@ -24,7 +24,7 @@
         select name from role r where r.id in (select role_id from role_menu where menu_id=#{id})
     </select>
 
-    <select id="getMenusByUserId" resultType="com.ray.dormitory.bean.po.Menu">
+    <select id="getMenusByUserId" resultType="com.ray.dormitory.infrastructure.entity.Menu">
         select m.*
             from menu m
             where m.id in(
@@ -36,7 +36,7 @@
     </select>
 
 
-    <select id="getApiPermissionList" resultType="com.ray.dormitory.bean.po.Menu">
+    <select id="getApiPermissionList" resultType="com.ray.dormitory.infrastructure.entity.Menu">
         select m.*,r.*
             from menu m
                 left join role_menu rp on m.id=rm.menu_id

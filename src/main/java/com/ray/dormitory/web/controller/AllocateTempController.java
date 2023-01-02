@@ -1,7 +1,7 @@
 package com.ray.dormitory.web.controller;
 
 
-import com.ray.dormitory.bean.po.AllocateTemp;
+import com.ray.dormitory.infrastructure.entity.AllocateTemp;
 import com.ray.dormitory.service.AllocateTempService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;

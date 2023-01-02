@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ray.dormitory.bean.po.Organization;
+import com.ray.dormitory.infrastructure.entity.Organization;
 import com.ray.dormitory.exception.CustomException;
 import com.ray.dormitory.exception.ErrorEnum;
-import com.ray.dormitory.mapper.OrganizationMapper;
+import com.ray.dormitory.infrastructure.mapper.OrganizationMapper;
 import com.ray.dormitory.service.OrganizationService;
 import org.springframework.stereotype.Service;
 

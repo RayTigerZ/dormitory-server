@@ -1,7 +1,7 @@
 package com.ray.dormitory.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ray.dormitory.bean.po.Room;
+import com.ray.dormitory.infrastructure.entity.Room;
 
 import java.util.List;
 

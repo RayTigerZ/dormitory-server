@@ -2,7 +2,7 @@ package com.ray.dormitory.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ray.dormitory.bean.bo.Floor;
-import com.ray.dormitory.bean.po.Building;
+import com.ray.dormitory.infrastructure.entity.Building;
 
 import java.util.List;
 

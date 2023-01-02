@@ -2,8 +2,8 @@ package com.ray.dormitory.web.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ray.dormitory.bean.bo.MenuOption;
-import com.ray.dormitory.bean.po.Menu;
-import com.ray.dormitory.bean.po.Operation;
+import com.ray.dormitory.infrastructure.entity.Menu;
+import com.ray.dormitory.infrastructure.entity.Operation;
 import com.ray.dormitory.service.MenuService;
 import com.ray.dormitory.service.OperationService;
 import org.springframework.beans.factory.annotation.Autowired;

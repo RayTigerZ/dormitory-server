@@ -1,8 +1,8 @@
 package com.ray.dormitory.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ray.dormitory.bean.po.ArticleType;
-import com.ray.dormitory.mapper.ArticleTypeMapper;
+import com.ray.dormitory.infrastructure.entity.ArticleType;
+import com.ray.dormitory.infrastructure.mapper.ArticleTypeMapper;
 import com.ray.dormitory.service.ArticleTypeService;
 import org.springframework.stereotype.Service;
 

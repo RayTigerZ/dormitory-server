@@ -3,9 +3,9 @@ package com.ray.dormitory.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ray.dormitory.bean.po.Questionnaire;
+import com.ray.dormitory.infrastructure.entity.Questionnaire;
 import com.ray.dormitory.exception.CustomException;
-import com.ray.dormitory.mapper.QuestionnaireMapper;
+import com.ray.dormitory.infrastructure.mapper.QuestionnaireMapper;
 import com.ray.dormitory.service.QuestionnaireService;
 import org.springframework.stereotype.Service;
 

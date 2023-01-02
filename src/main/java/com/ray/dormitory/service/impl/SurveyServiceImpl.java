@@ -2,9 +2,9 @@ package com.ray.dormitory.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ray.dormitory.bean.enums.AllocateStatus;
-import com.ray.dormitory.bean.po.Survey;
+import com.ray.dormitory.infrastructure.entity.Survey;
 import com.ray.dormitory.exception.CustomException;
-import com.ray.dormitory.mapper.SurveyMapper;
+import com.ray.dormitory.infrastructure.mapper.SurveyMapper;
 import com.ray.dormitory.service.SurveyService;
 import com.ray.dormitory.util.DateUtils;
 import org.springframework.stereotype.Service;

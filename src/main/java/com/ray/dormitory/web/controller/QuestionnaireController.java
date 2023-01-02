@@ -2,7 +2,7 @@ package com.ray.dormitory.web.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ray.dormitory.bean.bo.QuestionnaireOption;
-import com.ray.dormitory.bean.po.Questionnaire;
+import com.ray.dormitory.infrastructure.entity.Questionnaire;
 import com.ray.dormitory.service.QuestionnaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

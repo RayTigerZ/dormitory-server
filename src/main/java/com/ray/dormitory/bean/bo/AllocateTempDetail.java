@@ -1,8 +1,8 @@
 package com.ray.dormitory.bean.bo;
 
 import com.ray.dormitory.bean.enums.Sex;
-import com.ray.dormitory.bean.po.AllocateTemp;
-import com.ray.dormitory.bean.po.User;
+import com.ray.dormitory.infrastructure.entity.AllocateTemp;
+import com.ray.dormitory.infrastructure.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

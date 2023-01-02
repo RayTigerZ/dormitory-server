@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ray.dormitory.mapper.OrganizationMapper">
+<mapper namespace="com.ray.dormitory.infrastructure.mapper.OrganizationMapper">
 
-    <resultMap id="organizationResultMap" type="com.ray.dormitory.bean.po.Organization">
+    <resultMap id="organizationResultMap" type="com.ray.dormitory.infrastructure.entity.Organization">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="code" column="code"/>
         <result property="parentId" column="parent_id"/>
-        <collection property="children" ofType="com.ray.dormitory.bean.po.Organization" select="getChildrenByParent"
+        <collection property="children" ofType="com.ray.dormitory.infrastructure.entity.Organization" select="getChildrenByParent"
                     column="id" fetchType="lazy"/>
     </resultMap>
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ray.dormitory.mapper.RoomMapper">
-    <resultMap id="roomResultMap" type="com.ray.dormitory.bean.po.Room">
+<mapper namespace="com.ray.dormitory.infrastructure.mapper.RoomMapper">
+    <resultMap id="roomResultMap" type="com.ray.dormitory.infrastructure.entity.Room">
         <id property="id" column="id"/>
         <result property="number" column="number"/>
         <result property="size" column="size"/>
         <result property="buildingId" column="building_id"/>
         <collection property="students" ofType="com.ray.dormitory.bean.bo.Student" fetchType="lazy"
-                    select="com.ray.dormitory.mapper.UserMapper.getRoomMates" column="number">
+                    select="com.ray.dormitory.infrastructure.mapper.UserMapper.getRoomMates" column="number">
 
         </collection>
     </resultMap>

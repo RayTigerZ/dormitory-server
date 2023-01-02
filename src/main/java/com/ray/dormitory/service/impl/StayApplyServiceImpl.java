@@ -3,9 +3,9 @@ package com.ray.dormitory.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ray.dormitory.bean.po.StayApply;
+import com.ray.dormitory.infrastructure.entity.StayApply;
 import com.ray.dormitory.exception.CustomException;
-import com.ray.dormitory.mapper.StayApplyMapper;
+import com.ray.dormitory.infrastructure.mapper.StayApplyMapper;
 import com.ray.dormitory.service.StayApplyService;
 import org.springframework.stereotype.Service;
 

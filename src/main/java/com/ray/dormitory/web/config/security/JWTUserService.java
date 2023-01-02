@@ -1,6 +1,6 @@
 package com.ray.dormitory.web.config.security;
 
-import com.ray.dormitory.bean.po.User;
+import com.ray.dormitory.infrastructure.entity.User;
 import com.ray.dormitory.service.UserService;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

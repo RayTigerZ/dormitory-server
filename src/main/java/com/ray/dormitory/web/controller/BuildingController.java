@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ray.dormitory.bean.bo.BuildingOption;
 import com.ray.dormitory.bean.bo.Floor;
-import com.ray.dormitory.bean.po.Building;
+import com.ray.dormitory.infrastructure.entity.Building;
 import com.ray.dormitory.service.BuildingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

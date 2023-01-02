@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ray.dormitory.mapper.SurveyMapper">
-    <resultMap id="surveyResultMap" type="com.ray.dormitory.bean.po.Survey">
+<mapper namespace="com.ray.dormitory.infrastructure.mapper.SurveyMapper">
+    <resultMap id="surveyResultMap" type="com.ray.dormitory.infrastructure.entity.Survey">
         <id property="id" column="id"/>
         <result property="questionnaireId" column="questionnaire_id"/>
         <result property="beginTime" column="begin_time"/>

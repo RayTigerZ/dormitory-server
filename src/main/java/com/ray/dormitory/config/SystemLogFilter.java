@@ -2,7 +2,7 @@ package com.ray.dormitory.config;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ray.dormitory.bean.po.SystemLog;
+import com.ray.dormitory.infrastructure.entity.SystemLog;
 import com.ray.dormitory.service.SystemLogService;
 
 import jakarta.servlet.http.HttpServletResponse;

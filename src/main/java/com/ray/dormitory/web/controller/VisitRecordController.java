@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ray.dormitory.bean.po.VisitRecord;
+import com.ray.dormitory.infrastructure.entity.VisitRecord;
 import com.ray.dormitory.export.ExportData;
 import com.ray.dormitory.service.VisitRecordService;
 import com.ray.dormitory.system.Constants;

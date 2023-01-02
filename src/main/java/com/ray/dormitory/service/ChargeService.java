@@ -1,7 +1,7 @@
 package com.ray.dormitory.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ray.dormitory.bean.po.Charge;
+import com.ray.dormitory.infrastructure.entity.Charge;
 
 /**
  * <p>

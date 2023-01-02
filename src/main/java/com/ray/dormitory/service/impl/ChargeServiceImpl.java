@@ -1,8 +1,8 @@
 package com.ray.dormitory.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ray.dormitory.bean.po.Charge;
-import com.ray.dormitory.mapper.ChargeMapper;
+import com.ray.dormitory.infrastructure.entity.Charge;
+import com.ray.dormitory.infrastructure.mapper.ChargeMapper;
 import com.ray.dormitory.service.ChargeService;
 import org.springframework.stereotype.Service;
 

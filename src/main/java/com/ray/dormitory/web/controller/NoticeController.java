@@ -3,8 +3,8 @@ package com.ray.dormitory.web.controller;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ray.dormitory.bean.po.Notice;
-import com.ray.dormitory.bean.po.User;
+import com.ray.dormitory.infrastructure.entity.Notice;
+import com.ray.dormitory.infrastructure.entity.User;
 import com.ray.dormitory.service.NoticeService;
 import com.ray.dormitory.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

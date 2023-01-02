@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ray.dormitory.bean.bo.RepairerOption;
 import com.ray.dormitory.bean.bo.Student;
-import com.ray.dormitory.bean.po.User;
+import com.ray.dormitory.infrastructure.entity.User;
 import com.ray.dormitory.export.ExportData;
 import com.ray.dormitory.service.UserService;
 import com.ray.dormitory.system.SysConfig;

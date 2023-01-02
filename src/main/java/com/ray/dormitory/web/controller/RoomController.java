@@ -1,7 +1,7 @@
 package com.ray.dormitory.web.controller;
 
 import com.alibaba.excel.EasyExcel;
-import com.ray.dormitory.bean.po.Room;
+import com.ray.dormitory.infrastructure.entity.Room;
 import com.ray.dormitory.service.RoomService;
 import com.ray.dormitory.system.SysConfig;
 import com.ray.dormitory.upload.UploadDataListener;

@@ -1,7 +1,7 @@
 package com.ray.dormitory.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ray.dormitory.bean.po.RoleMenu;
+import com.ray.dormitory.infrastructure.entity.RoleMenu;
 
 import java.util.Set;
 

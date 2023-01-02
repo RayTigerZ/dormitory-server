@@ -3,7 +3,7 @@ package com.ray.dormitory.config;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ray.dormitory.bean.po.User;
+import com.ray.dormitory.infrastructure.entity.User;
 import com.ray.dormitory.service.UserService;
 import com.ray.dormitory.system.SysConfig;
 import com.ray.dormitory.util.JwtUtil;

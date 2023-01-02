@@ -1,6 +1,6 @@
 package com.ray.dormitory.bean.bo;
 
-import com.ray.dormitory.bean.po.Questionnaire;
+import com.ray.dormitory.infrastructure.entity.Questionnaire;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

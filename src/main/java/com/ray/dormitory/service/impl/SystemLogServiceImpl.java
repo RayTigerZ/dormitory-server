@@ -1,8 +1,8 @@
 package com.ray.dormitory.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ray.dormitory.bean.po.SystemLog;
-import com.ray.dormitory.mapper.SystemLogMapper;
+import com.ray.dormitory.infrastructure.entity.SystemLog;
+import com.ray.dormitory.infrastructure.mapper.SystemLogMapper;
 import com.ray.dormitory.service.SystemLogService;
 import org.springframework.stereotype.Service;
 

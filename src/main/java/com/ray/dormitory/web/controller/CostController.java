@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ray.dormitory.bean.po.Cost;
+import com.ray.dormitory.infrastructure.entity.Cost;
 import com.ray.dormitory.export.ExportData;
 import com.ray.dormitory.service.CostService;
 import com.ray.dormitory.service.NoticeService;

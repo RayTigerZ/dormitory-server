@@ -3,7 +3,7 @@ package com.ray.dormitory.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ray.dormitory.bean.bo.Count;
 import com.ray.dormitory.bean.enums.CycleType;
-import com.ray.dormitory.bean.po.Cost;
+import com.ray.dormitory.infrastructure.entity.Cost;
 
 import java.util.List;
 

@@ -2,8 +2,8 @@ package com.ray.dormitory.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ray.dormitory.bean.po.Menu;
-import com.ray.dormitory.mapper.MenuMapper;
+import com.ray.dormitory.infrastructure.entity.Menu;
+import com.ray.dormitory.infrastructure.mapper.MenuMapper;
 import com.ray.dormitory.service.MenuService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

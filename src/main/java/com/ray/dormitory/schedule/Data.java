@@ -1,8 +1,8 @@
 package com.ray.dormitory.schedule;
 
 import com.ray.dormitory.bean.enums.Sex;
-import com.ray.dormitory.bean.po.Answer;
-import com.ray.dormitory.bean.po.User;
+import com.ray.dormitory.infrastructure.entity.Answer;
+import com.ray.dormitory.infrastructure.entity.User;
 import com.ray.dormitory.kmeans.Point;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

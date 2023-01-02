@@ -1,6 +1,6 @@
 package com.ray.dormitory.web.controller;
 
-import com.ray.dormitory.bean.po.Operation;
+import com.ray.dormitory.infrastructure.entity.Operation;
 import com.ray.dormitory.service.OperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
