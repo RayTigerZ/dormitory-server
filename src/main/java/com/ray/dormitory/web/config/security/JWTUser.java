@@ -1,4 +1,4 @@
-package com.ray.dormitory.config.security;
+package com.ray.dormitory.web.config.security;
 
 import lombok.Getter;
 import lombok.Setter;

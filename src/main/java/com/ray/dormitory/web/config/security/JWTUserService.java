@@ -1,4 +1,4 @@
-package com.ray.dormitory.config.security;
+package com.ray.dormitory.web.config.security;
 
 import com.ray.dormitory.bean.po.User;
 import com.ray.dormitory.service.UserService;
