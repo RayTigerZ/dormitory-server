@@ -8,6 +8,12 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ray.dormitory.service.AllocateTempService;
+import com.ray.dormitory.service.AnswerService;
+import com.ray.dormitory.service.QuestionnaireService;
+import com.ray.dormitory.service.SurveyService;
+import com.ray.dormitory.service.UserService;
+import com.ray.dormitory.util.DateUtils;
 import com.ray.dormitory.web.bo.AllocateTempDetail;
 import com.ray.dormitory.web.bo.Question;
 import com.ray.dormitory.web.bo.Student;
@@ -20,16 +26,27 @@ import com.ray.dormitory.infrastructure.entity.Answer;
 import com.ray.dormitory.infrastructure.entity.Questionnaire;
 import com.ray.dormitory.infrastructure.entity.Survey;
 import com.ray.dormitory.infrastructure.entity.User;
-import com.ray.dormitory.service.*;
 import com.ray.dormitory.system.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -82,7 +99,7 @@ public class SurveyController {
             String grade = account.substring(0, Constants.GRADE_LEN);
             List<Survey> surveyList = surveyService.list(Wrappers.<Survey>lambdaQuery().eq(Survey::getGrade, grade));
             for (Survey survey : surveyList) {
-                Map<String, Object> map = new HashMap<>(3);
+                Map<String, Object> map = new HashMap<>(4);
                 map.put("survey", survey);
 
                 Questionnaire questionnaire = questionnaireService.getById(survey.getQuestionnaireId());
@@ -163,7 +180,7 @@ public class SurveyController {
             return null;
         }
         List<Student> rows = list.stream().map(Student::convert).collect(Collectors.toList());
-        String fileName = survey.getName() + (state ? " 完成名单-" : " 未完成名单-") + new SimpleDateFormat(Constants.EXPORT_FILE_DATE_FORMAT).format(new Date());
+        String fileName = survey.getName() + (state ? " 完成名单-" : " 未完成名单-") + YearMonth.now().format(DateUtils.EXPORT_FILE_DATE_FORMATTER);
         return new ExportData<>(fileName, rows);
     }
 
@@ -233,9 +250,11 @@ public class SurveyController {
     public List<SurveyOption> getOptions(HttpServletRequest request) {
         User user = userService.getCurrentUser(request);
         Assert.notNull(user, "");
+        String account = user.getAccount();
+        boolean moreLength = account.length() > Constants.GRADE_LEN;
         Wrapper<Survey> wrapper = Wrappers.<Survey>lambdaQuery()
                 .select(Survey::getId, Survey::getName)
-                .eq(Survey::getGrade, user.getAccount().substring(0, Constants.GRADE_LEN));
+                .eq(moreLength, Survey::getGrade, moreLength ? account.substring(0, Constants.GRADE_LEN) : "");
         return surveyService.list(wrapper).stream().map(SurveyOption::convert).collect(Collectors.toList());
     }
 
