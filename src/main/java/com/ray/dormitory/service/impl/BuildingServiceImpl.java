@@ -40,7 +40,7 @@ public class BuildingServiceImpl extends ServiceImpl<BuildingMapper, Building> i
         Wrapper<Building> wrapper = Wrappers.<Building>lambdaQuery()
                 .ne(id != null, Building::getId, id)
                 .eq(Building::getName, name);
-        int count = baseMapper.selectCount(wrapper);
+        long count = baseMapper.selectCount(wrapper);
         if (count == 0) {
             return super.saveOrUpdate(building);
         } else {

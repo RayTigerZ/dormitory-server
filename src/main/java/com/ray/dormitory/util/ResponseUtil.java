@@ -1,9 +1,10 @@
 package com.ray.dormitory.util;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -23,7 +24,7 @@ public class ResponseUtil {
             response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
             response.setHeader("Access-Control-Allow-Credentials", "true");
             response.setHeader("Vary", "Origin");
-            String jsonStr = new Gson().toJson(object);
+            String jsonStr = new ObjectMapper().writeValueAsString(object);
 
             printWriter.write(jsonStr);
             response.setHeader("content-Length", String.valueOf(jsonStr.getBytes().length));
@@ -33,10 +34,6 @@ public class ResponseUtil {
             e.printStackTrace();
 
         }
-
-    }
-
-    public static void sendFile(HttpServletRequest request, HttpServletResponse response, String filePath, String fileName) {
 
     }
 }

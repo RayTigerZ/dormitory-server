@@ -94,7 +94,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
         if (room == null) {
             throw new CustomException(ErrorEnum.RECORD_NOT_EXIST);
         }
-        int count = userMapper.selectCount(Wrappers.<User>lambdaQuery().eq(User::getRoomNum, room.getNumber()));
+        long count = userMapper.selectCount(Wrappers.<User>lambdaQuery().eq(User::getRoomNum, room.getNumber()));
         if (count > 0) {
             throw new CustomException(202, "有学生的宿舍无法删除");
         }

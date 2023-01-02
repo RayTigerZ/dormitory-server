@@ -10,9 +10,10 @@ import com.ray.dormitory.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.function.Supplier;
 
@@ -31,8 +32,12 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     private HttpServletRequest request;
     @Autowired
     private SysConfig sysConfig;
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public void setUserService(@Lazy UserService userService) {
+        this.userService = userService;
+    }
 
     public void setRequest(HttpServletRequest request) {
         this.request = request;
@@ -76,18 +81,8 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 
     }
 
-    /**
-     * 重写严格模式填充策略：强制覆盖值（默认为有值不覆盖）
-     *
-     * @param metaObject
-     * @param fieldName
-     * @param fieldVal
-     * @return
-     */
-
     @Override
-    public MetaObjectHandler strictFillStrategy(MetaObject metaObject, String fieldName, Supplier<Object> fieldVal) {
-
+    public MetaObjectHandler strictFillStrategy(MetaObject metaObject, String fieldName, Supplier<?> fieldVal) {
         setFieldValByName(fieldName, fieldVal.get(), metaObject);
 
         return this;

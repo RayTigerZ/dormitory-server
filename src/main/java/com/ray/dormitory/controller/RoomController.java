@@ -10,8 +10,8 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class RoomController {
         String token = request.getHeader(sysConfig.getTokenName());
         Assert.notNull(token, "token为空");
 
-        EasyExcel.read(file.getInputStream(), Room.class, new UploadDataListener(roomService, token)).sheet().doRead();
+        EasyExcel.read(file.getInputStream(), Room.class, new UploadDataListener<>(roomService, token)).sheet().doRead();
         return true;
     }
 

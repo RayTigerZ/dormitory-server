@@ -13,7 +13,7 @@ public class SetUtils {
         if (set1 == set2) {
             return true;
         } else {
-            return set1 != null && set2 != null && set1.size() == set2.size() ? set1.containsAll(set2) : false;
+            return set1 != null && set2 != null && set1.size() == set2.size() && set1.containsAll(set2);
         }
     }
 }

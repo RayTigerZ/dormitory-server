@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ray.dormitory.bean.po.Role;
 import com.ray.dormitory.bean.po.User;
-import com.ray.dormitory.config.mvc.ResponseBean;
+import com.ray.dormitory.web.config.mvc.ResponseBean;
 import com.ray.dormitory.exception.CustomException;
 import com.ray.dormitory.service.RedisService;
 import com.ray.dormitory.service.RoleService;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,7 +54,7 @@ public class LoginController {
 
             String str = password + user.getSalt();
             if (user.getPassword().equals(Md5Util.getMD5(str))) {
-                if (user.getIsUsable() == null && !user.getIsUsable()) {
+                if (user.getIsUsable() == null || !user.getIsUsable()) {
                     throw new UnsupportedEncodingException("该用户已被禁用");
                 }
 

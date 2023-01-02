@@ -17,7 +17,7 @@ import com.ray.dormitory.service.CostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -85,7 +85,7 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost> implements Co
 
     @Override
     public boolean save(@Valid Cost cost) {
-        int count = roomMapper.selectCount(Wrappers.<Room>lambdaQuery().eq(Room::getNumber, cost.getRoomNum()));
+        long count = roomMapper.selectCount(Wrappers.<Room>lambdaQuery().eq(Room::getNumber, cost.getRoomNum()));
         if (count == 0) {
             throw new CustomException(ErrorEnum.ROOM_NOT_EXIST);
         }

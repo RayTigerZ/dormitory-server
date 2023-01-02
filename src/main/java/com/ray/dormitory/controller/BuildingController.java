@@ -8,10 +8,10 @@ import com.ray.dormitory.bean.bo.BuildingOption;
 import com.ray.dormitory.bean.bo.Floor;
 import com.ray.dormitory.bean.po.Building;
 import com.ray.dormitory.service.BuildingService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 

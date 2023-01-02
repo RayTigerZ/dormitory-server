@@ -4,16 +4,15 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.google.gson.annotations.Expose;
 import com.ray.dormitory.bean.enums.Sex;
 import com.ray.dormitory.valid.group.SaveByFileValid;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -58,7 +57,6 @@ public class User implements Serializable {
      * 密码(加密)
      */
     @JsonIgnore
-    @Expose(serialize = false)
     @TableField(updateStrategy = FieldStrategy.NOT_EMPTY)
     private String password;
 
@@ -66,7 +64,6 @@ public class User implements Serializable {
      * 加密盐值
      */
     @JsonIgnore
-    @Expose(serialize = false)
     @TableField(updateStrategy = FieldStrategy.NOT_EMPTY)
     private String salt;
 

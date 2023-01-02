@@ -60,7 +60,7 @@ public class AllocateTempServiceImpl extends ServiceImpl<AllocateTempMapper, All
             throw new CustomException(ErrorEnum.RECORD_NOT_EXIST);
         }
 
-        int count = roomMapper.selectCount(Wrappers.<Room>lambdaQuery().eq(Room::getNumber, entity.getRoomNum()));
+        long count = roomMapper.selectCount(Wrappers.<Room>lambdaQuery().eq(Room::getNumber, entity.getRoomNum()));
         if (count == 0) {
             throw new CustomException(ErrorEnum.ROOM_NOT_EXIST);
         }

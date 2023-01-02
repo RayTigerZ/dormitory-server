@@ -72,8 +72,7 @@ public class Student implements Export {
     }
 
     public static Student convert(Object obj) {
-        if (obj instanceof User) {
-            User user = (User) obj;
+        if (obj instanceof User user) {
             Student student = new Student();
             student.setName(user.getName());
             student.setStudentNum(user.getAccount());

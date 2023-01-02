@@ -14,7 +14,7 @@ import com.ray.dormitory.service.ArticleTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +70,7 @@ public class ArticleController {
         map.put("types", types);
         List<List<Article>> newsList = new ArrayList<>();
         types.forEach(type -> {
-            List<Article> list = articleService.page(new Page<Article>(1, 5), Wrappers.<Article>lambdaQuery().eq(Article::getArticleTypeId, type.getId())).getRecords();
+            List<Article> list = articleService.page(new Page<>(1, 5), Wrappers.<Article>lambdaQuery().eq(Article::getArticleTypeId, type.getId())).getRecords();
             newsList.add(list);
 
         });

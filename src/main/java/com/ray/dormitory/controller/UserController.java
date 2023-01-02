@@ -18,8 +18,8 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,7 +61,7 @@ public class UserController {
 
         List<Student> rows = userService.list(wrapper).stream().map(Student::convert).collect(Collectors.toList());
         String fileName = "学生资料";
-        return new ExportData(fileName, rows);
+        return new ExportData<>(fileName, rows);
     }
 
 
@@ -83,7 +83,7 @@ public class UserController {
     public boolean batchSave(MultipartFile file, HttpServletRequest request) throws IOException {
         String token = request.getHeader(sysConfig.getTokenName());
         Assert.notNull(token, "token为空");
-        EasyExcel.read(file.getInputStream(), User.class, new UploadDataListener(userService, token)).sheet().doRead();
+        EasyExcel.read(file.getInputStream(), User.class, new UploadDataListener<>(userService, token)).sheet().doRead();
         return true;
     }
 

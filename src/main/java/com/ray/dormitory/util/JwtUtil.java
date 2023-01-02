@@ -35,26 +35,6 @@ public class JwtUtil {
 
 
     /**
-     * 校验token是否正确
-     *
-     * @param token 密钥
-     * @return 是否正确
-     */
-    public static boolean verify(String token, String name) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(SECRET);
-            JWTVerifier verifier = JWT.require(algorithm)
-                    .withClaim("name", name)
-                    .build();
-            DecodedJWT jwt = verifier.verify(token);
-            return true;
-        } catch (Exception exception) {
-            return false;
-        }
-    }
-
-
-    /**
      * 校验token是否有效
      *
      * @param token

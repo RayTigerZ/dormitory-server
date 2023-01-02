@@ -28,30 +28,31 @@ public class UploadDataListener<T> extends AnalysisEventListener<T> {
     /**
      * 记录保存数据时的错误信息
      */
-    private List<String> errorMsgs;
-    private String token;
+    private final List<String> errorMsgList;
+    private final String token;
 
     /**
      * 假设这个是一个DAO，当然有业务逻辑这个也可以是一个service。当然如果不用存储这个对象没用。
      */
-    private IService<T> baseService;
+    private final IService<T> baseService;
 
 
     /**
      * 如果使用了spring,请使用这个构造方法。每次创建Listener的时候需要把spring管理的类传进来
      *
      * @param baseService
+     * @param token
      */
-    public UploadDataListener(IService baseService, String token) {
+    public UploadDataListener(IService<T> baseService, String token) {
         this.baseService = baseService;
         this.token = token;
-        errorMsgs = new ArrayList<>();
+        errorMsgList = new ArrayList<>();
     }
 
     /**
      * 这个每一条数据解析都会来调用
      *
-     * @param data    one row value. Is is same as {@link AnalysisContext#readRowHolder()}
+     * @param data    one row value. is same as {@link AnalysisContext#readRowHolder()}
      * @param context
      */
     @Override
@@ -85,7 +86,7 @@ public class UploadDataListener<T> extends AnalysisEventListener<T> {
 
         } catch (Exception e) {
             msg = "数据：[" + getData(data) + "]\n错误信息:" + e.getMessage();
-            errorMsgs.add(msg);
+            errorMsgList.add(msg);
 
             log.error("data:{}, cause:{}", data, e.getMessage());
             WebSocketServer.sendInfo(token, msg);
@@ -96,7 +97,7 @@ public class UploadDataListener<T> extends AnalysisEventListener<T> {
 
 
     private String getData(T data) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
         Field[] fields = data.getClass().getDeclaredFields();
         int index = 0;
         for (Field field : fields) {
@@ -104,12 +105,12 @@ public class UploadDataListener<T> extends AnalysisEventListener<T> {
                 field.setAccessible(true);
                 try {
                     if (index > 0) {
-                        buffer.append("，");
+                        stringBuilder.append("，");
                     }
                     String[] name = field.getAnnotation(ExcelProperty.class).value();
 
                     Object value = field.get(data);
-                    buffer.append(name[0]).append("：").append(value);
+                    stringBuilder.append(name[0]).append("：").append(value);
                     index++;
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -117,11 +118,8 @@ public class UploadDataListener<T> extends AnalysisEventListener<T> {
             }
 
         }
-        return buffer.toString();
+        return stringBuilder.toString();
     }
 
 
-    public List<String> getErrorMsgs() {
-        return this.errorMsgs;
-    }
 }

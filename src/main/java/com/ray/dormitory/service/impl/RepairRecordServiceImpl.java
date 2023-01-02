@@ -100,7 +100,7 @@ public class RepairRecordServiceImpl extends ServiceImpl<RepairRecordMapper, Rep
         if (user == null) {
             throw new CustomException(204, "用户不存在");
         }
-        int count = userRoleService.count(Wrappers.<UserRole>lambdaQuery()
+        long count = userRoleService.count(Wrappers.<UserRole>lambdaQuery()
                 .eq(UserRole::getUserId, user.getId())
                 .eq(UserRole::getRoleId, sysConfig.getRepairerRoleId()));
         if (count == 0) {

@@ -22,8 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -115,14 +115,14 @@ public class SurveyController {
     }
 
     @GetMapping("/{id}/finishState")
-    public Map<String, Integer> getFinishState(@PathVariable int id) {
-        Map<String, Integer> map = new HashMap<>(2);
+    public Map<String, Long> getFinishState(@PathVariable int id) {
+        Map<String, Long> map = new HashMap<>(2);
         Survey survey = surveyService.getById(id);
         Wrapper<User> wrapper = Wrappers.<User>query()
                 .eq("LENGTH(account)", Constants.STUDENT_ACCOUNT_LEN)
                 .eq("LEFT(account," + Constants.GRADE_LEN + ")", survey.getGrade());
         map.put("sum", userService.count(wrapper));
-        int finish = answerService.count(Wrappers.<Answer>lambdaQuery().eq(Answer::getSurveyId, survey.getId()));
+        long finish = answerService.count(Wrappers.<Answer>lambdaQuery().eq(Answer::getSurveyId, survey.getId()));
         map.put("finish", finish);
         return map;
     }
@@ -195,7 +195,7 @@ public class SurveyController {
 
             for (Question question : questions) {
                 int a = random.nextInt(question.getOptions().size()) + 1;
-                list.add(new Double(a));
+                list.add((double) a);
             }
 
             answer.setAnswer(list);

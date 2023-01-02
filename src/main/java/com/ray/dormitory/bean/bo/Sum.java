@@ -16,6 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Sum {
-    private int sum;
+    private long sum;
     private List<Count> counts;
 }

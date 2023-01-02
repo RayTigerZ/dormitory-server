@@ -1,16 +1,18 @@
 package com.ray.dormitory.config;
 
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ray.dormitory.bean.po.SystemLog;
 import com.ray.dormitory.service.SystemLogService;
-import org.apache.shiro.web.servlet.AdviceFilter;
+
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,24 +26,26 @@ import java.util.Map;
  */
 
 @Component
-public class SystemLogFilter extends AdviceFilter {
+public class SystemLogFilter implements HandlerInterceptor {
 
     @Autowired
     private SystemLogService systemLogService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
     @Autowired
     private MyMetaObjectHandler metaObjectHandler;
-
 
     /**
      * 前置处理
      *
-     * @param servletRequest
-     * @param servletResponse
+     * @param request
+     * @param response
      * @return
      */
     @Override
-    protected boolean preHandle(ServletRequest servletRequest, ServletResponse servletResponse) {
-        servletRequest.setAttribute("startTime", System.currentTimeMillis());
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        request.setAttribute("startTime", System.currentTimeMillis());
         return true;
     }
 
@@ -52,11 +56,11 @@ public class SystemLogFilter extends AdviceFilter {
      * @param response
      */
     @Override
-    protected void postHandle(ServletRequest request, ServletResponse response) {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        metaObjectHandler.setRequest(httpServletRequest);
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
-        String httpMethod = httpServletRequest.getMethod();
+        metaObjectHandler.setRequest(request);
+
+        String httpMethod = request.getMethod();
 
         //http预请求，不进行处理
         if ("OPTIONS".equalsIgnoreCase(httpMethod)) {
@@ -64,7 +68,7 @@ public class SystemLogFilter extends AdviceFilter {
         }
 
         //获取URI
-        String requestUri = httpServletRequest.getRequestURI();
+        String requestUri = request.getRequestURI();
 
         if (requestUri.startsWith("/druid")) {
             return;
@@ -78,17 +82,17 @@ public class SystemLogFilter extends AdviceFilter {
         String remoteAddr = request.getRemoteAddr();
 
         Map<String, Object> paramMap = new HashMap<>(8);
-        Enumeration paramNames = httpServletRequest.getParameterNames();
+        Enumeration paramNames = request.getParameterNames();
 
         while (paramNames.hasMoreElements()) {
             String paramName = (String) paramNames.nextElement();
-            String[] paramValues = httpServletRequest.getParameterValues(paramName);
+            String[] paramValues = request.getParameterValues(paramName);
             if (paramValues.length > 0) {
                 String paramValue = paramValues[0];
                 paramMap.put(paramName, paramValue);
             }
         }
-        String params = new Gson().toJson(paramMap);
+        String params = objectMapper.writeValueAsString(paramMap);
         String browser = ((HttpServletRequest) request).getHeader("User-Agent");
         SystemLog systemLog = new SystemLog(null, null, remoteAddr, requestUri, httpMethod, params, null, useTime, browser, null, null, null);
         systemLogService.save(systemLog);

@@ -5,7 +5,7 @@ import com.ray.dormitory.bean.bo.RepairerOption;
 import com.ray.dormitory.bean.bo.Student;
 import com.ray.dormitory.bean.po.User;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**

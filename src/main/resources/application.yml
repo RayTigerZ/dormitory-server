@@ -12,25 +12,21 @@ spring:
       enabled: true
   #数据库配置
   datasource:
-    druid:
-      username: root
-      password: 123456
-      driverClassName: com.mysql.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/dormitory?useUnicode=true&characterEncoding=UTF-8&useSSL=false
-      initial-size: 5
-      max-active: 20
-      min-idle: 0
-      aop-patterns: com.ray.dormitory.service.*
-      stat-view-servlet:
-        allow: 127.0.0.1
-        reset-enable: false
-        url-pattern: /druid/*
-        enabled: true
-      web-stat-filter:
-        exclusions: /druid/*,*.json
-        url-pattern: /*
-        enabled: true
-      filters: stat,wall,slf4j
+    username: root
+    password: Z4521663
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dormitory?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 15
+  data:
+    redis:
+      host: localhost
+      port: 26378
+      client-type: JEDIS
+  cache:
+    type: REDIS
+
 
   freemarker:
     template-loader-path: classpath:/notice-templates
@@ -41,20 +37,17 @@ spring:
 mybatis-plus:
   mapperLocations: classpath:/mapper/*Mapper.xml
   typeAliasesPackage: com.ray.dormitory.bean
-  typeEnumsPackage: com.ray.dormitory.bean.enums
   configuration:
     lazy-loading-enabled: true
     aggressive-lazy-loading: false
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
     local-cache-scope: session
 
+
 sys-config:
-  templatePath: D:/graduation-project/code/dormitory-server/src/main/resources/excel-templates/
+  templatePath: excel-templates/
   tokenName: Authorization
   tokenTimeout: 1800
   repairerRoleId: 3
   studentRoleId: 4
-#logging:
-#  level:
-#    com.ray.dormitory: TRACE
 

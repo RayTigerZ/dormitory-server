@@ -108,7 +108,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                 .and(i -> i.eq(Organization::getCode, entity.getCode())
                         .or().eq(Organization::getName, entity.getName()));
 
-        int count = baseMapper.selectCount(queryWrapper);
+        long count = baseMapper.selectCount(queryWrapper);
         if (count > 0) {
             throw new CustomException(202, "编码、名称重复");
         }

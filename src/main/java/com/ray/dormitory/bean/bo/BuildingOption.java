@@ -21,8 +21,7 @@ public class BuildingOption {
     private Sex type;
 
     public static BuildingOption convert(Object object) {
-        if (object instanceof Building) {
-            Building building = (Building) object;
+        if (object instanceof Building building) {
             return new BuildingOption(building.getId(), building.getName(), building.getType());
         }
         return null;

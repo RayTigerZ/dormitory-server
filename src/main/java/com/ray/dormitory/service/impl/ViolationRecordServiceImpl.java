@@ -33,7 +33,7 @@ public class ViolationRecordServiceImpl extends ServiceImpl<ViolationRecordMappe
     @Override
     public boolean saveOrUpdate(ViolationRecord entity) {
         Wrapper<User> wrapper = Wrappers.<User>lambdaQuery().eq(User::getAccount, entity.getStudentNum()).eq(User::getName, entity.getStudentName());
-        Integer count = userMapper.selectCount(wrapper);
+        long count = userMapper.selectCount(wrapper);
         if (count == 0) {
             throw new CustomException(204, "学生学号和姓名不对应");
         }

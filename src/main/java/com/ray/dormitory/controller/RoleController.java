@@ -10,11 +10,10 @@ import com.ray.dormitory.bean.po.RoleMenu;
 import com.ray.dormitory.service.MenuService;
 import com.ray.dormitory.service.RoleMenuService;
 import com.ray.dormitory.service.RoleService;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,7 +38,6 @@ public class RoleController {
      * @param pageNum
      * @return
      */
-    @ApiOperation(value = "分页获取角色", notes = "增加角色时参数id为空,更新角色必须传id")
     @GetMapping("")
     public IPage<Role> getRoles(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         IPage<Role> rolePage = new Page<>(pageNum, pageSize);
@@ -47,20 +45,17 @@ public class RoleController {
     }
 
 
-    @ApiOperation(value = "增加/更新角色", notes = "增加角色时参数id为空,更新角色必须传id")
     @PostMapping("")
     public boolean saveOrUpdate(@Valid Role role) {
         return roleService.saveOrUpdate(role);
     }
 
-    @ApiOperation(value = "删除角色", notes = "通过id删除角色")
     @DeleteMapping("/{id}")
     public boolean delete(@PathVariable Integer id) {
         return roleService.removeById(id);
     }
 
 
-    @ApiOperation(value = "获取角色对应的菜单权限")
     @GetMapping("/{id}/menuIds")
     public List<Integer> getRolePermissions(@PathVariable Integer id) {
         Wrapper<RoleMenu> wrapper = Wrappers.<RoleMenu>lambdaQuery()
@@ -72,7 +67,6 @@ public class RoleController {
     }
 
 
-    @ApiOperation(value = "更新角色对应的菜单权限")
     @PostMapping("/{id}/menus")
     public boolean saveRoleMenu(@PathVariable int id, @RequestParam("ids") Set<Integer> ids) {
         return roleMenuService.save(id, ids);

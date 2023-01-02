@@ -1,6 +1,6 @@
 package com.ray.dormitory.valid.group;
 
-import javax.validation.groups.Default;
+import jakarta.validation.groups.Default;
 
 /**
  * 通过文件上传保存数据

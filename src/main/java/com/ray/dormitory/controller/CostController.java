@@ -20,7 +20,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -100,7 +100,7 @@ public class CostController {
         String token = request.getHeader(sysConfig.getTokenName());
         Assert.notNull(token, "token为空");
 
-        EasyExcel.read(file.getInputStream(), Cost.class, new UploadDataListener(costService, token)).sheet().doRead();
+        EasyExcel.read(file.getInputStream(), Cost.class, new UploadDataListener<>(costService, token)).sheet().doRead();
         return true;
     }
 
