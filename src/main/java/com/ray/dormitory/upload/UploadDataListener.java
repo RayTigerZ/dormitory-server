@@ -4,7 +4,7 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ray.dormitory.valid.group.SaveByFileValid;
+import com.ray.dormitory.web.validator.group.SaveByFileValid;
 import com.ray.dormitory.web.socket.WebSocketServer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;

@@ -1,4 +1,4 @@
-package com.ray.dormitory.valid.group;
+package com.ray.dormitory.web.validator.group;
 
 import jakarta.validation.groups.Default;
 

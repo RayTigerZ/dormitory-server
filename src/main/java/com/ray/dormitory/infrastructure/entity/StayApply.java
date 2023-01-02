@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ray.dormitory.export.Export;
-import com.ray.dormitory.valid.group.UpdateValid;
+import com.ray.dormitory.web.validator.group.UpdateValid;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;

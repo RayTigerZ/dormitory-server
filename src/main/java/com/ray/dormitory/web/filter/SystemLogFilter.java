@@ -1,7 +1,8 @@
-package com.ray.dormitory.config;
+package com.ray.dormitory.web.filter;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ray.dormitory.infrastructure.config.MyMetaObjectHandler;
 import com.ray.dormitory.infrastructure.entity.SystemLog;
 import com.ray.dormitory.service.SystemLogService;
 

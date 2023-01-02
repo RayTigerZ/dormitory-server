@@ -1,4 +1,4 @@
-package com.ray.dormitory.config;
+package com.ray.dormitory.infrastructure.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;

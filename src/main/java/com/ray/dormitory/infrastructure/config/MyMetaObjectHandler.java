@@ -1,4 +1,4 @@
-package com.ray.dormitory.config;
+package com.ray.dormitory.infrastructure.config;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;

@@ -1,4 +1,4 @@
-package com.ray.dormitory.config;
+package com.ray.dormitory.web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

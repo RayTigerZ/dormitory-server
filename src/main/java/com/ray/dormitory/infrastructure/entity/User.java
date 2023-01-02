@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ray.dormitory.bean.enums.Sex;
-import com.ray.dormitory.valid.group.SaveByFileValid;
+import com.ray.dormitory.web.validator.group.SaveByFileValid;
 import lombok.Getter;
 import lombok.Setter;
 
