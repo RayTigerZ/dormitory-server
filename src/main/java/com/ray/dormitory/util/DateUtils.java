@@ -10,6 +10,6 @@ public class DateUtils {
 
     public final static String EXPORT_FILE_DATE_FORMAT = "yyyyMMdd";
 
-    public final static DateTimeFormatter EXPORT_FILE_DATE_FORMATTER= DateTimeFormatter.ofPattern(EXPORT_FILE_DATE_FORMAT);
+    public final static DateTimeFormatter EXPORT_FILE_DATE_FORMATTER = DateTimeFormatter.ofPattern(EXPORT_FILE_DATE_FORMAT);
 
 }
