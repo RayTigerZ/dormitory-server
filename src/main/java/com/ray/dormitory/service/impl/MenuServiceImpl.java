@@ -58,15 +58,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         return menu;
     }
 
-//    void deleteNoChildNode(Menu menu) {
-//        if (menu.getChildren() == null) {
-//            menu = null;
-//        }
-//        for (Menu menu1 : menu.getChildren()) {
-//            deleteNoChildNode(menu1);
-//        }
-//    }
-
     @Override
     public Menu getAllPermission() {
         List<Menu> menus = baseMapper.selectList(Wrappers.emptyWrapper());
