@@ -14,7 +14,7 @@ spring:
   datasource:
     username: root
     password: Z4521663
-    driverClassName: com.mysql.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/dormitory?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     hikari:
       minimum-idle: 2
